@@ -1,5 +1,3 @@
-#manil
-
 get "/manager/sales" do
   @title = "Sales"
   @page = :"manager/sales/mngr_sales"

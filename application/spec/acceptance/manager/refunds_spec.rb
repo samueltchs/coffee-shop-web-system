@@ -9,7 +9,7 @@ RSpec.describe "Viewing refunds" do
       it "shows the empty refunds page" do
         visit "/manager/refunds"
 
-        expect(page).to have_content "Total refunds: 0"
+        expect(page).to have_content "Total Refunds: 0"
       end
     end
 
@@ -21,7 +21,7 @@ RSpec.describe "Viewing refunds" do
 
         visit "/manager/refunds"
 
-        expect(page).to have_content "Total refunds: 2"
+        expect(page).to have_content "Total Refunds: 2"
         expect(page).to have_content "Manny Belkacem"
         expect(page).to have_content "wrong drink"
         expect(page).to have_content "cold coffee"

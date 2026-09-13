@@ -31,7 +31,7 @@ RSpec.describe "manager controller" do
         manager = add_test_manager_to_db
         get_as_employee(manager, "/manager/refunds")
 
-        expect(last_response.body).to include("Total refunds:")
+        expect(last_response.body).to include("Total Refunds:")
       end
 
       it "shows the refund count from the db" do
@@ -42,7 +42,7 @@ RSpec.describe "manager controller" do
         manager = add_test_manager_to_db
         get_as_employee(manager, "/manager/refunds")
 
-        expect(last_response.body).to include("Total refunds: 2")
+        expect(last_response.body).to include("Total Refunds: 2")
       end
     end
   end
@@ -79,7 +79,7 @@ RSpec.describe "manager controller" do
         manager = add_test_manager_to_db
         get_as_employee(manager, "/manager/complaints")
 
-        expect(last_response.body).to include("Total complaints:")
+        expect(last_response.body).to include("Total Complaints:")
       end
 
       it "shows the complaint count from the db" do
@@ -91,7 +91,7 @@ RSpec.describe "manager controller" do
         manager = add_test_manager_to_db
         get_as_employee(manager, "/manager/complaints")
 
-        expect(last_response.body).to include("Total complaints: 3")
+        expect(last_response.body).to include("Total Complaints: 3")
       end
     end
   end
