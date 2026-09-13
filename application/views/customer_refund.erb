@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Request Refund" %>
+<%= erb :customer_head %>
+
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+    </header>
+
+    <div class="button-grid-box" id="account-settings">
+        <a href="/customer/dashboard">
+            <button class="customer-button large-button">Back to Dashboard</button>
+        </a>
+    </div>
+
+    <div id="customer/dashboard">
+        <div id="welcome" style="display: flex; flex-direction:column; align-items:center">
+            <h1>Customer Refund</h1>
+            <p>
+                We're sorry to hear that you would like to request a refund.
+                Please select the order you'd like to refund and describe your reason below.
+            </p>
+        </div>
+
+        <div id="refund-form-box" class="button-grid-box">
+
+            <% if @error %>
+                <p style="color: #ad0101;" class="important-text"><%= @error %></p>
+            <% end %>
+
+            <% if @message %>
+                <p style="color: #09a511;" class="important-text"><%= @message %></p>
+            <% end %>
+
+            <form method="post" action="/customer/refund" style="display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+
+                <label for="order_id"><h2>Select Order</h2></label>
+                <select
+                    id="order_id"
+                    name="order_id"
+                    style="font-family: 'Quicksand', sans-serif; font-size: 1rem; padding: 0.5rem 0.75rem; border-radius: 0.5rem; border: 1px solid var(--button-accent); background-color: var(--background-light); color: var(--dark-text); width: 100%;">
+                    <option value="">Select an order...</option>
+                    <% Order.get_all_orders_by_customer(@loyalty_number).each do |order| %>
+                        <% next if order.incomplete? || order.refunded? %>
+                        <% next if Refund.first(order_id: order.order_unique_id, status: "Pending") %>
+                        <option value="<%=h order.order_unique_id %>" <%= "selected" if params[:order_id] == order.order_unique_id.to_s %>>
+                            Order #<%=h order.order_unique_id %> &mdash; <%=h order.date_placed %>
+                        </option>
+                    <% end %>
+                </select>
+
+                <label for="refund"><h2>Reason for Refund</h2></label>
+                <textarea
+                    id="refund"
+                    name="refund"
+                    rows="8"
+                    cols="50"
+                    placeholder="Describe the reason for your refund..."
+                    required><%= @refund_reason %></textarea>
+
+                <br>
+
+                <button type="submit" name="submit_button" value="submit" class="customer-button large-button">
+                    Submit Refund Request
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+    <%= erb :customer_footer %>
+</body>
+</html>

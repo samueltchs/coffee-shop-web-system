@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Purchase Failed - BBC" %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+        <div class="page-header">
+            <h1>Purchase Failed!</h1>
+        </div>
+    </header>
+    <div class="main-content centralise-content">
+        <p>Please complete your payment in-store, or contact our team to cancel your order</p>
+        <p>Sorry for the inconvenience</p>
+        <br>
+        <p>Use the order number below when contacting us about this order:</p>
+        <p>Your Order Number: <%= @order_id %></p>
+        <p>(Failed) Payment Reference: <%= @payment_reference %></p>
+        <br>
+        <p>Screenshot this page before closing or reloading</p>
+        <p>These details can always be found in purchase history</p>
+    </div>
+    <%= erb :customer_footer %>
+</body>
+</html>

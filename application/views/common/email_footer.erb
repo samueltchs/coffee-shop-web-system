@@ -1,0 +1,20 @@
+        <p>Kind regards,</p>
+        <p><%= h @sender_name %></p>
+      </div>
+
+      <div class="email_footer">
+        <p>© <%= Time.now.year %> <%= h @cafe_name %>. All rights reserved.</p>
+
+        <% if @automated_email %>
+          <p>This is an automated message - please do not reply.</p>
+        <% end %>
+
+        <div class="email_buttons">
+          <span class="fake_button">Reply</span>
+          <span class="fake_button">Forward</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

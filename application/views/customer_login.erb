@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Login - BBC" %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+    </header>
+    <div class="main-content centralise-content">
+        <div class="center-box">
+            <div class="page-header">
+                <h1>Login</h1>
+            </div>
+            <div class="login_form">
+                <% unless @error.nil? %>
+                <p class="error"><%= h @error %></p>
+                <% end %>
+                <form action="/login" method="post">
+                <p><label for="email">Enter email address:</label></p>
+                <p><input type="text" name="email" value="<%= h @email %>" /></p>
+                <p><label for="password">Enter password:</label></p>
+                <p><input type="password" name="password" /></p>
+                <p><input type="submit" value="Submit"></p>
+                </form>
+                <p>
+                  Not a member? <a href="/sign-up">Sign up now</a>
+                </p>
+                <p>
+                  Forgot password? <a href="/forgot-password">Click here</a>
+                </p>
+            </div>
+        </div>
+  </div>
+    </div>
+    <%= erb :customer_footer %>
+</body>
+</html>

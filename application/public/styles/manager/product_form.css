@@ -1,0 +1,185 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+}
+
+h4, #pid, .type_label {
+  margin: 5px;
+  text-align: center;
+}
+
+h4{
+  margin-top: 4em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#product_form {
+  max-width: 500px;
+  padding: 20px 30px;
+  background: #FAF8F4;
+  border: 2px solid #E8E2D5;
+  border-radius: 12px;
+}
+
+.row{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.input_fields{
+  width: 300px;
+  margin-bottom: 5px;
+}
+
+select {
+  width: 304px;
+}
+
+textarea {
+  width: 302px;
+  height: 100px;
+}
+
+#form_container {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+
+#confirmation .buttons{
+  width: 100px;
+  height: 40px;
+  border-radius: 6px;
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: #DDD;
+  color: black;
+  border: none;
+  border-radius: 12px;
+}
+
+.buttons:hover, #submit:hover {
+  scale: 95%;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  opacity: 0;
+  pointer-events: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay:target {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.popup {
+  display: flex;
+  background: #FAF8F4;
+  width: 400px;
+  min-height: 150px;
+  border: 2px solid #E8E2D5;
+  border-radius: 12px;
+  position: relative;
+  padding: 8px 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.link {
+  text-align: center;
+  font-size: 13px;
+  text-decoration: none;
+
+  background: #efefef;
+  color: black;
+
+  border: 1px solid #767676;
+
+  cursor: pointer;
+}
+
+#add_link {
+  width: 70px;
+  padding: 2px 4px;
+  
+  border-radius: 2px;
+
+  background: #efefef;
+  color: black;
+}
+
+#close_link {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+
+  font-size: 20px !important;
+  border-radius: 6px;
+
+  background: #efefef;
+  color: black;
+}
+
+#origin_form {
+  max-width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+#new_origin {
+  width: 200px;
+  border-radius: 6px;
+  border: 1px solid #767676;
+}
+
+#submit {
+  width: 80px;
+  height: 25px;
+
+  padding: 2px 4px;
+  text-align: center;
+  font-size: 13px;
+  font-family: sans-serif;
+  text-decoration: none;
+  
+  border: 1px solid #767676;
+  border-radius: 6px;
+
+  background: #efefef;
+  color: black;
+
+  cursor: pointer;
+}
+
+.error_msg {
+  background-color: rgb(244, 166, 166);
+  font-size: 12px;
+  border-radius: 6px;
+  padding: 2px 8px;
+  color: #666;
+}

@@ -1,0 +1,79 @@
+body {
+  background-color: rgb(239, 239, 239);
+  font-family:Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+.email_page {
+  padding: 40px 0;
+}
+
+.email_details, .email_container {
+  max-width: 670px;
+  margin: 0 auto;
+}
+
+.email_details {
+  font-size: 12px;
+  color: rgba(20, 20, 20, 0.771);
+  background-color: white;
+  padding: 12px 17px;
+  border: 1px solid rgb(232, 227, 227);
+  border-radius: 7px;
+}
+
+.email_details p {
+  margin: 4px 0;
+}
+
+.email_container {
+  background-color: white;
+  border-radius: 7px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.07);
+}
+
+h1.email_brand {
+  padding: 20px;
+  border-bottom: 1px solid rgb(232, 227, 227);
+}
+
+.email_body {
+  padding: 30px;
+  padding-top: 0px;
+  color: rgba(20, 20, 20, 0.881);
+  line-height: 1.7;
+  min-height: 250px;
+}
+
+.email_footer {
+  background-color: whitesmoke;
+  padding: 15px 20px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(17, 23, 25, 0.762);
+}
+
+.email_footer p {
+  margin: 0;
+}
+
+.email_buttons {
+  display: flex;
+  gap: 7px;
+}
+
+span.fake_button {
+  display: inline-block;
+  padding: 7px 12px;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  font-size: 12px;
+  background-color: white;
+  cursor: default;
+}
+
+span.fake_button:hover {
+  background-color: rgba(210, 206, 206, 0.685);
+}

@@ -1,0 +1,63 @@
+<p><label for="first_name">Enter first name:</label></p>
+<p><input type="text" id="first_name" name="first_name" value="<%= h @employee.first_name %>" /></p>
+<% if @employee.errors.include?("first_name") %>
+  <% @employee.errors["first_name"].each do |error| %>
+    <p><span class="error">First name <%= h error %></span></p>
+  <% end %>
+<% end %>
+
+<p><label for="last_name">Enter last name:</label></p>
+<p><input type="text" id="last_name" name="last_name" value="<%= h @employee.last_name %>" /></p>
+<% if @employee.errors.include?("last_name") %>
+  <% @employee.errors["last_name"].each do |error| %>
+    <p><span class="error">Last name <%= h error %></span></p>
+  <% end %>
+<% end %>
+
+<p><label for="username">Enter username:</label></p>
+<p><input type="text" id="username" name="username" value="<%= h @employee.username %>" /></p>
+<% if @employee.errors.include?("username") %>
+  <% @employee.errors["username"].each do |error| %>
+    <p><span class="error">Username <%= h error %></span></p>
+  <% end %>
+<% end %>
+
+<p><label for="email">Enter email:</label></p>
+<p><input type="text" id="email" name="email" value="<%= h @employee.email %>" /></p>
+<% if @employee.errors.include?("email") %>
+  <% @employee.errors["email"].each do |error| %>
+    <p><span class="error">Email <%= h error %></span></p>
+  <% end %>
+<% end %>
+
+<p><label for="role">Choose role:</label></p>
+<p>
+  <select id="role" name="role">
+    <option value="">-- Select --</option>
+    <option value="Barista" <% if @employee.role == "Barista" %>selected<% end %>>Barista</option>
+    <option value="Manager" <% if @employee.role == "Manager" %>selected<% end %>>Manager</option>
+  </select>
+</p>
+<% if @employee.errors.include?("role") %>
+  <% @employee.errors["role"].each do |error| %>
+    <p><span class="error">Role <%= h error %></span></p>
+  <% end %>
+<% end %>
+
+<p><label for="password">Password:</label></p>
+<p><input type="password" id="password" name="password" /></p>
+<% if @employee.errors.include?("password") %>
+  <% @employee.errors["password"].each do |error| %>
+    <p><span class="error">Password <%= h error %></span></p>
+  <% end %>
+<% end %>
+
+<p><label for="conf_password">Confirm password:</label></p>
+<p><input type="password" id="conf_password" name="conf_password" /></p>
+<% if @employee.errors.include?("conf_password") %>
+  <% @employee.errors["conf_password"].each do |error| %>
+    <p><span class="error">The passwords <%= h error %></span></p>
+  <% end %>
+<% end %>
+    
+<p><input type="submit" id="submit" value="Create account"></p>

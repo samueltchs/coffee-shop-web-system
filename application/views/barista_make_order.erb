@@ -1,0 +1,225 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <TITLE> BARISTA MAKE ORDER PAGE </TITLE>
+        <link rel="icon" type="image/svg+xml" href="/images/Favicon.svg">
+        <link rel="stylesheet" href="../styles/barista.css">
+        <meta charset='UTF-8'>
+    </HEAD>
+    <BODY>
+
+        <H1>
+            Make Order
+        </H1>
+
+        <FORM  style="margin-left:2vw; margin-bottom: 1vh"  method="get" action="/barista/main">
+            <BUTTON class="menu_button_style" style="font-size:1.2rem;" type="submit">Main Menu</BUTTON>
+        </FORM>
+
+        <!--OUTER BOX-->
+        <DIV id="make_order_box" class="box">
+
+            <% if params[:error] == "empty" %>
+                <p style="color: white; background: #d9534f; padding: 10px; border-radius: 5px; text-align: center;">
+                    <strong>Empty Order:</strong> You can't checkout with an empty tray!
+                </p>
+            <% end %>
+            <!--ADDING/REMOVING ITEMS-->
+            <DIV style="display: flex;">
+
+            <!--ADDING ITEMS-->
+            <DIV class="add_item_icon">
+                <!--ADD ITEMS POPUP-->
+                <DIV class="add_items_popup_box">
+                    <%unless @all_products.nil?
+                        @all_products.each do |product|%>
+                            <%if product.available?%>
+                            <%if product.is_drink?%>
+                            <!--ADD DRINKS FORM-->
+                                <FORM method=post action="/barista/add-drink">
+                                <DIV class="item_container">
+                                    <INPUT type="hidden" value="<%=h product.product_id%>" name="item_to_be_added">
+                                    <p class="add_item_name"><%=h product.name%></p>
+                                    <INPUT class="add_item_button" type="image" src="..<%=h product.get_image_path%>" alt="add_item_icon">
+                                    <%milk_options = product.get_milk_options%>
+                                    <%size_options = product.get_size_options%>
+                                    <SELECT class="drink_variant_selection" name="milk_type">
+                                        <%milk_options.each do |milk_name|%>
+                                            <OPTION  value="<%=h milk_name%>"> <%=h milk_name%> </OPTION>
+                                        <%end%>
+                                    </SELECT>
+
+                                    <SELECT class="drink_variant_selection" name="size">
+                                        <%size_options.each do |size|%>
+                                            <OPTION value="<%=h size%>"> <%=h size%> </OPTION>
+                                        <%end%>
+                                    </SELECT>
+
+                                    <INPUT style="width: 9vw; height: 2.2vh; float: center;" type="text" placeholder="Amount" name="amount_of_items">
+                                </DIV>
+                                </FORM>
+
+                            <%elsif product.is_bean?%>
+                            <!--ADD BEANS FORM-->
+                                <FORM method=post action="/barista/add-beans">
+                                <DIV class="item_container">
+                                    <INPUT type="hidden" value="<%=h product.product_id%>" name="item_to_be_added">
+                                    <p class="add_item_name"><%=h product.name%></p>
+                                    <INPUT class="add_item_button" type="image" src="..<%=h product.get_image_path%>" alt="add_item_icon">
+                                    <p style="height: 2vh;"><%=h product.get_origin%></p>
+                                    <p style="height: 2vh;"><%=h product.get_roast_level%></p>
+                                    <INPUT style="width: 9vw; height: 2.2vh; float: center;" type="text" placeholder="Amount" name="amount_of_items">
+                                </DIV>
+                                </FORM>
+                            <%end%>
+                            <%end
+                        end
+                    end%>
+
+                </DIV>
+                <DIV style="display: grid;">
+                    <p style="height: 4vh; width: fit-content; font-size: 2rem; justify-self: center;">ADD ITEM</p>
+                    <INPUT class="add_items_button" type="image" src="../icons/diamond-plus.svg" alt="add_item_icon">
+                </DIV>
+            </DIV>
+
+            <!--ADDED ITEMS-->
+            <DIV style="display: flex; flex-direction: column; ">
+                <p style="height: 2vh; width: fit-content; font-size: 1.6rem; margin-bottom: 0.5vh">CLICK ON AN ITEM'S ICON TO REMOVE IT</p>
+                <DIV id="added_items_box" class="box">
+                        <%unless @added_items.nil?
+                            @added_items.each do |item|%>
+
+                            <FORM method=post action="/barista/remove-item">
+                                <DIV class="added_item">
+                                <p style="text-align: center;padding-right: 0.5vw;"><%=h item.get_name%> </BR>
+                                Qty.<%=h item.quantity%>
+                                </BR>
+                                <% if item.is_drink? %>
+                                    <%= h item.get_milk_name %>
+                                    </BR>
+                                    <%= h item.get_size_text %>
+                                <% elsif item.is_bean? %>
+                                    <%= h item.get_origin %>
+                                    </BR>
+                                    <%= h item.get_roast_level %>
+                                <% end %>
+                                </p>
+                                <INPUT type="hidden" value="<%=h item.item_in_order_id%>" name="remove_item">
+                                <INPUT class="remove_item_button" type="image" src="../icons/question-mark.svg" alt="add_item_icon">
+                                <INPUT style="width: 5vw; height: 1vh; float: center;" type="text" placeholder="Amount" name="amount_of_items">
+                                </DIV>
+                            </FORM>
+                            <%end
+                        end%>
+                </DIV>
+            </DIV>
+
+        </DIV>
+
+        <!--CUSTOMER SEARCH + RECEIPT-->
+        <DIV style="display: flex; flex-direction: row">
+
+            <!--CUSTOMER SEARCH-->
+            <DIV style="display: flex; flex-direction: column; margin-top: 1.5vh">
+                <!--SEARCH BAR-->
+                <FORM method=post action="/barista/search-customer-by-loyalty-number">
+                    <INPUT style="width: 19vw; height: 4vh; font-size: 85%;" type="search" placeholder="Enter loyalty card number or email..." name="entered_loyalty_number">
+                </FORM>
+                <%unless @customer.nil?%>
+                    <P style="font-size: calc(1vh + 1vw)"> Loyalty Number: <%=h @customer.loyalty_number%> </Br> Name: <%=h @customer.first_name%> </BR>Surname:  <%=h @customer.last_name%></P>
+
+                    <!--STAMPS-->
+                    <DIV style="
+                        display: flex;
+                        flex-wrap: wrap;
+                        margin-top: 0.4vh
+                        max-height: 20vh;
+                        width: calc(13vw + 7vh);
+                        justify-content: safe center;
+                        align-items: safe center;
+                        align-content: center;
+                        ">
+                        <%for i in 1..@customer.stamps%>
+                            <IMG class="stamp_icon" src="/images/stamp.png">
+                        <%end%>
+                        <%for i in @customer.stamps...9%>
+                        <IMG class="stamp_icon" src="/images/empty-stamp.png">
+                        <%end%>
+                        <%if @customer.stamps == 9%>
+                            <FORM method=post action="/barista/claim-stamps">
+                                <BUTTON class="menu_button_style" style="font-size: 1.4rem; width: calc(10vw + 7vh); height: 6vh;" type="submit">Claim Stamps</BUTTON>
+                            </FORM>
+                        <%end%>
+                    </DIV>
+                <%end%>
+            </DIV>
+            <!--RECEIPT-->
+            <DIV id="receipt_box" class="box" style="display: inline-block;">
+                <p style="margin: 0 0;font-size: calc(1.5vw + 1.5vh); justify-self: anchor-center; ">Order #<%=h @order_id%></p>
+                <hr style="margin: 0; width: 90%; height: 0; border-bottom: 0; border-top: 2px dashed #000; justify-self: anchor-center;">
+                <p class="receipt_header">Drinks:</p>
+                <%drinks = @order.get_drinks
+                if !drinks.nil?
+                    drinks.each do |drink|
+                        if drink.redemption_check(@order_id)
+                            if drink.quantity == 1%>
+                                <span class="receipt_content" style="color: #1f9a03"><%=h(drink.get_name + " - " + drink.get_milk_name + " - " + drink.get_size_text + " x1")%></span>
+                                <span class="receipt_item_price" style="color: #1f9a03">-£0-</span>
+                                </BR>
+                            <%else%>
+                                <span class="receipt_content" style="color: #1f9a03"><%=h(drink.get_name + " - " + drink.get_milk_name + " - " + drink.get_size_text + " x1")%></span>
+                                <span class="receipt_item_price" style="color: #1f9a03">-£0-</span>
+                                </BR>
+                                <span class="receipt_content"><%=h(drink.get_name + " - " + drink.get_milk_name + " - " + drink.get_size_text + " x" + (drink.quantity-1).to_s)%></span>
+                                <span class="receipt_item_price">-£<%=h((drink.price_for_one * (drink.quantity-1)).round(2))%>-</span>
+                                </BR>
+                            <%end
+                        else%>
+                        <span class="receipt_content"><%=h(drink.get_name + " - " + drink.get_milk_name + " - " + drink.get_size_text + " x" + drink.quantity.to_s)%></span>
+                        <span class="receipt_item_price">-£<%=h((drink.price_for_one * drink.quantity).round(2))%>-</span>
+                        </BR>
+                        <%end
+                    end
+                else%>
+                    <p class="receipt_content" style="color: #ff0000"> No drinks added <p>
+                <%end%>
+                <p class="receipt_header" style="margin-top: 1vh;">Beans:</p>
+                <%beans = @order.get_beans
+                if !beans.nil?
+                    beans.each do |bean|  %>
+                        <span class="receipt_content"><%=h(bean.get_name + " - " + bean.get_origin + " - " + bean.get_roast_level + " x" + bean.quantity.to_s)%></span>
+                        <span class="receipt_item_price">-£<%=h bean.price_for_one%>-</span>
+                        </BR>
+                    <%end
+                else%>
+                    <p class="receipt_content" style="color: #ff0000"> No beans added <p>
+                <%end%>
+                <span class="receipt_header" style="margin-top: 1vh;">Total:</span>
+                <span class="receipt_item_price">-£<%= @order.set_net_price_barista.round(2) %>-</span>
+                </BR>
+            </DIV>
+
+        </DIV>
+
+        <!--CANCEL/SUBMIT ORDER-->
+        <DIV style="align-self: flex-end; width: 100%; display: grid;">
+        <FORM method=post action="/barista/submit-order" style="align-self: center; justify-self: end;">
+            <SELECT class="menu_button_style" style="font-size:2rem; margin-right: 0.4vw" name="payment_method">
+                <%payment_methods = PaymentMethod.all
+                payment_methods.each do |payment_method|%>
+                    <OPTION value="<%=h payment_method.id%>"><%=h payment_method.payment_method%></OPTION>
+                <%end%>
+            </SELECT>
+            <BUTTON class="menu_button_style" style="font-size:2rem; margin-right: 1.1vw" type="submit">Continue to payment</BUTTON>
+        </FORM>
+
+        <FORM method=post action="/barista/cancel-order" style="align-self: center;">
+            <BUTTON class="menu_button_style" style="font-size:1.7rem; width: calc(12vw + 7vh); height: 4.5vh;" type="submit">Cancel Order</BUTTON>
+        </FORM>
+        </DIV>
+
+        </DIV>
+
+    </BODY>
+</HTML>

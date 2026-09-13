@@ -1,0 +1,6 @@
+<h1>Mock Payment Page</h1>
+<form action="/shop/basket/make-payment" method="post">
+    <input type="hidden" name="reference" value=<%= generate_unique_reference_id().to_s %>>
+    <input type="hidden" name="result" value=<%= Random.rand(0..1).to_s %>>
+    <button type="submit">"Pay"</button>
+</form>

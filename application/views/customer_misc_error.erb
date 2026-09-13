@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Error! - BBC" %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+        <div class="page-header">
+            <h1>This Shouldn't Happen!</h1>
+        </div>
+    </header>
+    <div class="main-content centralise-content">
+        <p>An error occurred, sorry for any inconvenience!</p>
+        <a href="/" class="accent-button small-button">Back Home!</a>
+    </div>
+    <%= erb :customer_footer %>
+</body>
+</html>

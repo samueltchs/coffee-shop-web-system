@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <TITLE> BARISTA PAST DAILY SUMMARY </TITLE>
+        <link rel="icon" type="image/svg+xml" href="/images/Favicon.svg">
+        <link rel="stylesheet" href="../styles/barista.css">
+        <meta charset="UTF-8">
+    </HEAD>
+    <BODY>
+
+        <H1>
+            PAST SALES
+        </H1>
+
+        <FORM  style="margin-left:2vw; margin-bottom: 1vh"  method="get" action="/barista/main">
+            <BUTTON class="menu_button_style" style="font-size:1.2rem;" type="submit">Main Menu</BUTTON>
+        </FORM>  
+        <DIV id="whole_screen_box" class = "box" >
+            <H2 style="margin-bottom: 1vh; font-size: calc(0.5vw + 5vh);">
+                Current User: <%=h session[:username]%>
+            </H2>
+            <%
+                total_earned = @orders.where(status: "Paid").sum(:net_price) || 0
+                order_ids = @orders.select_map(:order_unique_id)
+                free_coffees_count = FreeCoffeeRedemption.where(order_unique_id: order_ids).count
+            %>
+            <H3 style="margin: 0 0 2vh 0; font-size: calc(0.4vw + 3vh);">
+                Total Earned: £<%= "%.2f" % total_earned %>
+            </H3>
+            <H3 style="margin: 0 0 2vh 0; font-size: calc(0.4vw + 3vh);">
+                Free Coffees Redeemed: <%= free_coffees_count %>
+            </H3>
+            <!-- Filters -->
+            <%
+                @filter_action = "/barista/past-sales"
+                @reset_path = "/barista/past-sales"
+                @show_loyalty_filter = true
+                @show_barista_filter = false
+                @show_fulfilment_filter = true
+                @show_payment_status_filter = true
+                @show_payment_method_filter = true
+                @show_delivery_filter = true
+                @show_tracking_filter = false
+                @show_refund_status_filter = false
+                @show_date_filters = false
+            %>
+            <%=erb :"barista/filters"%>
+
+            <!-- Order Table -->
+            <%
+                @show_barista = false
+                @show_tracking = false
+                @view_items_path = "daily-summary"
+                @header_font_size = "calc(1.5vw + 0.2vh)"
+                @row_font_size = "1.3rem"
+                @table_style = nil
+            %>
+            <%=erb :"barista/orders_table"%>
+        </DIV>
+        <DIV class="alert_popup"
+            <%order_id = params[:selected]%>
+            <%='style="display: flex;"' if order_id && Order.get_order(order_id)%>
+        >
+        
+            <FORM method="get" action="/barista/daily-summary" style="align-self: start;">
+                <INPUT class="menu_button_style" style="font-size: calc(1.2vh + 0.9vw);" type="submit" value="Close">
+            </FORM>
+
+            <H2> Items in Order <%=h order_id%> </H2>
+
+            <%
+                @items = ItemInOrder.where(order_unique_id: order_id)
+                @header_font_size = "calc(2.1vw + 0.2vh)"
+                @row_font_size = "calc(1.3vw + 0.6vh)"
+                @table_style = "align-self: center"
+            %>
+            <%=erb :"barista/item_in_orders_table"%>
+
+        </DIV>
+    </BODY>
+</HTML>

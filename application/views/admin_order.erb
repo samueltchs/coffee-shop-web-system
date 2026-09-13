@@ -1,0 +1,109 @@
+<%= erb :"common/admin_header" %>
+
+<%= erb :"common/admin_top" %>
+
+<h1>Order: <%= h @order.order_unique_id %></h1>
+
+<div class="order_page">
+  <div class="order_details">
+    <div class="order_details_left">
+      <p>Loyalty no. of customer: <span class="detail"><%= h @order.get_loyalty_number %></span></p>
+      <p>Date placed: <span class="detail"><%= h format_time(@order.date_placed) %></span></p>
+      <p>Price: <span class="detail"><%= h(format_price(@order.price)) %></span></p>
+      <p>Cost: <span class="detail"><%= h(format_price(@order.cost)) %></span></p>
+      <p>Net price: <span class="detail"><%= h(format_price(@order.net_price)) %></span></p>
+      <p>Tracking ID: <span class="detail"><%= h @order.get_tracking_id %></span></p>
+      <p>Reference ID: <span class="detail"><%= h @order.get_reference_id %></span></p>
+      <p>Processed by: <span class="detail"><%= h @order.get_barista %></span></p>
+      <p>Order fulfilment: <span class="detail"><%= h @order.order_fulfilment %></span></p>
+      <p>Order delivery status: <span class="detail"><%= h @order.get_delivered %></span></p>
+      <p>Status: <span class="detail"><%= h @order.status %></span></p>
+      <p>Payment method: <span class="detail"><%= h @order.get_payment_method %></span></p>
+      <p>Discount code: <span class="detail"><%= h @order.get_discount_code_used %></span></p>
+      <% if @order.discount_code_used && !@order.discount_code_used.empty? %>
+        <p>Discount: <span class="detail"><%= h @order.get_percentage_off %></span></p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="order_contents">
+    <p>Contents:</p>
+    <ol>
+      <% @products.each do |name, price, quantity, image_path, size_id, milk_id| %>
+        <li>
+          <div class="product">
+            <div class="product_text">
+              <% if size_id == 1 && milk_id == 1 %>
+                <%= h name %>: <%= h(format_price(price)) %><br>
+              <% else %>
+                <%= h name %><%= h size_abbreviation(Size.get_size(size_id)) %>: <%= h(format_price(price)) %><br>
+                <% milk = MilkOption.get_milk_name(milk_id) %>
+                <% if !milk.empty? %>
+                  Milk Type: <%= h milk %><br>
+                <% end %>
+              <% end %>
+              Quantity: <%= h quantity %><br>
+              Total: <%= h(format_total(price, quantity)) %>
+            </div>
+
+            <img src="<%= h image_path %>" class="product_img" alt="<%= h name %>" />
+          </div>
+        </li>
+      <% end %>
+    </ol>
+    <p> ------------------------ </p>
+    <p class="total">Total: <%= h (format_price(@order.net_price)) %></p>
+  </div>
+
+  <div class="change_order">
+    <% if @order.status == "Unpaid" %>
+      <form action="/admin-payment-reference-id" method="post">
+        <input type="hidden" name="order_id" value="<%= h @order.order_unique_id %>" />
+
+        <% if @order.errors.include?("reference_id") %>
+          <% @order.errors["reference_id"].each do |error| %>
+            <p><span class="error">The Reference ID <%= h error %></span></p>
+          <% end %>
+        <% elsif !@reference_id_success.nil? %>
+          <p><span class="success"><%= h @reference_id_success %></span></p>
+        <% end %>
+
+        <p><input type="text" id="reference_id" name="reference_id" placeholder="Enter payment reference ID..." /></p>
+        <p><input type="submit" value="Submit"></p>
+      </form>
+    <% else %>
+      <p>Reference ID verification is only possible for unpaid orders.</p>
+    <% end %>
+
+    <form action="/admin-change-order-status" method="post">
+      <input type="hidden" name="order_id" value="<%= h @order.order_unique_id %>" />
+
+      <% if @order.errors.include?("status") %>
+        <% @order.errors["status"].each do |error| %>
+          <p><span class="error">The order's status <%= h error %></span></p>
+        <% end %>
+      <% elsif !@order_status_success.nil? %>
+        <p><span class="success"><%= h @order_status_success %></span></p>
+      <% end %>
+
+      <% if @audit_note && @audit_note.errors.include?("reason_note") %>
+        <% @audit_note.errors["reason_note"].each do |error| %>
+          <p><span class="error"><%= h error %></span></p>
+        <% end %>
+      <% end %>
+
+      <p><label for="status">Change order status:</label></p>
+      <select name="status" id="status">
+        <option value="">-- Select --</option>
+        <option value="Paid" <% if @order.status == "Paid" %>selected<% end %>>Paid</option>
+        <option value="Unpaid" <% if @order.status == "Unpaid" %>selected<% end %>>Unpaid</option>
+        <option value="Owed" <% if @order.status == "Owed" %>selected<% end %>>Owed</option>
+      </select>
+
+      <p><input type="text" name="reason_note" placeholder="Add reason note..." /></p>
+      <p><input type="submit" value="Change"></p>
+    </form>
+  </div>
+</div>
+
+<%= erb :"common/admin_footer" %>

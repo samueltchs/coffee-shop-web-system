@@ -1,0 +1,28 @@
+#btn_row {
+  display: flex;
+  justify-content: end;
+  margin-left: auto;
+}
+
+#btn_row .btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 140px;
+  height: 40px;
+
+  background-color: #DDD;
+  color: black;
+  text-decoration: none;
+  font-size: 13px;
+  border: none;
+  border-radius: 12px;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+#btn_row .btn:hover {
+  scale: 95%;
+  cursor: pointer;
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Order " + @order_id.to_s + " - BBC" %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+        <div class="page-header">
+            <h1>Order Number: <%= @order_id %></h1>
+        </div>
+    </header>
+    <div class="main-content centralise-content">
+        <p>price: <%= @order.price %></p>
+        <p>Date: <%= @order.date_placed %></p>
+        <p>Payment Status: <%= @order.status %></p>
+        <% if @order.status == "Unpaid" %>
+            <i>Please pay for your order in-store</i>
+        <% end %>
+        <br>
+        <br>
+        <br>
+        <b>Order Contents:</b>
+        <% @items.each do |item| %>
+            <% product = Product.get_product_by_id(item.item_id) %>
+            <p>(<%= item.quantity %>x) <%= product.name %> - Milk: <%= MilkOption.get_milk_name(item.milk_id) %> - Size: <%= Size.get_size(item.size_id) %> (£<%= item.price_for_one %> each)</p>
+        <% end %>
+    </div>
+    <%= erb :customer_footer %>
+</body>
+</html>

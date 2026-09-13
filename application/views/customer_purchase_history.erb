@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Purchase History - BBC" %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+        <div class="page-header">
+            <h1>Your Purchase History</h1>
+        </div>
+    </header>
+    <div class="main-content centralise-content">
+        <div class="basket-table-container">
+            <div class="basket-table-border">
+                <table class="basket-table">
+                    <tr class="basket-header-row basket-item">
+                        <th>Order ID</th>
+                        <th>Price</th>
+                        <th>No. Items</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                    <% @orders.each do |order| %>
+                        <% order_id = order["id"] %>
+                        <% no_items = order["no_items"] %>
+                        <% price = order["price"] %>
+                        <% date = order["date"] %>
+                        <tr class="basket-item">
+                            <td><a href=<%= "/customer/order?order_id=" + order_id.to_s %>><%= order_id %></a></td>
+                            <td class="price">£<%= price_float_to_string(price) %></td>
+                            <td><%= no_items %></td>
+                            <td><%= date %></td>
+                        </tr>
+                    <% end %>
+                </table>
+            </div>
+        </div>
+    </div>
+    <%= erb :customer_footer %>
+</body>
+</html>

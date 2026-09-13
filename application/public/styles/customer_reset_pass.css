@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+}
+
+h1 {
+  margin: 50px;
+}
+
+.reset_page {
+  min-height: 100vh;
+  background-image: url("/images/cup-of-coffee.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.reset_box {
+  max-width: 670px;
+  width: 100%;
+  min-height: 330px;
+  background-color: rgba(199, 198, 193, 0.537);
+  padding: 30px 40px;
+  border-radius: 10px;
+  text-align: center;
+  margin-left: 100px;
+}
+
+.reset_box form {
+  display: flex;
+  flex-direction: column;
+}
+
+.reset_box label {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+.reset_box input {
+  padding: 10px;
+  border: 1px solid rgb(173, 171, 171);
+  border-radius: 5px;
+}
+
+.reset_box button {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  padding: 10px;
+}
+
+.reset_links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+a.reset_pass {
+  display: inline-block;
+  margin-top: 50px;
+  padding: 7px 10px;
+  background-color: antiquewhite;
+  text-decoration: none;
+  color: black;
+  border-radius: 5px;
+  font-size: 17px;
+}
+
+p.warning {
+  color: rgb(189, 52, 52);
+}
+
+p.success {
+  color: rgb(15, 101, 70);
+}
+
+p.warning, p.success {
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  text-align: center;
+}

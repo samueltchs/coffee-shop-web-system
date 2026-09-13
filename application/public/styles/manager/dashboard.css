@@ -1,0 +1,119 @@
+* {
+  box-sizing: border-box;
+}
+
+form {
+  display: flex;
+  width: max-content;
+  justify-content: center;
+  
+  margin-bottom: 5px;
+  background: #FAF8F4;
+  padding: 4px;
+  border-radius: 12px;
+  border: 2px solid #E8E2D5;
+}
+
+#date_range_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+#date_range_container label {
+  font-size: 13px;
+}
+
+#date_range_container input {
+  border: 1px solid #E8E2D5;
+  border-radius: 6px;
+}
+
+#reset_btn, #submit_btn {
+  display: flex;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 25px;
+  width: 60px;
+  padding: 2px 4px;
+  font-size: 13px;
+  border-radius: 10px !important;
+  border: none;
+
+  background: #E8E2D5;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#reset_btn:hover, #submit_btn:hover {
+  scale: 95%;
+  cursor: pointer;
+}
+
+#charts_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+  "combo combo"
+  "drinks beans"
+  "discount_bar discount_pie";
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  height: auto;
+  width: 100%;
+
+  border: 2px solid #E8E2D5;
+  border-radius: 12px;
+  padding: 8px;
+  gap: 10px;
+}
+
+#combo_chart {
+  height: 500px;
+  width: 100%;
+}
+
+#combo_container { grid-area: combo; }
+
+#top_drinks { grid-area: drinks; }
+
+#top_beans { grid-area: beans;}
+
+#top_discounts { grid-area: discount_bar; }
+
+#discounted_sales { grid-area: discount_pie; }
+
+@media(max-width: 800px) {
+  #charts_container {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+    "combo"
+    "drinks"
+    "beans"
+    "discount_bar" 
+    "discount_pie";
+    gap: 8px;
+    margin-top: 5px;
+  }
+  .chart {
+    min-width: 350px;
+    width: 100%;
+  }
+  form {
+    min-width: 350px;
+    width: 100%;
+    align-items: center;
+  }
+}

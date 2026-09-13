@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= h @title %> - Login</title>
+  <link rel="icon" type="image/svg+xml" href="/images/Favicon.svg">
+  <link rel="stylesheet" href="styles/login.css">
+</head>
+<body>
+  <h1><%= h @title %></h1>
+  <div id="image">
+  <img src="images/coffee-beans.png" width="200" />
+  </div>
+  <div class="center_box">
+    <div class="login_and_image">
+      <div class="login_form">
+        <p class="sign_in">SIGN IN</p>
+        <% unless @error.nil? %>
+          <p class="error"><%= h @error %></p>
+        <% end %>
+        <form action="/login" method="post">
+          <p><label for="email">Enter email address:</label></p>
+          <p><input type="text" name="email" value="<%= h @email %>" /></p>
+          <p><label for="password">Enter password:</label></p>
+          <p><input type="password" name="password" /></p>
+          <p><input type="submit" value="Submit"></p>
+        </form>
+        <p>
+          Not a member? <a href="/sign-up">Sign up now</a>
+        </p>
+        <p>
+          Forgot password? <a href="/forgot-password">Click here</a>
+        </p>
+      </div>
+      <img src="images/header-logo.png">
+    </div>
+  </div>
+</body>
+</html>

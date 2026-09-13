@@ -1,0 +1,118 @@
+<%= erb :"common/admin_header" %>
+
+<%= erb :"common/admin_top" %>
+
+<h1><%= h @title %></h1>
+
+<div class="logs">
+  <a class="buttons" href="/admin-customer?loyalty_number=<%= h @customer.loyalty_number %>">
+    <img src="icons/arrow-big-left.svg" class="icon" alt="Go back to the customer's profile" />
+    Back to the customer's profile
+  </a>
+
+  <a class="buttons" href="/admin-customer-purchase-history?loyalty_number=<%= h @customer.loyalty_number %>">
+    <img src="icons/handbag.svg" class="icon" alt="View customer purchase history" />
+    View customer purchase history
+  </a>
+
+  <a class="buttons" href="/admin-customer-purchasing-habits?loyalty_number=<%= h @customer.loyalty_number %>">
+    <img src="icons/wallet.svg" class="icon" alt="View customer purchasing habits" />
+    View customer purchasing habits
+  </a>
+
+  <h2>Time Spent Per Week</h2>
+  <% if @time_spent.empty? %>
+    <p class="empty">No recorded activity</p>
+  <% else %>
+    <table class="admin_table">
+      <tr>
+        <th>Week</th>
+        <th>Time Spent</th>
+      </tr>
+      <% @time_spent.each do |week, time| %>
+        <tr>
+          <td><%= h week %></td>
+          <td><%= h time %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+  <h2>Recent Login Times</h2>
+  <% if @login_times.empty? %>
+    <p class="empty">No login activity</p>
+  <% else %>
+    <table class="admin_table">
+      <tr>
+        <th>Login Time</th>
+      </tr>
+      <% @login_times.each do |login_time| %>
+        <tr>
+          <td><%= h format_time(login_time.login_time) %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+  <h2>Recent Profile Updates</h2>
+  <% if @profile_updates.empty? %>
+    <p class="empty">No profile updates have been made</p>
+  <% else %>
+    <table class="admin_table">
+      <tr>
+        <th>Field</th>
+        <th>Old Value</th>
+        <th>New Value</th>
+        <th>Time Updated</th>
+      </tr>
+      <% @profile_updates.each do |profile_update| %>
+        <tr>
+          <td><%= h profile_update.display_field %></td>
+          <td><%= h profile_update.display_value(profile_update.old_value) %></td>
+          <td><%= h profile_update.display_value(profile_update.new_value) %></td>
+          <td><%= h format_time(profile_update.time_updated) %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+  <h2>Recently Viewed Items</h2>
+  <% if @recent_views.empty? %>
+    <p class="empty">No items viewed</p>
+  <% else %>
+    <table class="admin_table">
+      <tr>
+        <th>Item</th>
+        <th>Item ID</th>
+        <th>Time Viewed</th>
+      </tr>
+      <% @recent_views.each do |recent_view| %>
+        <tr>
+          <td><%= h recent_view.name %></td>
+          <td><%= h recent_view.item_id %></td>
+          <td><%= h format_time(recent_view.time_viewed) %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+  <h2>Favourited Items</h2>
+  <% if @favourites.empty? %>
+    <p class="empty">No items have been favourited</p>
+  <% else %>
+    <table class="admin_table">
+      <tr>
+        <th>Item</th>
+        <th>Item ID</th>
+      </tr>
+      <% @favourites.each do |favourite| %>
+        <tr>
+          <td><%= h favourite.name %></td>
+          <td><%= h favourite.item_id %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+</div>
+
+<%= erb :"common/admin_footer" %>

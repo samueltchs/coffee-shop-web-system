@@ -1,0 +1,53 @@
+@font-face {
+  font-family: "OpenSauce";
+  src: url("/fonts/OpenSauceOne-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "OpenSauce";
+  src: url("/fonts/OpenSauceOne-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "OpenSauce";
+  src: url("/fonts/OpenSauceOne-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "OpenSauce";
+  src: url("/fonts/OpenSauceOne-MediumItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "OpenSauce";
+  src: url("/fonts/OpenSauceOne-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* Apply OpenSauce to all manager pages */
+*:not(.material-symbols-outlined) {
+  font-family: "OpenSauce", sans-serif;
+}
+
+/* Page main title in extra bold */
+h1, h2{
+  font-weight: 800;
+  font-size: 36px;
+}
+
+h3, h4, th, strong, b {
+  font-weight: 500;
+}
+
+p[style*="font-size: 24px"] {
+  font-weight: 800 !important;
+}

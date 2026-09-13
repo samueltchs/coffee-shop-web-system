@@ -1,0 +1,98 @@
+<%= erb :"common/admin_header" %>
+
+<%= erb :"common/admin_top" %>
+
+<div class="admin_settings_page">
+  <div class="admin_info">
+    <div class="admin_headline">
+      <h1><%= h @title %></h1>
+      <img src="images/profile.png" width="70" height="70" alt="Profile Icon" />
+    </div>
+
+    <div class="details">
+      <p>Username: <span class="user_detail"><%= h @admin.username %></span></p>
+      <p>Email: <span class="user_detail"><%= h @admin.email %></span></p>
+      <p>Name: <span class="user_detail"><%= h @admin.name %></span></p>
+    </div>
+  </div>
+
+  <div class="admin_settings">
+    <div class="settings_forms">
+      <div class="settings_text_forms">
+        <form action="/admin-update-username" method="post">
+          <% if @admin.errors.include?("username") %>
+            <% @admin.errors["username"].each do |error| %>
+              <p><span class="error">Username <%= h error %></span></p>
+            <% end %>
+          <% elsif !@username_success.nil? %>
+            <p><span class="success"><%= h @username_success %></span></p>
+          <% end %>
+          <p><input type="text" id="username" name="username" />
+          <input type="submit" value="Update username"></p>
+        </form>
+
+        <form action="/admin-update-email" method="post">
+          <% if @admin.errors.include?("email") %>
+            <% @admin.errors["email"].each do |error| %>
+              <p><span class="error">Email <%= h error %></span></p>
+            <% end %>
+          <% elsif !@email_success_msg.nil? %>
+            <p><span class="success"><%= h @email_success_msg %></span></p>
+          <% end %>
+          <p><input type="text" id="email" name="email" />
+          <input type="submit" value="Update email"></p>
+        </form>
+
+        <form action="/admin-update-first-name" method="post">
+          <% if @admin.errors.include?("first_name") %>
+            <% @admin.errors["first_name"].each do |error| %>
+              <p><span class="error">First name <%= h error %></span></p>
+            <% end %>
+          <% elsif !@first_name_success.nil? %>
+            <p><span class="success"><%= h @first_name_success %></span></p>
+          <% end %>
+          <p><input type="text" id="first" name="first" />
+          <input type="submit" value="Update first name"></p>
+        </form>
+
+        <form action="/admin-update-last-name" method="post">
+          <% if @admin.errors.include?("last_name") %>
+            <% @admin.errors["last_name"].each do |error| %>
+              <p><span class="error">Last name <%= h error %></span></p>
+            <% end %>
+          <% elsif !@last_name_success.nil? %>
+            <p><span class="success"><%= h @last_name_success %></span></p>
+          <% end %>
+          <p><input type="text" id="last" name="last" />
+          <input type="submit" value="Update last name"></p>
+        </form>
+      </div>
+
+      <form action="/admin-change-password" method="post">
+        <p><label for="password">Update password: </label></p>
+        <% if @admin.errors.include?("password") %>
+          <% @admin.errors["password"].each do |error| %>
+            <p><span class="error">Password <%= h error %> </span></p>
+          <% end %>
+        <% end %>
+        <p><input type="password" id="password" name="password" /></p>
+        <p><label for="conf_password">Confirm new password: </label></p>
+        <% if @admin.errors.include?("conf_password") %>
+          <% @admin.errors["conf_password"].each do |error| %>
+            <p><span class="error">The passwords <%= h error %></span></p>
+          <% end %>
+        <% end %>
+        <p><input type="password" id="conf_password" name="conf_password" /></p>
+        <p><input type="submit" value="Submit"></p>
+      </form>
+
+      <% if !@warning.nil? %>
+        <p class="warning"><%= h @warning %></p>
+      <% elsif !@pass_success_msg.nil? %>
+        <p class="success"><%= h @pass_success_msg %></p>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= erb :"common/admin_footer" %>

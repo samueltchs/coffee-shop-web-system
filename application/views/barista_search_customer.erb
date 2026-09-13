@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <TITLE> BARISTA SEARCH CUSTOMER PAGE </TITLE>
+        <link rel="icon" type="image/svg+xml" href="/images/Favicon.svg">
+        <link rel="stylesheet" href="../styles/barista.css">
+        <meta charset='UTF-8'>
+    </HEAD>
+    <BODY>
+
+        <H1>
+            Search customers
+        </H1>
+
+        <FORM style="margin-left:5%; margin-bottom:1vh" method="get" action="/barista/main">
+            <BUTTON class="menu_button_style" style="font-size:1.2rem;" type="submit">Main Menu</BUTTON>
+        </FORM> 
+        <DIV id="whole_screen_box" class="box">
+
+            
+            <FORM style = "width: 100%; margin: 0.5vh 0 0 1vw " method="get" action="/barista/search-customer">
+                <a style="font-size: calc(1vh + 1.2vw);"> Enter the Loyalty Number or first name of the customer:</a><br/>
+                <a style="display:flex; align-contents:start;"> 
+                <INPUT 
+                style = "width: 20vw; height2vh; margin-top:0.25rem; font-size: calc(0.5vh + 0.8vw)"
+                 type="search" name="search_field" placeholder="Enter text here...">
+                <INPUT style="width:3rem; height:3rem" type="image" src="../images/search.png" alt="Search" value = "<%=h params[:search_field]%>">
+                </a>
+                <%unless @entered_text.empty?%>
+                    <p style="font-size: calc(1vh + 1.2vw)">Looking for: <%= h @entered_text %></p>
+                <%end%>
+                </FORM>
+                <TABLE class="content_table" style="margin-top: 1.3vh;">
+                <TR style="font-size: calc(1vh + 1.2vw)">
+                    <TH>Loyalty Card No.</TH>
+                    <TH>First Name</TH>
+                    <TH>Last Name</TH>
+                    <TH>Phone Number</TH>
+                    <TH>Email</TH>
+                    <TH>No. of Stamps</TH>
+                </TR>
+                    <%
+                    unless @matched_customers.nil?
+                        @matched_customers.each do |customer|
+                            %>
+                            <TR style="font-size: 1.8rem">
+                                <TD><%=customer.loyalty_number%></TD>
+                                <TD><%=customer.first_name%></TD>
+                                <TD><%=customer.last_name%></TD>
+                                <TD><%=customer.phone_number%></TD>
+                                <TD><%=customer.email%></TD>
+                                <TD>
+                                    <FORM method="post" action="/barista/add-stamps">
+                                    <INPUT type="hidden" value="<%=h @entered_text%>" name="filter_maintenance">
+                                    <INPUT type="hidden" value="<%=customer.loyalty_number%>" name="customer_loyalty_number">
+                                    <%=customer.stamps%>
+                                    <BUTTON type="submit" value="-" name="stamp_button">-</BUTTON>
+                                    <INPUT style="align-text:center; max-width: 1rem;"type="text" value="1" name="stamp_amount_field">
+                                    <BUTTON type="submit" value="+" name="stamp_button">+</BUTTON>
+                                    </FORM>
+                                </TD>
+                            </TR>
+                        <%end 
+                    end
+                    %>
+            </TABLE>
+        </DIV>
+        <DIV class="alert_popup"
+            <%if @refund == "order"%>
+                style="display: flex; align-items: center;"
+            <%end%>
+            >
+            <p class="alert_text">
+                Order #<%=h @order_id%> has been successfully completed
+            </p>
+            <BUTTON id="alert_button_properties" class="menu_button_style" type="submit" value="return" name="button">Return</BUTTON>
+        </DIV>
+        <FORM method="get" action="/barista/main">
+            <DIV class="alert_popup"
+                <%if @alert == "order"%>
+                    style="display: flex; align-items: center;"
+                <%end%>
+                >
+                <p class="alert_text">
+                    Order #<%=h @order_id%> has been successfully completed
+                </p>
+                <BUTTON id="alert_button_properties" class="menu_button_style" type="submit" value="return" name="button">Return</BUTTON>
+            </DIV>
+        </FORM>
+    </BODY>
+</HTML>

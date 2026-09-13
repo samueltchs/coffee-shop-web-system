@@ -1,0 +1,50 @@
+<%@orders = @orders.to_a.reverse if params[:reverse_orders] == "true"%>
+<TABLE class="content_table"<%if @table_style%> style="<%=@table_style%>"<%end%>>
+    <TR style="font-size: <%=@header_font_size%> ">
+        <TH><a href="?reverse_orders=<%=params[:reverse_orders] == "true" ? "false" : "true"%>" style="text-decoration:none; color:#4B0082"><%=params[:reverse_orders] == "true" ? "▲" : "▼"%></a> Order ID </TH>
+        <TH> Loyalty Number </TH>
+        <%if @show_barista%><TH> Barista </TH><%end%>
+        <TH> Cost </TH>
+        <TH> Price </TH>
+        <TH> Net-Price </TH>
+        <%if @show_tracking%><TH> Tracking ID </TH><%end%>
+        <TH> Reference ID </TH>
+        <TH> Delivered </TH>
+        <TH> Date Placed </TH>
+        <TH> Payment Method </TH>
+        <TH> Discount Code </TH>
+        <TH> Fulfilment </TH>
+        <TH> Status </TH>
+        <%if @view_items_path%><TH></TH><%end%>
+        <%if @checkout_path%><TH></TH><%end%>
+    </TR>
+    <%@orders.each do |order|%>
+    <TR<%if @row_font_size%> style="font-size: <%=@row_font_size%>"<%end%>>
+        <TD><%=h order.order_unique_id%></TD>
+        <TD><%=h order.get_loyalty_number%></TD>
+        <%if @show_barista%><TD><%=h order.get_barista%></TD><%end%>
+        <TD><%=h order.get_cost%></TD>
+        <TD><%=h order.get_price%></TD>
+        <TD><%=h order.get_net_price%></TD>
+        <%if @show_tracking%><TD><%=h order.get_tracking_id%></TD><%end%>
+        <TD><%=h order.get_reference_id%></TD>
+        <TD><%=h order.get_delivered%></TD>
+        <TD><%=h format_time(order.date_placed)%></TD>
+        <TD><%=h PaymentMethod.get_name(order.payment_method)%></TD>
+        <TD><%=h order.discount_code_used%></TD>
+        <TD><%=h order.order_fulfilment%></TD>
+        <TD><%=h order.status%></TD>
+        <%if @view_items_path%>
+        <TD><a style="color: #0a4fff" href="<%=@view_items_path%>?selected=<%=order.order_unique_id%>">View Items</a></TD>
+        <%end%>
+        <%if @checkout_path%>
+        <TD>
+            <FORM method="post" action="<%=@checkout_path%>">
+                <INPUT type="hidden" name="order_id" value="<%=h order.order_unique_id%>">
+                <BUTTON class="menu_button_style" type="submit">Checkout</BUTTON>
+            </FORM>
+        </TD>
+        <%end%>
+    </TR>
+    <%end%>
+</TABLE>

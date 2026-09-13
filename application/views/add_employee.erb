@@ -1,0 +1,29 @@
+<%= erb :"common/admin_header" %>
+
+<%= erb :"common/admin_top" %>
+
+<% if !@form_submitted || !@warning.nil? %>
+  <h1 class="add"><%= h @title %></h1>
+
+  <div class="add_employee_form">
+    <% if !@warning.nil? %>
+      <p class="warning"><%= h @warning %></p>
+    <% end %>
+    
+    <form action="/admin-add-employee" method="post">
+      <%= erb :"common/employee_form" %>
+    </form>
+  </div>
+<% elsif @form_submitted && @warning.nil? %>
+  <div class="add_employee_form">
+    <p class="success">Account has been successfully created!</p>
+    <p><b>First name: </b><%= h @employee.first_name %></p>
+    <p><b>Last name: </b><%= h @employee.last_name %></p>
+    <p><b>Username: </b><%= h @employee.username %></p>
+    <p><b>Email address: </b><%= h @employee.email %></p>
+    <p><b>Role: </b><%= h @employee.role %></p>
+    <a class="toc" href="/admin-add-employee">Go back to employee account creation page</a>
+  </div>
+<% end %>
+
+<%= erb :"common/admin_footer" %>

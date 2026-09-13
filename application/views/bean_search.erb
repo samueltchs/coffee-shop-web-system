@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Search - BBC Bean Shop" %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+        <div class="page-header">
+            <h1>Search Our Products</h1>
+        </div>
+    </header>
+    <div class="main-content centralise-content">
+        <div class="bean-search-bar-container">
+            <form class="bean-search-form" action="/shop/search" method="get">
+                <input type="text" class="search-bar" name="search-term" <%="value=" + @search_term if @search_term != "" %> placeholder="🔎 Search">
+                <select name="category">
+                    <option value="beans" <%= "selected" if @category == "beans" %>>Beans</option>
+                    <option value="drinks" <%= "selected" if @category == "drinks" %>>Drinks</option>
+                    <option value="both" <%= "selected" if @category == "both" %>>Both</option>
+                </select>
+                <button class="accent-button search-button gallery" type="submit">Search</button>
+            </form>
+        </div>
+        <% if @products.empty? %>
+                <h3 class="no-products-message">Sorry, no products match your search</h3>
+        <% else %>
+            <div class="bean-shop-gallery">
+                <% @products.each do |product| %>
+                    <div class="bean-gallery-cell">
+                        <a class="bean-link customer-button" id=<%= "product-" + product.product_id.to_s %> href=<%= "/shop/product?product_id=" + product.product_id.to_s %>>
+                            <div class="bean-container">
+                                <% if product.image_path == "" || product.image_path.nil? %>
+                                    <img class="bean-img" src=<%= @public_path_prefix + "icons/coffee-bean.svg" %> alt="bean">
+                                <% else %>
+                                    <% img_path = "public/" + product.image_path.slice(1, product.image_path.length - 1) %>
+                                    <% if File.exist?(img_path) %>
+                                        <img class="bean-img" src=<%= @public_path_prefix + product.image_path %> alt="bean">
+                                    <% else %>
+                                        <img class="bean-img" src=<%= @public_path_prefix + "icons/coffee-bean.svg" %> alt="bean">
+                                    <% end %>
+                                <% end %>
+                                <h3 class="bean-title"><%= product.name %></h3>
+                                <% if product.is_bean? %>
+                                    <p class="bean-detail">🌍 <%= product.get_origin %> </p>
+                                    <p class="bean-detail">🔥 <%= product.get_roast_level %></p>
+                                    <p class="bean-detail bean-price">£<%= product.get_bean_price %></p>
+                                <% else %>
+                                    <p class="bean-detail">🥛 Various Milks</p>
+                                    <p class="bean-detail">↕️ Various Sizes</p>
+                                    <p class="bean-detail bean-price">£ Select Milk and Size to see Price</p>
+                                <% end %>
+                                
+                                <% if session["logged_in"] %>
+                                    <form action="/shop/add-to-basket" method="post">
+                                        <input type="hidden" name="product_id" value=<%= product.product_id %>>
+                                        <button class="accent-button add-to-basket-button gallery" type="submit">Add to Basket</button>
+                                    </form>
+                                <% end %>
+                            </div>
+                        </a>
+                    </div>
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+    <%= erb :customer_footer %>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= h @title %></title>
+  <link rel="icon" type="image/svg+xml" href="/images/Favicon.svg">
+  <link rel="stylesheet" href="<%= h(@public_path_prefix + 'styles/promotion.css') %>">
+</head>
+<body class="send_page">
+  <% if @show_links %>
+    <a class="back_button" href="/customer/dashboard">Back to dashboard</a>
+  <% else %>
+    <a class="back_button" href="/admin-customer?loyalty_number=<%= h @customer.loyalty_number %>">Back to customer's profile</a>
+  <% end %>
+
+  <h1 class="send_title">
+    <% if @customer.first_name %>
+      <span class="format_name">
+        <%= h @customer.first_name.upcase %>,
+      </span>
+    <% end %>
+    WE KNOW YOU LOVE THESE<br>
+    WHY NOT TRY THEM <span class="format_again">AGAIN</span>
+    <span class="format_que_mark">?</span>
+  </h1>
+
+  <% @top_three_items.each do |name, desc, image_path, price, item_id| %>
+    <div class="send_product">
+      <% if @show_links %>
+        <a href="/shop/product?product_id=<%= h item_id %>">
+          <img src="<%= h image_path %>" alt="<%= h name %>" />
+        </a>
+      <% else %>
+        <img src="<%= h image_path %>" alt="<%= h name %>" />
+      <% end %>
+      <div class="product_info">
+        <h2><%= h name %></h2>
+
+        <p class="product_desc"><%= h desc %></p>
+
+        <p class="product_price">
+          <%= h(format_price(price)) %>
+        </p>
+      </div>
+    </div>
+  <% end %>
+</body>
+</html>

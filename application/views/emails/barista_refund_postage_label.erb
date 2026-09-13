@@ -1,0 +1,52 @@
+  <FORM style="margin-left:2vw; margin-bottom: 1vh" method="get" action="/barista/generate-refund-postage-labels">
+    <BUTTON class="menu_button_style" style="font-size:1.2rem;" type="submit">Go back</BUTTON>
+  </FORM>
+
+<%= erb :"common/email_header" %>
+
+<p>Please print and attach the label below to your return parcel.</p>
+
+<DIV style="
+  border: 3px solid #000;
+  border-radius: 6px;
+  max-width: 480px;
+  margin: 24px auto;
+  font-family: monospace;
+  overflow: hidden;
+">
+  <!-- Label header -->
+  <DIV style="background: #000; color: #fff; text-align: center; padding: 8px 12px; font-size: 1rem; letter-spacing: 2px; font-weight: bold;">
+    RETURN POSTAGE LABEL
+  </DIV>
+
+  <!-- SENDER -->
+  <DIV style="padding: 16px 20px; border-bottom: 2px dashed #000;">
+    <p style="font-size: 0.75rem; margin: 0 0 6px; text-transform: uppercase; letter-spacing: 1px; color: #555;">From</p>
+    <p style="font-size: 1rem; margin: 0; font-weight: bold;"><%=h @customer.name %></p>
+    <p style="margin: 2px 0;"><%=h @customer.address_line_1 %></p>
+    <%if @customer.address_line_2 && !@customer.address_line_2.to_s.strip.empty?%>
+    <p style="margin: 2px 0;"><%=h @customer.address_line_2 %></p>
+    <%end%>
+    <p style="margin: 2px 0;"><%=h @customer.city %></p>
+    <p style="margin: 2px 0; font-weight: bold;"><%=h @customer.postcode %></p>
+  </DIV>
+
+  <!-- RECEIVER -->
+  <DIV style="padding: 16px 20px;">
+    <p style="font-size: 0.75rem; margin: 0 0 6px; text-transform: uppercase; letter-spacing: 1px; color: #555;">To</p>
+    <p style="font-size: 1.1rem; margin: 0; font-weight: bold;">Badly Brewed Coffee</p>
+    <p style="margin: 2px 0;">17 Badly Brewed Coffee</p>
+    <p style="margin: 2px 0; font-weight: bold; font-size: 1.1rem; letter-spacing: 2px;">BBC17</p>
+  </DIV>
+
+  <!-- Refund ID -->
+  <%if @refund%>
+  <DIV style="background: #f5f5f5; padding: 8px 20px; border-top: 1px solid #ccc; font-size: 0.8rem; color: #444;">
+    Refund Ref: <strong><%=h @refund.refund_id %></strong>
+  </DIV>
+  <%end%>
+</DIV>
+
+<p>If you have any questions about your refund, please contact us.</p>
+
+<%= erb :"common/email_footer" %>

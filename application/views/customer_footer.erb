@@ -1,0 +1,21 @@
+<footer>
+    <!-- USE IN CASE NAVBAR HAS NOT BEEN LOADED -->
+    <% @home_link = session["logged_in"] ? "/customer/dashboard" : "/customer-landing-page" %>
+    <div class="footer-row-1">
+        <div class="footer-logo-container">
+            <a class="footer-logo" href=<%= @home_link %>>
+                <img src=<%= @public_path_prefix + "images/logo/logo-white.svg" %> alt="Badly Brewed Coffee Logo">
+            </a>
+        </div>
+        <div class="footer-links">
+            <h3>Explore</h3>
+            <a href="/shop">Order Online</a>
+            <a href="/about">About Us</a>
+            <a href="/faq">Help</a>
+        </div>
+        <img class="footer-img" src=<%= @public_path_prefix + "images/footer-img-cropped.png" %> alt="Brewed Coffee Image">
+    </div>
+    <div class="footer-copyright">
+        <p class="copyright-info">© 2026 Badly Brewed Coffee. All rights reserved.</p>
+    </div>
+</footer>

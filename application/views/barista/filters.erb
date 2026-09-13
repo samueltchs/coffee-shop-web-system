@@ -1,0 +1,117 @@
+<FORM method="GET" action="<%=@filter_action%>" style="display: flex; gap: 1.4vw; margin-bottom: 2vh; flex-wrap: wrap;">
+
+    <%if @show_loyalty_filter%>
+    <DIV class="past_sales_filter_container">
+        <p style="font-size: 1.15rem;">Loyalty Number:</p>
+        <INPUT type="text" name="loyalty_number" class="past_sales_filter_selector" placeholder="Search..." value="<%= h @loyalty_number %>">
+    </DIV>
+    <%end%>
+
+    <%if @show_barista_filter%>
+    <DIV class="past_sales_filter_container">
+        <p style="font-size: 1.15rem;">Barista:</p>
+        <SELECT name="barista" class="past_sales_filter_selector" onchange="form.submit()">
+            <OPTION value="">All</OPTION>
+            <%baristas = Employee.get_baristas
+              baristas.each do |barista|
+              name = barista.username%>
+            <OPTION value="<%=h name%>" <%= "selected" if params[:barista] == name %>><%=h name%></OPTION>
+            <%end%>
+        </SELECT>
+    </DIV>
+    <%end%>
+
+    <%if @show_fulfilment_filter%>
+    <DIV class="past_sales_filter_container">
+        <p style="font-size: 1.15rem;">Fulfilment:</p>
+        <SELECT name="fulfilment" class="past_sales_filter_selector" onchange="form.submit()">
+            <OPTION value="">All</OPTION>
+            <OPTION value="Collected" <%= "selected" if params[:fulfilment] == "Collected" %>>Collected</OPTION>
+            <OPTION value="Completed" <%= "selected" if params[:fulfilment] == "Completed" %>>Completed</OPTION>
+        </SELECT>
+    </DIV>
+    <%end%>
+
+    <%if @show_payment_status_filter%>
+    <DIV class="past_sales_filter_container">
+        <p style="font-size: 1.15rem;">Payment Status:</p>
+        <SELECT name="payment_status" class="past_sales_filter_selector" onchange="form.submit()">
+            <OPTION value="">All</OPTION>
+            <OPTION value="Paid" <%= "selected" if params[:payment_status] == "Paid" %>>Paid</OPTION>
+            <OPTION value="Owed" <%= "selected" if params[:payment_status] == "Owed" %>>Owed</OPTION>
+        </SELECT>
+    </DIV>
+    <%end%>
+
+    <%if @show_payment_method_filter%>
+    <DIV class="past_sales_filter_container">
+        <p style="font-size: 1.15rem;">Payment Method:</p>
+        <SELECT name="payment_method" class="past_sales_filter_selector" onchange="form.submit()">
+            <OPTION value="">All</OPTION>
+            <OPTION value="Card" <%= "selected" if params[:payment_method] == "Card" %>>Card</OPTION>
+            <OPTION value="Cash" <%= "selected" if params[:payment_method] == "Cash" %>>Cash</OPTION>
+        </SELECT>
+    </DIV>
+    <%end%>
+
+    <%if @show_delivery_filter%>
+    <DIV class="past_sales_filter_container">
+        <p style="font-size: 1.15rem;">Delivery Status:</p>
+        <SELECT name="delivery" class="past_sales_filter_selector" onchange="form.submit()">
+            <OPTION value="">All</OPTION>
+            <OPTION value="Delivered" <%= "selected" if params[:delivery] == "Delivered" %>>Delivered</OPTION>
+            <OPTION value="Not Delivered" <%= "selected" if params[:delivery] == "Not Delivered" %>>Not Delivered</OPTION>
+        </SELECT>
+    </DIV>
+    <%end%>
+
+    <%if @show_tracking_filter%>
+    <DIV class="past_sales_filter_container">
+        <p style="font-size: 1.15rem;">Tracking:</p>
+        <SELECT name="tracking" class="past_sales_filter_selector" onchange="form.submit()">
+            <OPTION value="">All</OPTION>
+            <OPTION value="Handled In-Store" <%= "selected" if params[:tracking] == "Handled In-Store" %>>In-Store</OPTION>
+            <OPTION value="Has Tracking" <%= "selected" if params[:tracking] == "Has Tracking" %>>Has Tracking ID</OPTION>
+        </SELECT>
+    </DIV>
+    <%end%>
+
+    <%if @show_refund_status_filter%>
+    <DIV class="past_sales_filter_container">
+        <p style="font-size: 1.15rem;">Refund Status:</p>
+        <SELECT name="refund_status" class="past_sales_filter_selector" onchange="form.submit()">
+            <OPTION value="">All</OPTION>
+            <OPTION value="Pending" <%= "selected" if params[:refund_status] == "Pending" %>>Pending</OPTION>
+            <OPTION value="Denied" <%= "selected" if params[:refund_status] == "Denied" %>>Denied</OPTION>
+            <OPTION value="Resolved" <%= "selected" if params[:refund_status] == "Resolved" %>>Resolved</OPTION>
+        </SELECT>
+    </DIV>
+    <%end%>
+
+    <%if @show_date_filters%>
+    <DIV class="past_sales_filter_container">
+        <p style="font-size: 1.15rem;">Start Date:</p>
+        <INPUT
+            type="date"
+            onchange="form.submit()"
+            class="past_sales_filter_selector" style="font-size: calc(0.25vh + 0.84vw);"
+            name="start_date"
+            value="<%=h params[:start_date]%>"
+        >
+    </DIV>
+
+    <DIV class="past_sales_filter_container">
+        <p style="font-size: 1.15rem;">End Date:</p>
+        <INPUT
+            type="date"
+            onchange="form.submit()"
+            class="past_sales_filter_selector" style="font-size: calc(0.25vh + 0.84vw);"
+            name="end_date"
+            value="<%=h params[:end_date]%>"
+        >
+    </DIV>
+    <%end%>
+
+</FORM>
+
+<A href="<%=@reset_path%>" id="past_sales_reset_button_properties" class="menu_button_style">Reset Filters</A>

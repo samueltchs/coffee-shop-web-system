@@ -1,0 +1,58 @@
+<nav>
+    <div class="nav-content">
+        <ul class="nav-list">
+            <% @home_link = session["logged_in"] ? "/customer/dashboard" : "/customer-landing-page" %>
+            <li>
+                <a class="icon-nav-link logo-icon" href=<%= @home_link %>>
+                    <img src=<%= @public_path_prefix + "icons/logo/logo-icon-black-small.svg" %> alt="BBC">
+                </a>
+            </li>
+            <li>
+                <a class="text-nav-link" href=<%= @home_link %>>Home</a>
+            </li>
+            <li>
+                <a class="text-nav-link" href="/shop">Products</a>
+            </li>
+            <li>
+                <a class="text-nav-link" href="/about">About</a>
+            </li>
+            <li>
+                <a class="text-nav-link" href="/faq">Help</a>
+            </li>
+            <li>
+                <a class="icon-nav-link" href="/shop/search">
+                    <img src=<%= @public_path_prefix + "icons/search.svg" %> alt="search">
+                </a>
+            </li>
+            <% if session["logged_in"] %>
+                <li>
+                    <a class="icon-nav-link" href="/shop/basket">
+                        <img src=<%= @public_path_prefix + "icons/basket.svg" %> alt="basket">
+                    </a>
+                </li>
+                <li>
+                    <div class="user-dropdown">
+                        <button class="user-dropdown-button">
+                            <img src=<%= @public_path_prefix + "icons/user-round.svg" %> alt="user">
+                        </button>
+                        <div class="user-dropdown-content">
+                            <a href="/shop/favourites">Favourites</a>
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </div>
+                </li>
+            <% else %>
+                <li>
+                    <div class="user-dropdown">
+                        <button class="user-dropdown-button">
+                            <img src=<%= @public_path_prefix + "icons/user-round.svg" %> alt="user">
+                        </button>
+                        <div class="user-dropdown-content">
+                            <a href="/login">Log In</a>
+                        </div>
+                    </div>
+                </li>
+            <% end %>
+        </ul>
+    </div>
+</nav>

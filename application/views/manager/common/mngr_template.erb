@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= @title %></title>
+  <link rel="icon" type="image/svg+xml" href="/images/Favicon.svg">
+  
+  <link rel="stylesheet" href="/styles/manager/template.css">
+  <link rel="stylesheet" href="/styles/manager/table.css">
+  <link rel="stylesheet" href="/styles/manager/fonts.css">
+  <% if @page_css %>
+    <link rel="stylesheet" href="/styles/manager/<%= @page_css %>.css">
+  <% end %>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+</head>
+
+<body>
+  <input type="checkbox" id="sidemenu">
+  <div id="layout">
+    <header>
+      <div class="title-bar">
+        <label class="sidemenu-label" for="sidemenu">
+          <span class="material-symbols-outlined">menu</span>
+        </label>
+        <h1><%= @title %></h1>
+      </div>
+      <hr id="split_line">
+    </header>
+
+    <div id="sidebar_logo" class="sidebar">
+      <img src="/images/logo/logo-black.svg" alt="Badly Brewed">
+      <hr>
+    </div>
+
+    <aside class="sidebar">
+      <div id="sidebar_container">
+
+        <nav class="sidebar-nav">
+          <a href="/manager/dashboard" class="nav-item">Dashboard</a>
+          <a href="/manager/products/drinks" class="nav-item">Products - Drinks</a>
+          <a href="/manager/products/beans" class="nav-item">Products - Beans</a>
+          <a href="/manager/discounts" class="nav-item">Personalized Discounts</a>
+          <a href="/manager/sales/analytics" class="nav-item">Sales Analytics</a>
+          <a href="/manager/free-coffees" class="nav-item">Free Coffees</a>
+          <a href="/manager/customers" class="nav-item">Customers</a>
+          <a href="/manager/refunds" class="nav-item">Refunds</a>
+          <a href="/manager/complaints" class="nav-item">Complaints</a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="/employee-logout" class="nav-item" id="logout">Log Out</a>
+        </div>
+
+      </div>
+    </aside>
+
+    <main><%=  erb @page %></main>
+  </div>
+</body>
+
+</html>

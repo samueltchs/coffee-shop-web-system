@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Customer Complaint" %>
+<%= erb :customer_head %>
+
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+    </header>
+
+    <div id="customer/dashboard">
+        <div id="welcome">
+            <h1>Customer Complaint</h1>
+            <p>We're sorry to hear something went wrong. Please tell us about your issue below.</p>
+        </div>
+
+        <div id="complaint-form-box" class="button-grid-box">
+            <% if @error %>
+                <p class="important-text"><%= @error %></p>
+            <% end %>
+
+            <% if @message %>
+                <p class="important-text"><%= @message %></p>
+            <% end %>
+
+            <form method="post" action="/process-customer-complaint-form">
+                <label for="complaint"><h2>Your Complaint</h2></label>
+                <textarea 
+                    id="complaint" 
+                    name="complaint" 
+                    rows="8" 
+                    cols="50" 
+                    placeholder="Enter your complaint here..."
+                    required><%= @submitted_text_field_value %></textarea>
+
+                <br><br>
+
+                <button type="submit" class="customer-button large-button">
+                    Submit Complaint
+                </button>
+            </form>
+        </div>
+
+        <div class="button-grid-box" id="account-settings">
+            <a href="/customer/dashboard">
+                <button class="customer-button large-button">Back to Dashboard</button>
+            </a>
+        </div>
+    </div>
+
+    <%= erb :customer_footer %>
+</body>
+</html>

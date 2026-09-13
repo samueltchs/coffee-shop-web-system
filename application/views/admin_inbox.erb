@@ -1,0 +1,27 @@
+<%= erb :"common/admin_header" %>
+
+<%= erb :"common/admin_top" %>
+
+<div class="inbox_container">
+  <div class="admin_inbox">
+    <h2><%= h @title %></h2>
+
+    <% if @messages.empty? %>
+      <p class="no_messages">No actions need to be taken.</p>
+    <% else %>
+      <ul>
+        <% @messages.each do |time, text, loyalty_number| %>
+          <li>
+            <b><%= h format_time(time) %></b>: Customer #
+            <a href="/admin-customer?loyalty_number=<%= h loyalty_number %>">
+              <%= h loyalty_number %>
+            </a>
+            <%= h text %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>
+
+<%= erb :"common/admin_footer" %>

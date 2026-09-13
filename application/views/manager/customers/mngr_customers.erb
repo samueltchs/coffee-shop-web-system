@@ -1,0 +1,92 @@
+<script src="/charts/chart.js"></script>
+<script src="/charts/chartkick.js"></script>
+
+<!-- signup stats -->
+<div id="signup_and_date_container">
+  <div id="signup_container">
+    <span>Total Accounts: <%= @total %></span>
+    <span>Current Month Sign-up: <%= @curr_month %></span>
+    <a id="view_btn" href="#signup-graph">View</a>
+  </div>
+
+  <!-- date filter -->
+  <div id="date_range_container">
+    <form method="get" action="/manager/customers">
+      <div>
+        <input type="hidden" name="sort" value="<%= params["sort"] %>">
+        <input type="hidden" name="order" value="<%= params["order"] %>">
+
+        <label for="from">From:</label>
+        <input type="date" id="from" name="from" value="<%= params[:from] %>">
+
+        <label for="to">To:</label>
+        <input type="date" id="to" name="to" value="<%= params[:to] %>">
+      </div>
+      <div>
+        <select name="select_filter">
+          <option value="reg_date" 
+            <%= "selected" if params[:select_filter] == "reg_date" %>>
+            Register Date
+          </option>
+          <option value="order_date" 
+            <%= "selected" if params[:select_filter] == "order_date" %>>
+            Sales Date
+          </option>
+        </select>
+        
+        <input type="submit" id="submit_btn" value="Filter">
+        <a id="reset_btn" 
+          href="?<%= URI.encode_www_form(params.merge("from" => nil, "to" => nil )) %>"
+        >Reset</a>
+      </div>
+    </form>
+  </div>
+</div>
+<hr id="line">
+<!-- table -->
+<div class="table-container">
+  <table class="scrollable-table">
+    <tr>
+      <% @sortby.each do |column, text| %>
+        <th>
+          <% column = column.to_s %>
+          <% order = column == @sort && @lastorder == "desc" ? "asc" : "desc" %>
+          <a class="sort-head" 
+            href="?<%= URI.encode_www_form(
+              params.merge(
+                "sort" => column,
+                "order" => Order
+              )
+            ) %>"
+          ><%= text %><%= @symbol if @sort == column %>
+          </a>
+        </th>
+      <% end %>
+      <th>Details</th>
+    </tr>
+
+    <% @customers.each do |customer| %>
+      <tr>
+        <td><%= customer.loyalty_number %></td>
+        <td><%= customer.name %></td>
+        <td><%= params[:select_filter] == "order_date" ? 
+              "£%.2f" % customer.total_purchase(@from_date, @to_date) : "£%.2f" % customer.total_purchase %></td>
+        <td><%= params[:select_filter] == "order_date" ? 
+              customer.num_purchase(@from_date, @to_date) : customer.num_purchase %></td>
+        <td><%= formatted_time(uk_time(customer.parse_regtime)) %></td>
+        <td><a class="details" href="<%= mngr_cdetails_url(customer, params) %>">details</a></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+<div id="signup-graph" class="overlay">
+  <div class="popup">
+      <a class="link material-symbols-outlined" id="close_btn" href="#">close</a>
+      <%= line_chart @signup_chart_data, 
+        discrete: true, colors: ['#C2A878'],
+        title: "Customer Account Registrations (Last 12 Months)",
+        xtitle: "Month", ytitle: "Sign-ups" 
+      %>
+  </div>
+</div>

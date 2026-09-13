@@ -1,0 +1,99 @@
+<%= erb :"common/admin_header" %>
+
+<%= erb :"common/admin_top" %>
+
+<h1><%= h @title %></h1>
+
+<div class="dashboard_container">
+  <div class="dashboard_box">
+    <h2>Customer Stats</h2>
+
+    <p>Active: <span class="detail"><%= h @num_active_cust %></span></p>
+    <p>Flagged: <span class="detail"><%= h @num_flagged_cust %></span></p>
+    <p>Suspended: <span class="detail"><%= h @num_suspended_cust %></span></p>
+    <p>Deleted: <span class="detail"><%= h @num_deleted_cust %></span></p>
+  </div>
+
+  <div class="dashboard_box">
+    <h2>Order and Revenue Stats</h2>
+
+    <p>Total orders: <span class="detail"><%= h @num_orders %></span></p>
+    <p>Paid: <span class="detail"><%= h @num_paid_orders %></span></p>
+    <p>Unpaid: <span class="detail"><%= h @num_unpaid_orders %></span></p>
+    <p>Owed: <span class="detail"><%= h @num_owed_orders %></span></p>
+    <p>Total Revenue: <span class="detail"><%= h(format_price(@total_revenue)) %></span></p>
+    <p>Total Profit: <span class="detail"><%= h(format_price(@total_profit)) %></span></p>
+  </div>
+
+  <div class="dashboard_box">
+    <h2>Employee Stats</h2>
+
+    <p>Baristas: <span class="detail"><%= h @num_baristas %></span></p>
+    <p>Managers: <span class="detail"><%= h @num_managers %></span></p>
+    <p>Deleted: <span class="detail"><%= h @num_deleted_employees %></span></p>
+  </div>
+
+  <div class="dashboard_box">
+    <h2>Top 3 Baristas</h2>
+
+    <% if @top_three_baristas.empty? %>
+      <p class="empty">No orders exist</p>
+    <% else %>
+      <ol>
+        <% @top_three_baristas.each do |barista, order_count| %>
+          <li><%= h barista %> - <span class="detail"><%= h order_count %></span></li>
+        <% end %>
+      </ol>
+    <% end %>
+  </div>
+
+  <div class="dashboard_box">
+    <h2>Monthly Change in Orders (Last 6 Months)</h2>
+
+    <% if @monthly_orders.empty? %>
+      <p class="empty">Not enough data to display</p>
+    <% else %>
+      <ul>
+        <% @monthly_orders.each do |month, count, change| %>
+          <li>
+            <%= h(format_month(month)) %>:
+            <span class="detail">
+              <%= h(format_count(count, "order")) %> 
+              <% if change >= 0 %>
+                (+<%= h change %>)
+              <% else %>
+                (<%= h change %>)
+              <% end %>
+            </span>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+
+  <div class="dashboard_box">
+    <h2>Monthly Change in Signups (Last 6 Months)</h2>
+
+    <% if @monthly_signups.empty? %>
+      <p class="empty">Not enough data to display</p>
+    <% else %>
+      <ul>
+        <% @monthly_signups.each do |month, count, change| %>
+          <li>
+            <%= h(format_month(month)) %>:
+            <span class="detail">
+              <%= h(format_count(count, "signup")) %>
+              <% if change >= 0 %>
+                (+<%= h change %>)
+              <% else %>
+                (<%= h change %>)
+              <% end %>
+            </span>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>
+
+<%= erb :"common/admin_footer" %>

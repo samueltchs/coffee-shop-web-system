@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <TITLE> BARISTA CHECKOUT ORDERS </TITLE>
+        <link rel="icon" type="image/svg+xml" href="/images/Favicon.svg">
+        <link rel="stylesheet" href="../styles/barista.css">
+        <meta charset="UTF-8">
+    </HEAD>
+    <BODY>
+
+        <H1>
+            CHECKOUT ORDERS
+        </H1>
+
+        <FORM style="margin-left:2vw; margin-bottom: 1vh" method="get" action="/barista/main">
+            <BUTTON class="menu_button_style" style="font-size:1.2rem;" type="submit">Main Menu</BUTTON>
+        </FORM>
+
+        <DIV id="whole_screen_box" class="box">
+            <FORM method="GET" action="/barista/checkout-orders" style="display: flex; gap: 1.4vw; margin-bottom: 2vh; flex-wrap: wrap;">
+
+                <!-- Loyalty Number Search Filter -->
+                <DIV class="past_sales_filter_container">
+                <p style="font-size: 1.15rem;">Loyalty Number:</p>
+                <INPUT type="text" name="loyalty_number" class="past_sales_filter_selector" placeholder="Search..." value="<%= h @loyalty_number %>">
+                </DIV>
+
+               <!-- Payment Status Filter -->
+                <DIV class="past_sales_filter_container">
+                    <p style="font-size: 1.15rem;">Payment Status:</p>
+                <SELECT name="payment_status" class="past_sales_filter_selector" onchange="form.submit()">
+                    <OPTION value="">All</OPTION>
+                    <OPTION value="Paid" <%= "selected" if params[:payment_status] == "Paid" %>>Paid</OPTION>
+                    <OPTION value="Owed" <%= "selected" if params[:payment_status] == "Owed" %>>Owed</OPTION>
+                </SELECT>
+                </DIV>
+
+                <!-- Payment Method Filter -->
+                <DIV class="past_sales_filter_container">
+                    <p style="font-size: 1.15rem;">Payment Method:</p>
+                <SELECT name="payment_method" class="past_sales_filter_selector" onchange="form.submit()">
+                    <OPTION value="">All</OPTION>
+                    <OPTION value="Card" <%= "selected" if params[:payment_method] == "Card" %>>Card</OPTION>
+                    <OPTION value="Cash" <%= "selected" if params[:payment_method] == "Cash" %>>Cash</OPTION>
+                </SELECT>
+                </DIV>
+
+                <!-- Start & End Times -->
+                <DIV class="past_sales_filter_container">
+                <p style="font-size: 1.15rem;">Start Date:</p>
+                <INPUT
+                type="date"
+                onchange="form.submit()"
+                class="past_sales_filter_selector" style="font-size: calc(0.25vh + 0.84vw);"
+                name="start_date"
+                value="<%=h params[:start_date]%>"
+                >
+                </DIV>
+
+                <DIV class="past_sales_filter_container">
+                <p style="font-size: 1.15rem;">End Date:</p>
+                <INPUT
+                type="date"
+                onchange="form.submit()"
+                class="past_sales_filter_selector" style="font-size: calc(0.25vh + 0.84vw);"
+                name="end_date"
+                value="<%=h params[:end_date]%>"
+                >
+                </DIV>
+
+            </FORM>
+            <!-- Reset Filters Button -->
+            <A href="/barista/checkout-orders" id="past_sales_reset_button_properties" class="menu_button_style">Reset Filters</A>
+
+            <!-- Order Table -->
+            <%
+                @show_barista = false
+                @show_tracking = true
+                @view_items_path = nil
+                @checkout_path = "/barista/checkout-orders"
+                @header_font_size = "calc(1.5vw + 0.2vh)"
+                @row_font_size = nil
+                @table_style = nil
+            %>
+            <%=erb :"barista/orders_table"%>
+
+        </DIV>
+        <DIV class="alert_popup"
+            <%order_id = params[:selected]%>
+            <%='style="display: flex; flex-direction: column; gap:2vh"' if order_id && Order.get_order(order_id)%>
+        >
+
+            <FORM method="get" action="/barista/checkout-orders" style="align-self: start;">
+                <INPUT class="menu_button_style" style="font-size: calc(1.2vh + 0.9vw);" type="submit" value="Close">
+            </FORM>
+
+            <H2 style="font-size: 2rem"> Items in Order <%=h order_id%> </H2>
+
+            <%
+                @items = ItemInOrder.where(order_unique_id: order_id)
+                @header_font_size = "calc(2.1vw + 0.2vh)"
+                @row_font_size = "calc(1.8vw + 0.2vh)"
+                @table_style = "align-self: center; margin: 0 0"
+            %>
+            <%=erb :"barista/item_in_orders_table"%>
+
+            <FORM method="post" action="/barista/confirm-checkout" style="display:flex; flex-direction: column; gap: 2vh; align-items: center; align-self: center;">
+                <%if  Order.get_order(order_id).owed? if order_id%>
+                <SELECT name="payment_method" class="past_sales_filter_selector">
+                    <OPTION value="">All</OPTION>
+                    <OPTION value="Card" >Card</OPTION>
+                    <OPTION value="Cash" >Cash</OPTION>
+                </SELECT>
+                <p style="color: #db0000; font-size: 2rem"><%="Please choose a payment method " if params[:error] == "payment" %></p>
+                <%end%>
+                <INPUT type="hidden" name="order_id" value="<%=h order_id%>">
+                <BUTTON class="menu_button_style" style="font-size: calc(1.2vh + 0.9vw);" type="submit">Confirm Checkout</BUTTON>
+            </FORM>
+
+        </DIV>
+    </BODY>
+</HTML>

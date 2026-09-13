@@ -1,0 +1,21 @@
+<%@items = @items.to_a.reverse if params[:reverse_items] == "true"%>
+<TABLE class="content_table"<%if @table_style%> style="<%=@table_style%>"<%end%>>
+    <TR style="font-size: <%=@header_font_size%>">
+        <TH><a href="?selected=<%=params[:selected]%>&reverse_items=<%=params[:reverse_items] == "true" ? "false" : "true"%>" style="text-decoration:none; color:#4B0082"><%=params[:reverse_items] == "true" ? "▲" : "▼"%></a> Item </TH>
+        <TH> Size </TH>
+        <TH> Milk </TH>
+        <TH> Quantity </TH>
+        <TH> Price Each </TH>
+        <TH> Refunded </TH>
+    </TR>
+    <%@items.each do |item|%>
+    <TR style="font-size: <%=@row_font_size%>">
+        <TD><%=h item.get_name%></TD>
+        <TD><%=h item.get_size_text%></TD>
+        <TD><%=h item.get_milk_name%></TD>
+        <TD><%=h item.quantity%></TD>
+        <TD><%=h item.price_for_one%></TD>
+        <TD><%=h item.get_refund_status%></TD>
+    </TR>
+    <%end%>
+</TABLE>

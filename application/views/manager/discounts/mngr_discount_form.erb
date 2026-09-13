@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title><%= @title %></title>
+  <link rel="stylesheet" href="/styles/manager/discount_form.css">
+  <link rel="stylesheet" href="/styles/manager/fonts.css">
+</head>
+
+<body>
+  <h3><%= @title %></h3>
+  <form method="post" action="<%= @form_action %>">
+    <div id="details_container">
+      <input type="hidden" name="action" value="<%= @action %>">
+      <input type="hidden" name="viewcode" value="<%= @code %>">
+      <% if params[:from_past] == "yes" %>
+        <input type="hidden" name="from_past" value="yes">
+      <% end %>
+      <h4>Details:</h4>
+
+      <% if @errors && @errors[:code] %>
+        <span class="row error_msg"><%= @errors[:code] %></span>
+      <% end %>
+      <div class="row">
+        <label for="code">Discount Code:</label>
+        <% if @action == "update" %>
+          <input type="hidden" name="code" value="<%= @discount.discount_code %>">
+          <span class="row_end"><%= @discount.discount_code %></span>
+        <% else %>
+        <input
+          class="row_end input_field"
+          type="text" id="code" name="code" 
+          value="<%= params[:code] if @errors %>" 
+          required
+        >
+        <% end %>
+      </div>
+      
+      <% if @errors && @errors[:name] %>
+        <span class="row error_msg"><%= @errors[:name] %></span>
+      <% end %>
+      <div class="row">
+        <label for="name">Campaign Name:</label>
+        <input 
+          class="row_end input_field"
+          type="text" id="name" name="name" required
+          value="<%=
+            if @errors 
+              params[:name]
+            elsif @action == "update"
+              @discount.campaign_name
+            end
+          %>"
+        >
+      </div>
+
+      <% if @errors && @errors[:percentage] %>
+        <span class="row error_msg"><%= @errors[:percentage] %></span>
+      <% end %>
+      <div class="row">
+        <label for="percentage">Percentage off:</label>
+        <div class="row row_end">
+          <input 
+            class="row_end"
+            type="number" id="percentage" name="percentage" 
+            min="0" max="100" required
+            value="<%=
+              if @errors 
+                params[:percentage]
+              elsif @action == "update"
+                @discount.percentage_off
+              end
+            %>"
+          >
+          <span id="percent_sign">%</span>
+        </div>
+      </div>
+      
+      <% if @errors && @errors[:expiry] %>
+        <span class="row error_msg"><%= @errors[:expiry] %></span>
+      <% end %>
+      <div class="row">
+        <label for="expiry">Code Expiry Date:</label>
+        <input 
+          class="row_end input_field"
+          type="date" id="expiry" name="expiry" required
+          value="<%=
+            if @errors 
+              params[:expiry]
+            elsif @action == "update"
+              @discount.code_expiry_date
+            end
+          %>"
+        >
+      </div>
+      
+      <% if @errors && @errors[:status] %>
+        <span class="row error_msg"><%= @errors[:status] %></span>
+      <% end %>
+      <div class="row">
+        <span>Status:</span>
+        <div class="row row_end">
+          <input type="radio" id="enable" name="status" value="1" required
+            <%= 
+              if @errors && params[:status] == "1" 
+                "checked"
+              elsif @action == "update" && @discount.is_active == 1
+                "checked"
+              end
+            %>
+          >
+          <label for="enable">Enabled</label>
+          <input type="radio" id="disable" name="status" value="0"
+            <%= 
+              if @errors && params[:status] == "0" 
+                "checked"
+              elsif @action == "update" && @discount.is_active == 0
+                "checked"
+              end
+            %>
+          >
+          <label for="disable">Disabled</label>
+        </div>
+      </div>
+    </div>
+
+    <div id="eligibility_container">
+      <h4>Eligibility:</h4>
+
+      <span class="row">Purchase Timeframe</span>
+      <% if @errors && @errors[:daterange] %>
+        <span class="row error_msg"><%= @errors[:daterange] %></span>
+      <% end %>
+      <div class="row">
+        <label for="from">From:</label>
+        <input 
+          class="row_end input_field"
+          type="date" id="from" name="from" required
+          value="<%=
+            if @errors 
+              params[:from]
+            elsif @action == "update"
+              @discount.valid_purchase_date_from
+            end
+          %>"
+        >
+      </div>
+      <div class="row">
+        <label for="to">To:</label>
+        <input 
+          class="row_end input_field"
+          type="date" id="to" name="to" required
+          value="<%=
+            if @errors 
+              params[:to]
+            elsif @action == "update"
+              @discount.valid_purchase_date_to
+            end
+          %>"
+        >
+      </div>
+
+      <% if @errors && @errors[:pur_type] %>
+        <span class="row error_msg"><%= @errors[:pur_type] %></span>
+      <% end %>
+      <div class="row">
+        <label for="pur_type">Purchase Type:</label>
+        <select class="row_end" id="pur_type" name="pur_type">
+          <% EligiblePurchaseType.all.each do |t| %>
+            <option value="<%= t.id %>" 
+              <%=  
+                if @errors && params[:pur_type] == t.id.to_s
+                  "selected"
+                elsif @action == "update" && @discount.eligible_type == t.id
+                  "selected"
+                end
+              %>
+            ><%= t.type %></option>
+          <% end %>
+        </select>
+      </div>
+
+      <% if @errors && @errors[:elig_rule] %>
+        <span class="row error_msg"><%= @errors[:elig_rule] %></span>
+      <% end %>
+      <div class="row">
+        <label for="elig_rule">Rule:</label>
+        <select class="row_end" id="elig_rule" name="elig_rule">
+          <% EligibleRule.all.each do |r| %>
+            <option value="<%= r.id %>"
+              <%= 
+                if @errors && params[:elig_rule] == r.id.to_s 
+                  "selected"
+                elsif @action == "update" && @discount.eligible_rule == r.id
+                  "selected"
+                end
+              %>
+            ><%= r.rule %></option>
+          <% end %>
+        </select>
+      </div>
+
+      <% if @errors && @errors[:min_amount] %>
+        <span class="row error_msg"><%= @errors[:min_amount] %></span>
+      <% end %>
+      <div class="row">
+        <label for="min_amount">Minimum Amount:</label>
+        <input 
+          class="row_end"
+          type="number" id="min_amount" name="min_amount" 
+          min="0" step="0.01" 
+          required 
+          value="<%=  
+            if @errors
+              params[:min_amount]
+            elsif @action == "update"
+              @discount.eligible_min
+            end
+          %>"
+        >
+      </div>
+    </div>
+
+    <div id="btn_row">
+      <button 
+        type="button" 
+        onclick="window.location.href='<%= @cancel_to %>'"
+      >Cancel</button>
+      <button type="submit"><%= @action == "create" ? "Submit" : "Save" %></button>
+    </div>
+  </form>
+
+</body>
+</html>

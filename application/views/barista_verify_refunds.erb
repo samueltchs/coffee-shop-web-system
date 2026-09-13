@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <TITLE> BARISTA VERIFY REFUNDS PAGE </TITLE>
+        <link rel="icon" type="image/svg+xml" href="/images/Favicon.svg">
+        <link rel="stylesheet" href="../styles/barista.css">
+        <meta charset="UTF-8">
+    </HEAD>
+    <BODY>
+        <H1>
+            Verify Refunds
+        </H1>
+
+        <FORM  style="margin-left:2vw; margin-bottom: 1vh"  method="get" action="/barista/main">
+            <BUTTON class="menu_button_style" style="font-size:1.2rem;" type="submit">Main Menu</BUTTON>
+        </FORM>
+
+        <DIV id="whole_screen_box" class = "box">
+        <!-- Filters -->
+        <%
+            @filter_action = "/barista/verify-refunds"
+            @reset_path = "/barista/verify-refunds"
+            @show_loyalty_filter = true
+            @show_barista_filter = false
+            @show_fulfilment_filter = false
+            @show_payment_status_filter = false
+            @show_payment_method_filter = false
+            @show_delivery_filter = false
+            @show_tracking_filter = false
+            @show_refund_status_filter = true
+            @show_date_filters = true
+        %>
+        <%=erb :"barista/filters"%>
+
+        <!-- Refunds Table -->
+        <%
+            @header_font_size = "calc(1.1vh + 2.3vw)"
+            @row_font_size = "calc(0.9vh + 1.4vw)"
+            @view_items_path = "/barista/verify-refunds"
+            @table_style = nil
+        %>
+        <%=erb :"barista/refunds_table"%>
+
+        </DIV>
+        <!-- Pop-up -->
+        <DIV class="alert_popup"
+            <%refund = Refund.get_refund_by_id(params[:selected]) if params[:selected]%>
+            <%='style="display: flex; left: 5vw;width: 90vw; height: 80vh"' if refund%>
+        >
+
+            <FORM method="get" action="/barista/verify-refunds" style="align-self: start;">
+                <INPUT id="main_me" class="menu_button_style" style="font-size: calc(1.2vh + 0.9vw);" type="submit" value="Close">
+            </FORM>
+
+            <H2> Refund request #<%=h refund.refund_id if refund%></H2>
+
+            <!-- For refund type order -->
+            <%if refund && refund.order_id%>
+
+                <!-- Order Table -->
+                <%
+                    @orders = [Order.get_order(refund.order_id)]
+                    @show_barista = true
+                    @show_tracking = true
+                    @view_items_path = nil
+                    @header_font_size = "calc(1.1vw + 0.1vh)"
+                    @row_font_size = "calc(1vw + 0.1vh)"
+                    @table_style = "align-self: center;"
+                %>
+                <%=erb :"barista/orders_table"%>
+
+                <!-- Items Table -->
+                <%
+                    @items = ItemInOrder.where(order_unique_id: refund.order_id)
+                    @header_font_size = "calc(1.6vw + 0.2vh)"
+                    @row_font_size = "calc(1.3vw + 0.2vh)"
+                    @table_style = "align-self: center"
+                %>
+                <%=erb :"barista/item_in_orders_table"%>
+
+            <!-- For refund type item -->
+            <%elsif refund && refund.item_id%>
+
+                <!-- Items Table -->
+                <%
+                    @items = [ItemInOrder.get_item(refund.item_id)]
+                    @header_font_size = "calc(1.6vw + 0.2vh)"
+                    @row_font_size = "calc(1.3vw + 0.2vh)"
+                    @table_style = "max-height: 30vh; align-self: center"
+                %>
+                <%=erb :"barista/item_in_orders_table"%>
+
+            <%end%>
+
+            <!-- Refund Reason -->
+            <%if refund%>
+                <DIV class="box" style="margin-top: 2vh; padding: 1.5vh 1.5vw; align-self: center; justify-content: center; min-width: 30vw;">
+                    <H3 style="font-size: calc(1.2vw + 0.2vh); margin-bottom: 1vh;"> Refund Reason </H3>
+                    <P style="font-size: calc(1vw + 0.2vh);"><%=h refund.refund_reason%></P>
+                    <H3 style="font-size: calc(1.2vw + 0.2vh); margin-bottom: 1vh;"> Refund Amount: </H3>
+                    <P style="font-size: calc(1vw + 0.2vh);">£<%=h refund.get_amount%></P>
+                    <H3 style="font-size: calc(1.2vw + 0.2vh); margin-bottom: 1vh;"> Refund Method: </H3>
+                    <P style="font-size: calc(1vw + 0.2vh);"><%=h refund.get_order ? refund.get_order.get_payment_method : "N/A" %></P>
+
+                </DIV>
+
+                <!-- Approve / Deny -->
+                <%if refund.status == "Pending"%>
+                <FORM method="post" action="/barista/verify-refund" style="align-self: center; display: flex; gap: 2vw; margin-top: 2vh;">
+                    <INPUT type="hidden" name="refund_id" value="<%=h refund.refund_id%>">
+                    <BUTTON class="menu_button_style" style="font-size: calc(1.2vh + 0.9vw); background-color: #ee1b1b; color: white;" type="submit" name="choice" value="deny">Deny Refund</BUTTON>
+                    <BUTTON class="menu_button_style" style="font-size: calc(1.2vh + 0.9vw); background-color: #19c10a; color: white;" type="submit" name="choice" value="approve">Approve Refund</BUTTON>
+                </FORM>
+                <%end%>
+            <%end%>
+        </DIV>
+    </BODY>
+</HTML>

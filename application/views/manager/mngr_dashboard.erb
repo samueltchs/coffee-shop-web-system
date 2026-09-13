@@ -1,0 +1,86 @@
+<script src="/charts/chart.js"></script>
+<script src="/charts/chartkick.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawVisualization);
+
+  function drawVisualization() {
+    var data = google.visualization.arrayToDataTable(<%= @combo_data.to_json %>);
+    
+    var formatter = new google.visualization.NumberFormat({
+      prefix: '£',
+      fractionDigits: 2
+    });
+    formatter.format(data, 1);
+    formatter.format(data, 2);
+    formatter.format(data, 3);
+
+    var options = {
+      title : 'Monthly Sales in Type',
+      titleTextStyle: {bold: false},
+      vAxis: {title: 'Gross Sales', format: "£#,##0.00"},
+      hAxis: {title: 'Month'},
+      seriesType: 'bars',
+      series: {2: {type: 'line'}},
+      colors: ['#C2A878', '#6F4E37', '#DDD']
+    };
+
+    var chart = new google.visualization.ComboChart(document.getElementById('combo_chart'));
+    chart.draw(data, options);
+  }
+  window.addEventListener('resize', drawVisualization);
+</script>
+
+<form method="get" action="/manager/dashboard">
+  <div id="date_range_container">
+    
+      <label for="start_date">From:</label>
+      <input type="date" id="start_date" name="start_date"
+        value="<%= params[:start_date] %>"
+      >
+      <label for="end_date">To:</label>
+      <input type="date" id="end_date" name="end_date"
+        value="<%= params[:end_date] %>"
+      >
+    
+    
+      <input id="submit_btn" type="submit">
+      <a id="reset_btn" href="/manager/dashboard">Reset</a>
+    
+  </div>
+</form>
+
+<hr>
+
+<div id="charts_container">
+  <div class="chart" id="combo_container">
+    <div id="combo_chart"></div>
+  </div>
+
+  <div class="chart" id="top_drinks">
+    <span>Top Drinks</span>
+    <%= bar_chart @top_drinks_data, xtitle: "Quantity", colors: ['#C2A878'] %>
+  </div>
+
+  <div class="chart" id="top_beans">
+    <span>Top Beans</span>
+    <%= bar_chart @top_beans_data, xtitle: "Quantity", colors: ['#C2A878'] %>
+  </div>
+
+  <div class="chart" id="top_discounts">
+    <span>Top Discount Campaigns</span>
+    <%= bar_chart @top_discounts_data, 
+    xtitle: "Contributed Net Sales", 
+    prefix: "£", thousands: ",", round: 2, zeros: true,
+    colors: ['#C2A878'] %>
+  </div>
+
+  <div class="chart" id="discounted_sales">
+    <span>Discounted Sales Proportion</span>
+    <%= pie_chart @discounted_data,
+      prefix: "£", thousands: ",", round: 2, zeros: true,
+      legend: "bottom", donut: true, colors: ['#6F4E37', '#C2A878']
+    %>
+  </div>
+</div>

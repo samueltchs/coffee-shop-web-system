@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Basket - BBC" %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+        <% if @added %>
+            <p class="added-to-basket-message">Item added to basket!</p>
+        <% end %>
+        <% if @error != "" %>
+            <p class="added-to-basket-message"><%= @error %></p>
+        <% end %>
+        <div class="page-header">
+            <h1>Your Basket</h1>
+        </div>
+    </header>
+    <div class="main-content centralise-content">
+        <div class="basket-table-container">
+            <div class="basket-table-border">
+                <table class="basket-table">
+                    <tr class="basket-header-row basket-item">
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th></th>
+                    </tr>
+                    <% @basket_entries.each do |item| %>
+                        <% product = Product.get_product_by_id(item.product_id) %>
+                        <% quantity = item.quantity %>
+                        <tr class="basket-item">
+                            <td><a href=<%= "/shop/product?product_id=" + product.product_id.to_s %>><%= product.name %> <%= "(#{MilkOption.get_milk_name(item.milk_id)}, #{Size.get_size(item.size_id)})" if product.is_drink? %></a></td>
+                            <td class="price">£<%= price_float_to_string(ProductVariant.find_variant(item.product_id, item.size_id, item.milk_id).price) %></td>
+                            <td><%= quantity %></td>
+                            <td class="basket-control-button-container">
+                                <form action="/shop/basket/reduce" method="POST">
+                                    <input type="hidden" name="basket_item_id" value=<%= item.basket_item_id %>>
+                                    <button class="basket-control-button" type="submit">
+                                        <img src=<%= @public_path_prefix + "icons/minus.svg" %> alt="Reduce Quantity">
+                                    </button>
+                                </form>
+                                <form action="/shop/basket/remove" method="POST">
+                                    <input type="hidden" name="basket_item_id" value=<%= item.basket_item_id %>>
+                                    <button class="basket-control-button" type="submit">
+                                        <img src=<%= @public_path_prefix + "icons/trash-2.svg" %> alt="Remove Item">
+                                    </button>
+                                </form>
+                                <form action="/shop/basket/increase" method="POST">
+                                    <input type="hidden" name="basket_item_id" value=<%= item.basket_item_id %>>
+                                    <button class="basket-control-button" type="submit">
+                                        <img src=<%= @public_path_prefix + "icons/plus.svg" %> alt="Increase Quantity">
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% end %>
+                </table>
+            </div>
+        </div>
+        <div class="below-basket-controls">
+            <div class="discount-container">
+                <form action="/shop/basket/discount-code" method="POST">
+                    <label for="code"><h3>Discount Code</h3></label>
+                    <input type="text" name="code" placeholder="Enter Code Here">
+                    <button type="submit" class="basket-submit-button accent-button">Submit</button>
+                </form>
+            </div>
+            <div class="price-purchase-container">
+                <div class="total-price-container">
+                    <h3>Total: £<%= price_float_to_string(@total_price) %></h3>
+                </div>
+                <div class="purchase-button-container">
+                    <form action="/shop/basket/purchase" method="POST">
+                        <button type="submit" class="basket-purchase-button accent-button">Purchase</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <% unless @contains_drinks %>
+            <div class="delivery-pickup-selection">
+                <form action="/shop/basket/delivery-pickup-selection", method="POST">
+                    <label for="delivery-pickup-dropdown">Select Pickup or Delivery</label>
+                    <select id="delivery-pickup-dropdown" name="delivery-pickup-dropdown">
+                        <option value="delivery" <%= @delivery ? "selected=\"selected\"" : "" %>>Delivery</option>
+                        <option value="pickup" <%= @delivery ? "" : "selected=\"selected\"" %>>Pickup</option>
+                    </select>
+                    <button type="submit" class="basket-submit-button accent-button">Submit</button>
+                </form>
+            </div>
+        <% end %>
+        <% if @delivery %>
+            <!-- @delivery always false if basket contains drinks - no issue here -->
+             <div class="delivery-details-container">
+                <% if @change_delivery_details %>
+                    <form action="/shop/basket/change-delivery-details" class="delivery-details-form" method="POST">
+                        <label for="address_line_1">Address Line 1:</label>
+                        <input type="text" value="<%= @address_line_1 %>" name="address_line_1">
+                        <label for="address_line_2">Address Line 2 (Optional):</label>
+                        <input type="text" value="<%= @address_line_2 %>" name="address_line_2">
+                        <label for="city">Town / City:</label>
+                        <input type="text" value="<%= @city %>" name="city">
+                        <label for="postcode">Postcode:</label>
+                        <input type="text" value="<%= @postcode %>" name="postcode">
+                        <button type="submit" class="basket-submit-button accent-button">Save Changes</button>
+                    </form>
+                <% else %>
+                    <h3>Your Current Delivery Details:</h3>
+                    <p>Address Line 1:</p>
+                    <p><%= @address_line_1%></p>
+                    <p>Address Line 2:</p>
+                    <p><%= @address_line_2%></p>
+                    <p>Town/City:</p>
+                    <p><%= @city%></p>
+                    <p>Postcode:</p>
+                    <p><%= @postcode%></p>
+                    <form action="/shop/basket/request-change-delivery-details", method="POST">
+                        <button type="submit" class="basket-submit-button accent-button">Change Details</button>
+                    </form>
+                <% end %>
+            </div>
+        <% else %>
+            <b class="basket-pickup-message">Please pick up your beans in-store!</b>
+        <% end %>
+    </div>
+    <%= erb :customer_footer %>
+</body>
+</html>

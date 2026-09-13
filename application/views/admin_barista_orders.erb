@@ -1,0 +1,40 @@
+<%= erb :"common/admin_header" %>
+
+<%= erb :"common/admin_top" %>
+
+<h1><%= h @title %> (<%= @orders.count %>)</h1>
+
+<div class="logs">
+  <a class="buttons" href="/admin-employee?username=<%= h @employee.username %>">
+    <img src="icons/arrow-big-left.svg" class="icon" alt="Go back to the employee's profile" />
+    Back to the employee's profile
+  </a>
+
+  <% if @employee.role == "Manager" %>
+    <p class="empty">Managers do not fulfil orders.</p>
+  <% elsif @orders.empty? %>
+    <p class="empty">The barista has not fulfilled any orders yet.</p>
+  <% else %>
+    <div class="table_wrapper">
+      <table class="admin_table">
+        <tr>
+          <th>ID</th>
+          <th>Date Placed</th>
+          <th>Price</th>
+          <th>Reference ID</th>
+        </tr>
+        <% @orders.each do |order| %>
+          <% order_link = "/admin-order?order_id=#{h order.order_unique_id}" %>
+          <tr>
+            <td><a class="see_entry" href="<%= order_link %>"><%= h order.order_unique_id %></a></td>
+            <td><a class="see_entry" href="<%= order_link %>"><%=  h(format_date(order.date_placed)) %></a></td>
+            <td><a class="see_entry" href="<%= order_link %>"><%= h(format_price(order.price)) %></a></td>
+            <td><a class="see_entry" href="<%= order_link %>"><%= h order.get_reference_id %></a></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  <% end %>
+</div>
+
+<%= erb :"common/admin_footer" %>

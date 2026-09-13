@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>
+    <% if @action == "add" %>
+      <%= "Add Product" %>
+    <% else %>
+      <%= "Update Product" %>
+    <% end %>
+  </title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <link rel="stylesheet" href="/styles/manager/product_form.css">
+  <link rel="stylesheet" href="/styles/manager/fonts.css">
+  
+</head>
+
+<body>
+  <h4><%= @action == "add" ? "Add New #{@type.capitalize}" : "Product ID: #{@id}" %></h4>
+
+  <form
+    id="product_form"
+    method="post"
+    action="<%= "/manager/products/#{@action}-#{@type}" %>"
+    enctype="multipart/form-data">
+
+    <% unless @action == "add" %>
+      <input type="hidden" name="id" value="<%= @id %>">
+    <% end %>
+    <input type="hidden" name="lastpage" value="<%= h(params[:lastpage]) %>">
+    <input type="hidden" name="sort" value="<%= h(params[:sort]) %>">
+    <input type="hidden" name="order" value="<%= h(params[:order]) %>">
+    <input type="hidden" name="lastsort" value="<%= h(params[:lastsort]) %>">
+    <input type="hidden" name="column_to_search" value="<%= h(params[:column_to_search]) %>">
+    <input type="hidden" name="search_input" value="<%= h(params[:search_input]) %>">
+
+    <div id="form_container">
+      <label for="pname">Product Name:</label>
+      <% if @errors && @errors[:pname] %>
+        <span class="error_msg"><%= @errors[:pname] %></span>
+      <% end %>
+      <input
+        class="input_fields"
+        type="text"
+        id="pname"
+        name="pname"
+        value="<%=
+          if @errors
+            h(params[:pname])
+          elsif @product
+            h(@name)
+          end
+        %>"
+        required
+      >
+
+      <label for="description">Description:</label>
+      <% if @errors && @errors[:description] %>
+        <span class="error_msg"><%= @errors[:description] %></span>
+      <% end %>
+      <textarea 
+        name="description"
+        id="description"
+        maxlength="500"
+        required
+      ><%= 
+        if @errors
+          h(params[:description])
+        elsif @product
+          h(@description)
+        end
+      %></textarea>
+
+      <label for="image">Upload Image</label>
+      <% if @errors && @errors[:image] %>
+        <span class="error_msg"><%= @errors[:image] %></span>
+      <% end %>
+      <input
+        type="file"
+        id="image"
+        name="image"
+        accept=".png,.jpg,.jpeg,.webp"
+        <%= "required" if @action == "add" %>
+      >
+
+      <% if @type == "drinks" %>
+        <label for="price">Prices:</label>
+        <% if @errors && @errors[:price] %>
+          <span class="error_msg"><%= @errors[:price] %></span>
+        <% end %>
+        <div class="row">
+          <% @sizes.each do |size| %>
+            <label for="<%= "#{size.size}_price" %>"><%= "#{size.size} £" %></label>
+            <input
+              type="number"
+              id="<%= "#{size.size}_price" %>"
+              name="price[]"
+              min="0"
+              max="300"
+              step="0.01"
+              value="<%= 
+                if @errors
+                  params[:price][size.id - 2]
+                elsif @product
+                  @prices[size.id]
+                end
+              %>"
+            >
+          <% end %>
+        </div>
+        
+        <label for="cost">Costs:</label>
+        <% if @errors && @errors[:cost] %>
+          <span class="error_msg"><%= @errors[:cost] %></span>
+        <% end %>
+        <div class="row">
+          <% @sizes.each do |size| %>
+            <label for="<%= "#{size.size}_cost" %>"><%= "#{size.size} £" %></label>
+            <input 
+              type="number"
+              id="<%= "#{size.size}_cost" %>"
+              name="cost[]"
+              min="0"
+              max="300"
+              step="0.01"
+              value="<%= 
+                if @errors
+                  params[:cost][size.id - 2]
+                elsif @product
+                  @costs[size.id]
+                end
+              %>"
+            >
+          <% end %>
+        </div>
+      <% else %>
+        <label for="price">Price £</label>
+        <% if @errors && @errors[:price] %>
+          <span class="error_msg"><%= @errors[:price] %></span>
+        <% end %>
+        <input 
+          class="input_fields"
+          type="number"
+          id="price"
+          name="price"
+          min="0"
+          max="300"
+          step="0.01"
+          value="<%= 
+            if @errors
+              params[:price]
+            elsif @product
+              @price
+            end
+          %>"
+          required
+        >
+        
+        <label for="cost">Cost £</label>
+        <% if @errors && @errors[:cost] %>
+          <span class="error_msg"><%= @errors[:cost] %></span>
+        <% end %>
+        <input 
+          class="input_fields"
+          type="number"
+          id="cost"
+          name="cost"
+          min="0"
+          max="300"
+          step="0.01"
+          value="<%= 
+            if @errors
+              params[:cost]
+            elsif @product
+              @cost
+            end
+          %>"
+          required
+        >
+      <% end %>
+      
+      <div class="row">
+        <label for="availability">Availability</label>
+        <input
+          type="checkbox"
+          id="availability" 
+          name="availability" 
+          value="1"
+          <%=
+            if @errors
+              "checked" if params[:availability] == 1
+            elsif @product && @availability == 1
+              "checked"
+            end
+          %>
+        >
+      </div>
+      <% if @errors && @errors[:availability] %>
+        <span class="error_msg"><%= @errors[:availability] %></span>
+      <% end %>
+      
+      <% if @type == "drinks" %>
+        <span>Drink Sizes:</span>
+        <% if @errors && @errors[:size] %>
+          <span class="error_msg"><%= @errors[:size] %></span>
+        <% end %>
+        <div class="row">
+          <% @sizes.each do |size| %>
+            <label for="<%= "size#{size.id}" %>"><%= size.size %></label>
+            <input 
+              type="checkbox" 
+              id="<%= "size#{size.id}" %>" 
+              name="size[]"
+              value="<%= size.id %>"
+              <%=
+                if @errors
+                  "checked" if params[:size].include?(size.id)
+                elsif @product && @available_sizes.include?(size.id)
+                  "checked"
+                end
+              %>
+            >
+          <% end %>
+        </div>
+        
+        <span>Milk Options:</span>
+        <% if @errors && @errors[:milk] %>
+          <span class="error_msg"><%= @errors[:milk] %></span>
+        <% end %>
+        <div class="row">
+          <% @milk_options.each do |milk| %>
+            <label for="<%= "milk#{milk.id}" %>"><%= milk.milk %></label>
+            <input 
+              type="checkbox"
+              id="<%= "milk#{milk.id}" %>"
+              name="milk[]"
+              value="<%= milk.id %>"
+              <%=
+                if @errors
+                  "checked" if params[:milk].include?(milk.id)
+                elsif @product && @available_milk.include?(milk.id)
+                  "checked"
+                end
+              %>
+            >
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if @type == "beans" %>
+        <label for="stock">Stock Level</label>
+        <% if @errors && @errors[:stock] %>
+          <span class="error_msg"><%= @errors[:stock] %></span>
+        <% end %>
+        <input
+          class="input_fields"
+          type="number"
+          id="stock"
+          name="stock"
+          min="0"
+          max="1000"
+          value="<%= 
+            if @errors
+              params[:stock]
+            elsif @product
+              @stock
+            end
+          %>"
+          required
+        >
+        
+        <label for="roast">Roast Level</label>
+        <% if @errors && @errors[:roast] %>
+          <span class="error_msg"><%= @errors[:roast] %></span>
+        <% end %>
+        <select id="roast" name="roast" required>
+          <option value="">Select roast level</option>
+          <% @roast_levels.each do |roast| %>
+            <option
+              value="<%= roast.id %>"
+              <%= 
+                if @errors
+                  "selected" if params[:roast].to_s.to_i == roast.id
+                elsif @product && @roast_id == roast.id
+                  "selected" 
+                end
+              %>
+            ><%= roast.roast_level %></option>
+          <% end %>
+        </select>
+
+        <div class="row">          
+          <label for="origin">Origin</label>
+          <a class="link" id="add_link" href="#add_origin">Add Origin</a>
+        </div>
+        <% if @errors && @errors[:origin] %>
+          <span class="error_msg"><%= @errors[:origin] %></span>
+        <% end %>
+        <select id="origin" name="origin" required>
+          <option value="">Select origin</option>
+          <% @countries.each do |country| %>
+            <option 
+              value="<%= country.id %>"
+              <%= 
+                if @errors
+                  "selected" if params[:origin].to_s.to_i == country.id
+                elsif @product && @origin_id == country.id
+                  "selected" 
+                end
+              %>
+            ><%= country.country %></option>
+          <% end %>
+        </select>
+      <% end %>
+    </div>
+
+    <div id="confirmation">
+      <button 
+        id="cancel"
+        class="buttons"
+        type="button"
+        onclick="window.location.href='<%= 
+          @backto ? mngr_products_back_url(params, @backto, @id) : "/manager/products/#{@type}"
+        %>'"
+        >Cancel
+      </button>
+      <input class="buttons" type="submit" value="Save">
+    </div>
+  </form>
+
+  <% if @type == "beans" %>
+    <div id="add_origin" class="overlay">
+      <div class="popup">
+        <form id="origin_form" method="post" action="/manager/products/new-origin">
+          <label for="new_origin">New Origin</label>
+          <% if params[:error] %>
+            <span class="error_msg"><%= h(params[:error]) %></span>
+          <% end %>
+          <input
+            class="input_fields"
+            type="text"
+            id="new_origin"
+            name="new_origin"
+            value="<%= h(params[:origin_input]) if params[:error] %>"
+          >
+          <input type="hidden" name="id" value="<%= @id %>">
+          <input type="hidden" name="action" value="<%= @action %>">
+          
+          <input type="hidden" name="lastpage" value="<%= h(params[:lastpage]) %>">
+          <input type="hidden" name="sort" value="<%= h(params[:sort]) %>">
+          <input type="hidden" name="order" value="<%= h(params[:order]) %>">
+          <input type="hidden" name="lastsort" value="<%= h(params[:lastsort]) %>">
+          <input type="hidden" name="column_to_search" value="<%= h(params[:column_to_search]) %>">
+          <input type="hidden" name="search_input" value="<%= h(params[:search_input]) %>">
+          
+          <input id="submit" type="submit">
+          <a class="link material-symbols-outlined" id="close_link" href="#">
+            close
+          </a>
+        </form>
+      </div>
+    </div>
+  <% end %>
+
+</body>
+</html>

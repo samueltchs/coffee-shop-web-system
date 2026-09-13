@@ -1,0 +1,127 @@
+* {
+  margin: 0;
+  padding: 0 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+}
+
+h3 {
+  margin-top: 20px;
+}
+
+h4 {
+  margin-bottom: 15px;
+  text-decoration: underline;
+}
+
+form {
+  width:400px;
+  min-width: 400px;
+  padding: 20px 30px;
+  margin-top: 10px;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 2px solid #E8E2D5;
+  border-radius: 12px;
+  
+  background-color: #FAF8F4;
+}
+
+label, span, h4 {
+  color: #666;
+}
+
+input {
+  text-align: right;
+  padding: 0 4px;
+}
+
+select {
+  text-align: center;
+  height: 24px;
+}
+
+input, select {
+  border: 1px solid #E8E2D5;
+  border-radius: 4px;
+  color: #666;
+}
+
+.input_field {
+  width: 150px;
+  height: 24px;
+}
+
+#percentage, #min_amount {
+  height: 24px;
+}
+
+#min_amount, #pur_type {
+  width: 100px;
+}
+
+.row {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.row .row {
+  margin-bottom: 0;
+}
+
+#eligibility_container h4 {
+  margin-top: 15px;
+}
+
+#percent_sign {
+  margin-left: -3px;
+}
+
+#btn_row {
+  margin-top: 5px;
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+}
+
+button {
+  width: 100px;
+  height: 40px;
+  background-color: #e3e3e3;
+  color: #666;
+  border: none;
+  border-radius: 12px;
+}
+
+button:hover {
+  scale: 95%;
+  cursor: pointer;
+}
+
+.row_end {
+  margin-left: auto;
+}
+
+.error_msg {
+  background-color: rgb(244, 166, 166);
+  font-size: 14px;
+  border-radius: 6px;
+  padding: 2px 8px;
+  color: #666;
+  justify-content: center;
+  align-items: center;
+}

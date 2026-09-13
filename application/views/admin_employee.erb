@@ -1,0 +1,92 @@
+<%= erb :"common/admin_header" %>
+
+<%= erb :"common/admin_top" %>
+
+<% if @employee.role == "Deleted" %>
+  <h1>Deleted Employee</h1>
+<% else %>
+  <h1>Full Name: <%= h @employee.name %></h1>
+<% end %>
+
+<div class="details">
+  <p>Username: <span class="user_detail"><%= h @employee.username %></span></p>
+  <p>Email: <span class="user_detail"><%= h @employee.email %></span></p>
+  <p>Role: <span class="user_detail"><%= h @employee.role %></span></p>
+  <% if @employee.role != "Deleted" %>
+    <p>Registered At: <span class="user_detail"><%= h format_time(@employee.registered_time) %></span></p>
+  <% else %>
+    <p>Deleted At: <span class="user_detail"><%= h format_time(@employee.deleted_at) %></span></p>
+  <% end %>
+</div>
+
+<div class="config">
+  <div class="config_account">
+    <% if @deletion_success %>
+      <p><span class="success"><%= h @deletion_success %></span></p>
+    <% elsif @deletion_error %>
+      <p><span class="error"><%= h @deletion_error %></span></p>
+    <% end %>
+
+    <% if @employee.role != "Deleted" %>
+      <form action="/admin-employee-reset-password" method="post"
+        onsubmit="return confirm('Are you sure you want to permanently reset the password of this employee?');">
+        <input type="hidden" name="username" value="<%= h @employee.username %>" />
+        <p><label for="password">Update password:</label></p>
+        <% if @employee.errors.include?("password") %>
+          <% @employee.errors["password"].each do |error| %>
+            <p><span class="error">Password <%= h error %> </span></p>
+          <% end %>
+        <% end %>
+        <p><input type="password" id="password" name="password" /></p>
+
+        <p><label for="conf_password">Confirm new password:</label></p>
+        <% if @employee.errors.include?("conf_password") %>
+          <% @employee.errors["conf_password"].each do |error| %>
+            <p><span class="error">The passwords <%= h error %></span></p>
+          <% end %>
+        <% end %>
+        <p><input type="password" id="conf_password" name="conf_password" /></p>
+
+        <button type="submit" class="buttons">Reset password</button>
+      </form>
+
+      <% if !@warning.nil? %>
+        <p class="warning"><%= h @warning %></p>
+      <% elsif !@pass_success_msg.nil? %>
+        <p class="success"><%= h @pass_success_msg %></p>
+      <% end %>
+
+      <form class="delete_employee" action="/admin-employee-delete" method="post"
+        onsubmit="return confirm('Are you sure you want to delete this employee account?');">
+        <input type="hidden" name="username" value="<%= h @employee.username %>" />
+        <button type="submit" class="buttons">
+          <img src="icons/trash-2.svg" class="icon" alt="Delete employee account" />
+          Delete Account
+        </button>
+      </form>
+    <% end %>
+  </div>
+
+  <% if @has_orders %>
+    <a class="buttons" href="/admin-employee-orders?username=<%= h @employee.username %>">
+      <img src="icons/package-search.svg" class="icon" alt="View orders fulfilled by the employee" />
+      See orders fulfilled
+    </a>
+  <% end %>
+
+  <% if @employee.role != "Deleted" %>
+    <form action="/admin-access-employee-account" method="post"
+      onsubmit="return confirm(
+        'You are about to access this employee account in read-only mode. To stop, visit /admin-stop-viewing. Continue?'
+      );"
+    >
+      <input type="hidden" name="username" value="<%= h @employee.username %>" />
+      <button type="submit" class="buttons">
+        <img src="icons/eye.svg" class="icon" alt="Access employee account view" />
+        Access Employee Account View
+      </button>
+    </form>
+  <% end %>
+</div>
+
+<%= erb :"common/admin_footer" %>

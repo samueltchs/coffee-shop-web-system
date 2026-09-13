@@ -1,0 +1,35 @@
+<div class="table-container">
+  <table class="scrollable-table">
+    <tr>
+      <th>Name</th>
+      <th>Code</th>
+      <th>Details</th>
+    </tr>
+    
+    <% @discounts.each do |discount| %>
+      <tr>
+        <td><%= discount.campaign_name %></td>
+        <td><%= discount.discount_code %></td>
+        <td>
+          <% query = "?viewcode=#{discount.discount_code}" %>
+          <% query += "&from_past=yes" if @show_past %>
+          <a class="details"
+            href="/manager/discounts/details<%= query %>">details
+          </a>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<div id="btn_row">
+  <% if @show_past %>
+    <a class="btn" href="/manager/discounts">Current Campaigns</a>
+  <% else %>
+    <a class="btn" href="/manager/discounts/past">Past Campaigns</a>
+  <% end %>
+
+  <a 
+    class="btn"
+    href="/manager/create-discount<%= "?from_past=yes" if @show_past %>"
+  >New Campaign</a>
+</div>

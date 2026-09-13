@@ -1,0 +1,145 @@
+* { box-sizing: border-box; }
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 5px;
+  gap: 8px;
+}
+
+#line { margin-bottom: 5px; }
+
+#signup_and_date_container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+#date_range_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#signup_container,
+#date_range_container form {
+  display: flex;
+  width: max-content;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 5px;
+  background: #FAF8F4;
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: 2px solid #E8E2D5;
+}
+
+#signup_container span,
+#date_range_container label {
+  font-size: 13px;
+}
+
+#date_range_container div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+#date_range_container input,
+#date_range_container select {
+  border: 1px solid #E8E2D5;
+  border-radius: 6px;
+}
+
+#view_btn, #reset_btn, #submit_btn {
+  display: flex;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 25px;
+  width: 60px;
+  padding: 2px 4px;
+  font-size: 13px;
+  border-radius: 12px !important;
+  border: none;
+
+  background: #E8E2D5;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  opacity: 0;
+  pointer-events: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay:target {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.popup {
+  position: relative;
+  display: flex;
+  background: white;
+  width: 50%;
+  min-width: 350px;
+  border: 2px solid #E8E2D5;
+  border-radius: 12px;
+  position: relative;
+  padding: 8px 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+#close_btn {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+
+  font-size: 20px !important;
+  border-radius: 6px;
+
+  background: #efefef;
+  color: black;
+  text-decoration: none;
+}
+
+#submit_btn:hover, #reset_btn:hover,
+#view_btn:hover, #close_btn:hover {
+  scale: 95%;
+  cursor: pointer;
+}
+
+@media(max-width: 800px) {
+  #signup_and_date_container {
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  #date_range_container form {
+    flex-direction: column;
+  }
+
+  #signup_container,
+  #date_range_container,
+  #date_range_container form {
+    min-width: 350px;
+    width: 100%;
+  }
+}

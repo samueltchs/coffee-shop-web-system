@@ -1,0 +1,43 @@
+<%@refunds = @refunds.to_a.reverse if params[:reverse_refunds] == "true"%>
+<TABLE class="content_table"<%if @table_style%> style="<%=@table_style%>"<%end%>>
+    <TR style="font-size: <%=@header_font_size%>">
+        <TH><a href="?reverse_refunds=<%=params[:reverse_refunds] == "true" ? "false" : "true"%>" style="text-decoration:none; color:#4B0082"><%=params[:reverse_refunds] == "true" ? "▲" : "▼"%></a> Refund ID </TH>
+        <TH> Loyalty Number </TH>
+        <TH> Refund Reason </TH>
+        <TH> Type </TH>
+        <TH> Order/Item ID </TH>
+        <TH> Status </TH>
+        <TH> Date Posted </TH>
+        <%if @view_items_path%><TH></TH><%end%>
+    </TR>
+    <%@refunds.each do |refund|%>
+    <TR<%if @row_font_size%> style="font-size: <%=@row_font_size%>"<%end%>>
+        <TD><%=h refund.refund_id%></TD>
+        <TD><%=h refund.loyalty_number%></TD>
+        <TD><%=h refund.refund_reason%></TD>
+        <%if refund.order_id%>
+            <TD>Order</TD>
+            <TD><%=h refund.get_order_id%></TD>
+        <%elsif refund.item_id%>
+            <TD>Item</TD>
+            <TD><%=h refund.get_item_id%></TD>
+        <%else%>
+            <TD>N/A</TD>
+            <TD>N/A</TD>
+        <%end%>
+        <%
+            status_color = case refund.status
+                when "Pending"  then "#b15600"
+                when "Denied"   then "#d42020"
+                when "Resolved" then "#0f8004"
+                else "inherit"
+            end
+        %>
+        <TD style="color: <%=status_color%>;"><%=h refund.status%></TD>
+        <TD><%=h format_time(refund.created_at)%></TD>
+        <%if @view_items_path%>
+        <TD><a style="color: #0a4fff" href="<%=@view_items_path%>?selected=<%=refund.refund_id%>"><%=@view_link_text ? @view_link_text : "View"%></a></TD>
+        <%end%>
+    </TR>
+    <%end%>
+</TABLE>

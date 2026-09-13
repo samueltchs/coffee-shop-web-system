@@ -1,0 +1,68 @@
+<div class="table-container">
+  <table class="scrollable-table">
+    <tr>
+      <% @sortby.each do |text, column| %>
+        <th>
+          <% order = column == @sort && @lastorder == "desc" ? "asc" : "desc" %>
+          <a class="sort-head"
+            href="?<%= URI.encode_www_form(
+              params.merge(
+                "sort" => column,
+                "order" => order
+              )
+            ) %>"
+          ><%= text %><%= @symbol if @sort == column %>
+          </a>
+        </th>
+      <% end %>
+      <th>Details</th>
+    </tr>
+      
+    <% @products.each do |product| %>
+      <tr>
+        <td><%= product[:product_id] %></td>
+        <% name = product[:name] %>
+        <td><%= @type == "beans" ? name.sub("N/A ", "") : name %></td>
+        <td><%= "£%.2f" % product[:price] %></td>
+        <td><%= "£%.2f" % product[:cost] %></td>
+        <% if @type == "beans" %>
+          <td><%= product[:stock_level] %></td>
+        <% end %>
+        <td><%= product[:availability] == 1 ? "yes" : "no" %></td>
+        <td>
+          <a class="details"
+            href="<%= mngr_product_details_url(product, params) %>"
+          >details</a>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<div id="bottom_row">
+  <form id="search_bar" method="get" action="/manager/products/<%= @type %>">
+    <input type="hidden" name="sort" value="<%= params["sort"] %>">
+    <input type="hidden" name="order" value="<%= params["order"] %>">
+
+    <select name="column_to_search" id="column_to_search">
+      <option value="product_id" <%= "selected" if params["column_to_search"] == "product_id" %>>ID</option>
+      <option value="name" <%= "selected" if params["column_to_search"] == "name" %>>Name</option>
+      <option value="availability" <%= "selected" if params["column_to_search"] == "availability" %>>Available</option>
+    </select>
+
+    <input type="search" name="search_input" id="search_input" placeholder="Search" value="<%= h(params["search_input"]) %>">
+    <button id="search_icon">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+  </form>
+  
+  <div id="btn_row">
+    <a
+      class="btn" id="add_drink_btn"
+      href="<%= mngr_add_products_url(params, "drinks", @type) %>"
+    >Add Drinks</a>
+    <a
+      class="btn" id="add_bean_btn"
+      href="<%= mngr_add_products_url(params, "beans", @type) %>"
+    >Add Beans</a>
+  </div>
+</div>

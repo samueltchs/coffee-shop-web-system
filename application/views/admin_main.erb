@@ -1,0 +1,40 @@
+<%= erb :"common/admin_header" %>
+
+<%= erb :"common/admin_top" %>
+
+<div class="middle_page">
+  <h1>Welcome, <%= h @first_name %>!</h1>
+</div>
+
+<p class="add">
+  <a class="add_employee" href="/admin-add-employee">Register an Employee</a>
+</p>
+
+<div class="stats_container">
+  <div class="stats customer">
+    <a class="filter_icons" href="/admin-search?filter=customers">
+      <img src="images/customer.png" alt="Customers Icon"/>
+      <p class="total">Total customers:</p>
+      <p class="counts"><%= h @num_non_deleted_cust %></p>
+      <p class="sus_counts">(<%= h @num_suspended_cust %> Suspended)</p>
+    </a>
+  </div>
+
+  <div class="stats employee">
+    <a class="filter_icons" href="/admin-search?filter=employees">
+      <img src="images/employee.png" alt="Employees Icon"/>
+      <p class="total">Total employees:</p>
+      <p class="counts"><%= h @num_non_deleted_employees %></p>
+    </a>
+  </div>
+
+  <div class="stats order">
+    <a class="filter_icons" href="/admin-search?filter=orders">
+      <img src="images/order.png" alt="Orders Icon"/>
+      <p class="total">Total orders:</p>
+      <p class="counts"><%= h @num_orders %></p>
+    </a>
+  </div>
+</div>
+
+<%= erb :"common/admin_footer" %>

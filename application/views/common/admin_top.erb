@@ -1,0 +1,38 @@
+<div class="admin_header_wrapper">
+  <div class="admin_header">
+    <div class="header_left_side">
+      <a href="/admin-main">
+        <img src="images/home.png" alt="Home" />
+        <p>Home</p>
+      </a>
+
+      <a href="/admin-settings">
+        <img src="images/settings.png" alt="Settings" />
+        <p>Settings</p>
+      </a>
+
+      <a href="/admin-inbox">
+        <img src="images/inbox.png" alt="Inbox" />
+        <p>Inbox (<%= h @no_of_admin_messages %>)</p>
+      </a>
+
+      <a href="/admin-dashboard">
+        <img src="images/dashboard.png" alt="Dashboard" />
+        <p>Dashboard</p>
+      </a>
+
+      <a href="/employee-logout">
+        <img src="images/logout.png" alt="Logout" />
+        <p>Log out</p>
+      </a>
+    </div>
+
+    <img src="images/logo/logo-white.svg" class="logo" alt="BBC Logo" />
+  </div>
+
+  <form class="search_form" action="/admin-search">
+    <input type="text" id="search" name="admin_search" value="<%= h @admin_search %>" placeholder="Search content..." />
+    <input type="hidden" name="filter" value="<%= h @filter %>" />
+    <input type="image" src="images/search.png" width="40" height="40" value="Search" alt="Search" >
+  </form>
+</div>

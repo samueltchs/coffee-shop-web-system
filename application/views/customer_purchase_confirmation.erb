@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Purchase Successful - BBC" %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+        <div class="page-header">
+            <h1>Purchase Successful!</h1>
+        </div>
+    </header>
+    <div class="main-content centralise-content">
+        <p>Your Order Number: <%= @order_id %></p>
+        <p>Payment Reference: <%= @payment_reference %></p>
+        <br>
+        <p>Screenshot this page before closing or reloading</p>
+        <p>These details can always be found in purchase history</p>
+    </div>
+    <%= erb :customer_footer %>
+</body>
+</html>

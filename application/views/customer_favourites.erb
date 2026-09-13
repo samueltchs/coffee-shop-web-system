@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Favourites - BBC" %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+        <div class="page-header">
+            <h1>Your Favourites</h1>
+        </div>
+    </header>
+    <div class="main-content centralise-content">
+        <div class="basket-table-container">
+            <div class="basket-table-border">
+                <table class="basket-table">
+                    <tr class="basket-header-row basket-item">
+                        <th>Product Name</th>
+                        <th></th>
+                    </tr>
+                    <% @favourites.each do |product| %>
+                        <tr class="basket-item">
+                            <td><a href=<%= "/shop/product?product_id=" + product.product_id.to_s %>><%= product.name %></a></td>
+                            <td class="basket-control-button-container">
+                                <form action="/shop/favourites/remove" method="POST">
+                                    <input type="hidden" name="product_id" value=<%= product.product_id %>>
+                                    <button class="basket-control-button" type="submit">
+                                        <img src=<%= @public_path_prefix + "icons/trash-2.svg" %> alt="Remove Item">
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% end %>
+                </table>
+            </div>
+        </div>
+    </div>
+    <%= erb :customer_footer %>
+</body>
+</html>

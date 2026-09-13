@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Sign Up - BBC" %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+    </header>
+
+    <div class="main-content centralise-content">
+        <div class="center-box">
+            <div class="page-header">
+                <h1>Sign Up</h1>
+            </div>
+            <div class="login-and-image">
+                <div class="login-form">
+                    <% if !@form_submitted || !@warning.nil? %>
+                        <% if !@warning.nil? %>
+                            <p class="error warning"><%= h @warning %></p>
+                        <% end %>
+                        <form action="/sign-up" method="post">
+                            <div class="sign-up-form-section sign-up-top">
+                                <p><label for="first">Enter first name:</label></p>
+                                <p><input type="text" name="first" value="<%= h @first_name %>" /></p>
+                                <% if !@first_name_error.nil? %>
+                                    <p class="error"><%= h @first_name_error %></p>
+                                <% end %>
+                            </div>
+                            <div class="sign-up-form-section">
+                                <p><label for="last">Enter last name:</label></p>
+                                <p><input type="text" name="last" value="<%= h @last_name %>"/></p>
+                                <% if !@last_name_error.nil? %>
+                                    <p class="error"><%= h @last_name_error %></p>
+                                <% end %>
+                            </div>
+                            <div class="sign-up-form-section">
+                                <p><label for="phone">Enter phone number:</label></p>
+                                <p><input type="text" name="phone" value="<%= h @phone_no %>"/></p>
+                                <% if !@phone_no_error.nil? %>
+                                    <p class="error"><%= h @phone_no_error %></p>
+                                <% end %>
+                            </div>
+                            <div class="sign-up-form-section">
+                                <p><label for="email">Enter email address:</label></p>
+                                <p><input type="text" name="email" value="<%= h @email %>" /></p>
+                                <% if !@email_error.nil? %>
+                                    <p class="error"><%= h @email_error %></p>
+                                <% end %>
+                            </div>
+                            <div class="sign-up-form-section">
+                                <p><label for="password">Enter password:</label></p>
+                                <p><input type="password" name="password" /></p>
+                                <% if !@pass_error.nil? %>
+                                    <p class="error"><%= h @pass_error %></p>
+                                <% end %>
+
+                                <ul class="requirements">
+                                    <li>At least 8 characters long</li>
+                                    <li>At least 1 uppercase character</li>
+                                    <li>At least 1 number</li>
+                                    <li>At least 1 special character</li>
+                                </ul>
+                            </div>
+                            <div class="sign-up-form-section">
+                                <p><label for="conf_password">Confirm password:</label></p>
+                                <p><input type="password" name="conf_password" /></p>
+                                <% if !@pass_mismatch_error.nil? %>
+                                    <p class="error"><%= h @pass_mismatch_error %></p>
+                                <% end %>
+                            </div>
+                            <div class="sign-up-form-section">
+                                <p><input type="submit" value="Submit"></p>
+                            </div>
+                        </form>
+                    <% elsif @form_submitted && @warning.nil? %>
+                        <h1>Account has been successfully created!</h1>
+                        <p>First name: <%= h @first_name %></p>
+                        <p>Last name: <%= h @last_name %></p>
+                        <p>Phone number: <%= h @phone_no %></p>
+                        <p>Email address: <%= h @email %></p>
+                        <p>Loyalty card number: <%= h @loyalty_number %></p>
+                    <% end %>
+                    <a class="toc" href="/login">Go back to login page</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%= erb :customer_footer %>
+</body>
+</html>

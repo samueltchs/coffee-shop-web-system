@@ -1,0 +1,64 @@
+<div class="sales-tabs">
+  <a href="/manager/sales/analytics" class="sales-tab <%= 'active' if @active_tab == 'overview' %>">Overview</a>
+  <a href="/manager/sales/drinks" class="sales-tab <%= 'active' if @active_tab == 'drinks' %>">Drinks Sales</a>
+  <a href="/manager/sales/beans" class="sales-tab <%= 'active' if @active_tab == 'beans' %>">Beans Sales</a>
+  <a href="/manager/sales/top-products" class="sales-tab <%= 'active' if @active_tab == 'top' %>">Top Products</a>
+  <a href="/manager/sales/top-customers" class="sales-tab <%= 'active' if @active_tab == 'customers' %>">Top Customers</a>
+  </div>
+
+<div id="signup_and_date_container">
+  <div id="date_range_container">
+    <form method="get" action="/manager/sales/beans">
+      <div>
+        <label for="from_date">From:</label>
+        <input type="date" id="from_date" name="from_date" value="<%= @from_date %>">
+        <label for="to_date">To:</label>
+        <input type="date" id="to_date" name="to_date" value="<%= @to_date %>">
+      </div>
+      <div>
+        <input type="submit" id="submit_btn" value="Filter">
+        <a id="reset_btn" href="/manager/sales/beans">Reset</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<hr id="line">
+
+<div class="kpi-grid-2">
+  <div class="kpi-card-full">
+    <p class="kpi-label">Total Beans Sold</p>
+    <p class="kpi-value"><%= @total_beans_sold %></p>
+  </div>
+  <div class="kpi-card-full">
+    <p class="kpi-label">Beans Revenue</p>
+    <p class="kpi-value">£<%= sprintf("%.2f", @total_beans_revenue) %></p>
+  </div>
+</div>
+
+<div class="table-container">
+  <table class="scrollable-table">
+    <tr>
+      <th>Bean</th>
+        <th class="numeric">Avg Price</th>
+        <th class="numeric">Quantity Sold</th>
+        <th class="numeric">Revenue</th>
+    </tr>
+    <% if @beans_data.empty? %>
+      <tr>
+        <td colspan="4" class="empty-state">
+          No beans sales in this period
+        </td>
+      </tr>
+    <% else %>
+      <% @beans_data.each do |bean| %>
+        <tr>
+          <td><%= bean[:name] %></td>
+            <td class="numeric">£<%= sprintf("%.2f", bean[:avg_price]) %></td>
+            <td class="numeric"><%= bean[:quantity] %></td>
+            <td class="numeric">£<%= sprintf("%.2f", bean[:revenue]) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+</div>

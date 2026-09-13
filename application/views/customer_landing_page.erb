@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Badly Brewed Coffee" %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+    </header>
+    <div class="main-content">
+        <div class="login-zone">
+            <div class="lp-top-whitespace"></div>
+            <div class="tagline-container">
+                <h1 class="tagline">Badly Brewed Coffee</h1>
+            </div>
+            <div class="login-buttons-container">
+                <a class="accent-button small-button" href="/login">Login</a>
+                <a class="transparent-button small-button" href="/sign-up">Sign Up</a>
+            </div>
+            <div class="lp-info-container">
+                <p>Badly Brewed Coffee</p>
+                <div class="location">
+                    <img src="icons/map-pin.svg" alt="Location">
+                    <p>Sheffield</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%= erb :customer_footer %>
+</body>
+

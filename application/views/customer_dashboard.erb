@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Dashboard" %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+    </header>
+    <div id="customer-dashboard">
+        <div class="button-grid-box" id="shop">
+            <a href="../shop">
+                <button class="customer-button large-button">Shop</button>
+            </a>
+        </div>
+        <div id="welcome">
+            <h1>Welcome, <%= @first_name %>!</h1>
+        </div>
+         <div id="promotions">
+            <h2 id="promo-header">Your Promotions & Favourites</h2>
+            <ul id="promo-list">
+                <% if @latest_promotion %>
+                    <li class="promo-item">
+                        <a href="/customer/ad">
+                            <button class="customer-button promo-button large-button">
+                                <img class="promo-button-img" src=<%= @public_path_prefix + "images/iconmonstr-discount.svg" %> alt="promotion">
+                                <p class="promo-button-text">View your latest promotion</p>
+                            </button>
+                        </a>
+                    </li>
+                <% end %>
+                <% @discounts.each do |discount| %>
+                    <li class="promo-item">
+                        <a href="/shop">
+                            <button class="customer-button promo-button large-button">
+                                <img class="promo-button-img" src=<%= @public_path_prefix + "images/iconmonstr-discount.svg" %> alt="promotion">
+                                <p class="promo-button-text">Use code "<%= discount.discount_code %>" for <%= discount.percentage_off.to_s %>% off!</p>
+                            </button>
+                        </a>
+                    </li>
+                <% end %>
+                <% @favourites.each do |item| %>
+                    <li class="promo-item">
+                        <a href=<%= "/shop/product?product_id=" + item.product_id.to_s %>>
+                            <button class="customer-button promo-button large-button">
+                                <% if item.image_path == "" || item.image_path.nil? %>
+                                    <img class="bean-img" src=<%= @public_path_prefix + "icons/coffee-bean.svg" %> alt="bean">
+                                <% else %>
+                                    <% img_path = "public/" + item.image_path.slice(1, item.image_path.length - 1) %>
+                                    <% if File.exist?(img_path) %>
+                                        <img class="bean-img" src=<%= @public_path_prefix + item.image_path %> alt="bean">
+                                    <% else %>
+                                        <img class="bean-img" src=<%= @public_path_prefix + "icons/coffee-bean.svg" %> alt="bean">
+                                    <% end %>
+                                <% end %>
+                                <p class="promo-button-text"><%= item.name %></p>
+                            </button>
+                        </a>
+                    </li>
+                <% end %>
+                <% if !@latest_promotion && @favourites.empty? && @discounts.empty? %>
+                    <ul>Nothing to Display!</ul>
+                <% end %>
+            </ul>
+        </div>
+        <div class="button-grid-box" id="purchase-history">
+            <a href="/customer/purchase-history">
+                <button class="customer-button large-button">View Purchase History</button>
+            </a>
+        </div>
+        <div id="loyalty-number">
+            <h2>Your Loyalty Number:</h2>
+            <p class="important-text"><%= @loyalty_number %></p>
+        </div>
+        <div class="button-grid-box" id="account-settings">
+            <a href="customer-account-settings">
+                <button class="customer-button large-button">Account Settings</button>
+            </a>
+        </div>
+        <div id="stamp-check">
+            <h2>You have <%= @stamps %> stamp<%= @stamps == 1 ? "" : "s" %></h2>
+        </div>
+    </div>
+    <%= erb :customer_footer %>
+</body>
+</html>

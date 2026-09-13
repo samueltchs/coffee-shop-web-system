@@ -1,0 +1,9 @@
+<%= erb :"common/email_header" %>
+
+<p>Per your request, you may reset your password using the link below:</p>
+<a href="/forgot-password">
+  Reset password
+</a>
+<p>Your loyalty number: <%= h @customer.loyalty_number %></p>
+
+<%= erb :"common/email_footer" %>

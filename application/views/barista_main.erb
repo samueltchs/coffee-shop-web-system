@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+    <TITLE>BARISTA MAIN</TITLE>
+    <link rel="icon" type="image/svg+xml" href="/images/Favicon.svg">
+    <link rel='stylesheet' href='../styles/barista.css'>
+    <meta charset='UTF-8'>
+</HEAD>
+<BODY>
+    <H1>
+        Welcome <%=h @barista_name%>
+    </H1>
+    <FORM action="../employee-logout" method="GET" style="float: right;">
+        <BUTTON class="log_out_button" type="submit">Log-out</BUTTON>
+    </FORM>
+    <BR/>
+    <HR style = "margin-top: 0.5rem">
+    <DIV id="main_menu_box" class = "box" >
+        <FORM method="post" action="/barista/main">
+            <BUTTON id="menu_button_properties" class="menu_button_style" type="submit" value="make_order" name="button">Make Order</BUTTON>
+            <BUTTON id="menu_button_properties" class="menu_button_style" type="submit" value="checkout_orders" name="button">Checkout Orders</BUTTON>
+            <BUTTON id="menu_button_properties" class="menu_button_style" type="submit" value="search_customer" name="button">Search Customer</BUTTON>
+            <BUTTON id="menu_button_properties" class="menu_button_style" type="submit" value="past_sales" name="button">Past Sales</BUTTON>
+            <BUTTON id="menu_button_properties" class="menu_button_style" type="submit" value="daily_summary" name="button">Daily Summary</BUTTON>
+            <BUTTON id="menu_button_properties" class="menu_button_style" type="submit" value="verify_refunds" name="button">Verify Refunds</BUTTON>
+            <BUTTON id="menu_button_properties" class="menu_button_style" type="submit" value="make_refund" name="button">Make Refund</BUTTON>
+            <BUTTON id="menu_button_properties" class="menu_button_style" type="submit" value="generate_postage_labels" name="button">Generate Postage Labels</BUTTON>
+        </FORM>
+        
+    </DIV>
+
+
+    <FORM method="get" action="/barista/main">
+    <DIV class="alert_popup" style="justify-content: center;"R
+        <%if params[:alert] == "order_success" || params[:alert] == "refund_success"%>
+            style="display: flex; align-items: center;"
+        <%end%>
+        >
+        <%if params[:alert] == "order_success"%>
+            <p class="alert_text">
+                Order #<%=h params[:order_id]%> has been successfully completed
+            </p>
+        <%elsif params[:alert] == "refund_success"%>
+            <p class="alert_text">
+                Refund <%=params[:refund_id]%> has been successfully submitted
+            </p>
+        <%end%>
+        <BUTTON id="alert_button_properties" class="menu_button_style" type="submit" value="return" name="button">Return</BUTTON>
+    </DIV>
+    </FORM>
+</BODY>
+</HTML>

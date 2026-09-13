@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "FAQ" %>
+<%= erb :customer_head %>
+
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+        <div class="page-header">
+            <h1>Frequently Asked Questions</h1>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="faq-container">
+
+            <div class="faq-item">
+                <h2 class="faq-question">What is your return policy?</h2>
+                <p class="faq-answer">We can only offer refunds to coffee beans within 2 weeks of the order being shipped.</p>
+            </div>
+
+            <div class="faq-item">
+                <h2 class="faq-question">How do I track my order?</h2>
+                <p class="faq-answer">Once your order ships, you will receive an email with a tracking number.</p>
+            </div>
+
+            <div class="faq-item">
+                <h2 class="faq-question">How do I change my password?</h2>
+                <p class="faq-answer">
+                    You can go to the home page and click on account settings, or Alternatively, 
+                    if you have been locked out or you are having a hard time finding it, 
+                    please get in touch with us so we can send you an email with a reset password link.
+                    <a href="/customer/customer-account-settings">click here</a>.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h2 class="faq-question">How do I make a complaint?</h2>
+                <p class="faq-answer">
+                    Contact us via email or 
+                    <a href="/customer/complaints">click here</a>.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h2 class="faq-question">My account has been suspended?</h2>
+                <p class="faq-answer">
+                    Accounts that have been inactive for 6 months are flagged with a 5 day grace period to return. 
+                    If no activity is recorded within those 5 days, the account is automatically suspended. 
+                    If you wish to reactivate your account, please contact us within 3 months of the suspension date.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h2 class="faq-question">My account is deleted?</h2>
+                <p class="faq-answer">
+                    Accounts that remain suspended for more than 3 months are automatically deleted as 
+                    part of our policy of maintaining active accounts.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h2 class="faq-question">How can I return if I am suspended?</h2>
+                <p class="faq-answer">
+                    Please get in contact with us via email contact@badlybrewedcoffee.com within 3 months of your account's suspension date 
+                    in order for us to reactivate your account.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h2 class="faq-question">My order shows up as unpaid?</h2>
+                <p class="faq-answer">
+                    There may have been an error in payment processing. Please contact us with your payment reference ID and order number. 
+                    Once validated, the order will proceed as normal.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h2 class="faq-question">How do I request a refund?</h2>
+                <p class="faq-answer">
+                    If you would like to request a refund please do so by filling out a request 
+                    for refund form by <a href="/customer/refund">clicking here</a>.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h2 class="faq-question">What payment methods are accepted?</h2>
+                <p class="faq-answer">
+                    If you are ordering online and expect delivery you can use 'PayFriend' to complete your purcahse, 
+                    you can also pay in cash in-store if you are picking up your order.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <%= erb :customer_footer %>
+</body>
+</html>
+
+<!-- contact@badlybrewedcoffee.com -->

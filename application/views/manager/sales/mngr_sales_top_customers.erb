@@ -1,0 +1,63 @@
+<div class="sales-tabs">
+  <a href="/manager/sales/analytics" class="sales-tab <%= 'active' if @active_tab == 'overview' %>">Overview</a>
+  <a href="/manager/sales/drinks" class="sales-tab <%= 'active' if @active_tab == 'drinks' %>">Drinks Sales</a>
+  <a href="/manager/sales/beans" class="sales-tab <%= 'active' if @active_tab == 'beans' %>">Beans Sales</a>
+  <a href="/manager/sales/top-products" class="sales-tab <%= 'active' if @active_tab == 'top' %>">Top Products</a>
+  <a href="/manager/sales/top-customers" class="sales-tab <%= 'active' if @active_tab == 'customers' %>">Top Customers</a>
+</div>
+
+
+<div id="signup_and_date_container">
+  <div id="signup_container">
+    <span>Top Customers: <%= @top_data.length %></span>
+    <span>Top 3 Combined: £<%= sprintf("%.2f", @total_top_spent) %></span>
+  </div>
+
+  <div id="date_range_container">
+    <form method="get" action="/manager/sales/top-customers">
+      <div>
+        <label for="from_date">From:</label>
+        <input type="date" id="from_date" name="from_date" value="<%= @from_date %>">
+        <label for="to_date">To:</label>
+        <input type="date" id="to_date" name="to_date" value="<%= @to_date %>">
+      </div>
+      <div>
+        <input type="submit" id="submit_btn" value="Filter">
+        <a id="reset_btn" href="/manager/sales/top-customers">Reset</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<hr id="line">
+
+<div class="table-container">
+  <table class="scrollable-table">
+    <tr>
+      <th>Rank</th>
+      <th>Customer</th>
+      <th>Loyalty No.</th>
+      <th>Orders</th>
+      <th>Total Spent</th>
+      <th>Stamps</th>
+    </tr>
+    <% if @top_data.empty? %>
+      <tr>
+        <td colspan="6" class="empty-state">
+          No customer activity in this period
+        </td>
+      </tr>
+    <%else%>
+      <%@top_data.each_with_index do |c, i| %>
+        <tr>
+          <td>#<%= i + 1 %></td>
+          <td><%= c[:name] %></td>
+          <td><%= c[:loyalty_number] %></td>
+          <td><%= c[:orders] %></td>
+          <td><%= c[:spent] %></td>
+          <td><%= c[:stamps] %>/9</td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+</div>

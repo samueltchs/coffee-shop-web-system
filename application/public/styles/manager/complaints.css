@@ -1,0 +1,160 @@
+/* complaint button (preview in table) */
+.complaint-link {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  font-family: inherit;
+  font-size: inherit;
+  color: #1a1a1a;
+}
+
+.complaint-link:hover {
+  color: #6F4E37 !important;
+  font-weight: 500;
+}
+
+.complaint-link::after {
+  content: " ↗";
+  opacity: 0.5;
+  font-size: 11px;
+  margin-left: 4px;
+}
+
+/* complaint cell wrapper (constrains text width) */
+.complaint-cell {
+  max-width: 300px;
+}
+
+/* popup dialog */
+.complaint-dialog {
+  padding: 30px;
+  border-radius: 8px;
+  border: 1px solid #EEEEEE;
+  width: 500px;
+  max-width: 90vw;
+  word-wrap: break-word;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
+
+.complaint-dialog h3 {
+  margin-top: 0;
+}
+
+.complaint-meta {
+  font-size: 13px;
+  color: #666;
+  margin: 0 0 12px 0;
+}
+
+.complaint-meta-last {
+  font-size: 13px;
+  color: #666;
+  margin: 0 0 16px 0;
+}
+
+.complaint-body {
+  line-height: 1.6;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.dialog-close {
+  margin-top: 20px;
+  padding: 8px 20px;
+  background: #FAFAFA;
+  border: 1px solid #EEEEEE;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* filter header (style cohérent avec page Customers) */
+* { box-sizing: border-box; }
+
+#line { margin-bottom: 5px; }
+
+#signup_and_date_container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+#date_range_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#signup_container,
+#date_range_container form {
+  display: flex;
+  width: max-content;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 5px;
+  background: #FAF8F4;
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: 2px solid #E8E2D5;
+}
+
+#signup_container span,
+#date_range_container label {
+  font-size: 13px;
+}
+
+#date_range_container div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+#date_range_container input {
+  border: 1px solid #E8E2D5;
+  border-radius: 6px;
+}
+
+#reset_btn, #submit_btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  width: 60px;
+  padding: 2px 4px;
+  font-size: 13px;
+  border-radius: 12px !important;
+  border: none;
+  background: #E8E2D5;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#submit_btn:hover, #reset_btn:hover {
+  scale: 95%;
+  cursor: pointer;
+}
+
+@media(max-width: 800px) {
+  #signup_and_date_container {
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  #date_range_container form {
+    flex-direction: column;
+  }
+  #signup_container,
+  #date_range_container,
+  #date_range_container form {
+    min-width: 350px;
+    width: 100%;
+  }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = @product.name %>
+<%= erb :customer_head %>
+<body>
+    <header>
+        <%= erb :customer_navbar %>
+    </header>
+    <div class="main-content centralise-content">
+        <div class="product-content">
+            <div class="product-page-left">
+                <% if @product.image_path == "" || @product.image_path.nil? %>
+                    <img class="product-page-img" src=<%= @public_path_prefix + "icons/coffee-bean.svg" %> alt="bean">
+                <% else %>
+                    <% img_path = "public/" + @product.image_path.slice(1, @product.image_path.length - 1) %>
+                    <% if File.exist?(img_path) %>
+                        <img class="product-page-img" src=<%= @public_path_prefix + @product.image_path %> alt="bean">
+                    <% else %>
+                        <img class="product-page-img" src=<%= @public_path_prefix + "icons/coffee-bean.svg" %> alt="bean">
+                    <% end %>
+                <% end %>
+            </div>
+            <div class="product-page-right">
+                 <div class="product-name-favourite-container">
+                    <h1 class="product-page-name"><%= @product.name %></h1>
+                    <% if session["logged_in"] %>
+                        <% if @favourited %>
+                            <form action="/shop/favourites/remove" method="post">
+                                <input type="hidden" name="product_id" value=<%= @product.product_id %>>
+                                <input type="hidden" name="from" value="product">
+                                <button class="favourite-button" type="submit">
+                                    <img class="favourite-button-img" src=<%= @public_path_prefix + "icons/solid-heart.svg" %> alt="Remove Favourite">
+                                </button>
+                            </form>
+                        <% else %>
+                            <form action="/shop/favourites/add" method="post">
+                                <input type="hidden" name="product_id" value=<%= @product.product_id %>>
+                                <button class="favourite-button" type="submit">
+                                    <img class="favourite-button-img" src=<%= @public_path_prefix + "icons/hollow-heart.svg" %> alt="Add Favourite">
+                                </button>
+                            </form>
+                        <% end %>
+                    <% end %>
+                </div>
+                <div class="product-page-details">
+                    <form action="/shop/product/select-milk-size" method="post">
+                        <input type="hidden" name="product_id" value=<%= @product.product_id.to_s %>>
+                        <select name="milk" id="milk">
+                            <% @milks.each do |milk| %>
+                                <option value=<%= milk.id.to_s %> <%= "selected" if @selected_milk == milk.id %>><%= milk.milk %></option>
+                            <% end %>
+                        </select>
+                        <select name="size" id="size">
+                            <% @sizes.each do |size| %>
+                                <option value=<%= size.id.to_s %> <%= "selected" if @selected_size == size.id %>><%= size.size %></option>
+                            <% end %>
+                        </select>
+                         <button class="accent-button focus" type="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="product-price-and-controls">
+                    <p class="product-page-detail product-page-price">£<%= @price %></p>
+                    <div class="basket-controls">
+                        <% if session["logged_in"] %>
+                            <% if @product.in_stock? %>
+                                <form action="/shop/add-to-basket" method="post">
+                                    <input type="hidden" name="product_id" value=<%= @product.product_id %>>
+                                    <button class="accent-button add-to-basket-button focus" type="submit">Add to Basket</button>
+                                </form>
+                            <% else %>
+                                <button class="unavailable-button accent-button add-to-basket-button">🚫 Not in Stock</button>
+                            <% end %>
+                        <% else %>
+                            <button class="unavailable-button accent-button add-to-basket-button">🚫 Log in to add to basket</button>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <%= erb :customer_footer %>
+</body>
+</html>

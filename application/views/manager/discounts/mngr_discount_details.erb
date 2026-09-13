@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title><%= @title %></title>
+  <link rel="stylesheet" href="/styles/manager/table.css">
+  <link rel="stylesheet" href="/styles/manager/fonts.css">
+  <link rel="stylesheet" href="/styles/manager/discount_details.css">
+</head>
+
+<body>
+  <div id="content_container">
+    <h3><%= @discount.campaign_name + " - " + @discount.discount_code %></h3>
+    <h4>Status: <%= @discount.is_active == 1 ? "Active" : "Inactive" %></h4>
+    <h4>Eligibility</h4>
+    <p>Purchase Type: <%= @discount.get_purchase_type_name %></p>
+    <p>Eligibility Rule: <%= @discount.get_eligible_rule_name %></p>
+    <p>
+      Minimum Amount: <%= 
+        @discount.eligible_rule == 1 ? 
+        "£%.2f" % @discount.eligible_min : "%d" % @discount.eligible_min 
+      %>
+    </p>
+    <p>Eligible Purchase Period</p>
+    <p>From: <%= @discount.valid_purchase_date_from %></p>
+    <p>To: <%= @discount.valid_purchase_date_to %></p>
+    <p>Code Expiry Date: <%= @discount.code_expiry_date %></p>
+    <p>Discount Rate: <%= @discount.percentage_off %>%</p>
+
+    <h4>Statistics</h4>
+    <p>Attributed Gross Sales: <%= "£%.2f" % @discount.total_used_code(:gross) %></p>
+    <p>Attributed Net Sales: <%= "£%.2f" % @discount.total_used_code(:net) %></p>
+    <p>Attributed Costs: <%= "£%.2f" % @discount.total_used_code(:cost) %></p>
+    <p>Attributed Profits: <%= "£%.2f" % @discount.profits_used_code %></p>
+    <p>Total Discounts Allowed: <%= "£%.2f" % @discount.discount_allowed_by_code %></p>
+
+    <div id="btn_row">
+      <a class="btn" href="/manager/discounts<%= "/past" if @from_past %>">Back</a>
+
+      <% query = "?viewcode=#{@discount.discount_code}" %>
+      <% query += "&from_past=yes" if @from_past %>
+
+      <a class="btn" href="/manager/update-discount<%= query %>">Edit</a>
+    </div>
+  </div>
+
+  <div id="customers_container">
+    <h3>Eligible Customers</h3>
+    <div class="table-container">
+      <table class="scrollable-table">
+        <tr>
+          <th>Name</th>
+          <th>Loyalty Number</th>
+          <th>Eligible Amount</th>
+          <th>Code Status</th>
+        </tr>
+        <% @customers.each do |customer| %>
+          <% loyalty = customer.loyalty_number %>
+          <% redemption = DiscountRedemption.get_by_loyalty_and_code(loyalty, @code) %>
+          <% if redemption %>
+            <tr>
+              <td><%= customer.name %></td>
+              <td><%= loyalty %></td>
+              <td>
+                <% if @method && @discount.eligible_rule == 1 %>
+                  <%= "£%.2f" % customer.send(@method, @from_date, @to_date) %>
+                <% elsif @method %>
+                  <%= customer.send(@method, @from_date, @to_date) %>
+                <% else %>
+                  -
+                <% end %>
+              </td>
+              <td>
+                <% if redemption.is_redeemed? %>
+                  redeemed
+                <% else %>
+                  unredeemed
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

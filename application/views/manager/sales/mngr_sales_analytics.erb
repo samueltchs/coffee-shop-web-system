@@ -1,0 +1,33 @@
+<div class="sales-tabs">
+  <a href="/manager/sales/analytics" class="sales-tab <%= 'active' if @active_tab == 'overview' %>">Overview</a>
+  <a href="/manager/sales/drinks" class="sales-tab <%= 'active' if @active_tab == 'drinks' %>">Drinks Sales</a>
+  <a href="/manager/sales/beans" class="sales-tab <%= 'active' if @active_tab == 'beans' %>">Beans Sales</a>
+  <a href="/manager/sales/top-products" class="sales-tab <%= 'active' if @active_tab == 'top' %>">Top Products</a>
+  <a href="/manager/sales/top-customers" class="sales-tab <%= 'active' if @active_tab == 'customers' %>">Top Customers</a>
+</div>
+
+<!-- KPI Cards -->
+    <div class="kpi-grid-4">
+    <div class="kpi-card-full">
+      <p class="kpi-label">Total Revenue</p>
+      <p class="kpi-value">£<%= sprintf("%.2f", @total_revenue) %></p>
+    </div>
+
+    <div class="kpi-card-full">
+      <p class="kpi-label">Total Orders</p>
+      <p class="kpi-value"><%= @total_orders %></p>
+    </div>
+
+    <div class="kpi-card-full">
+      <p class="kpi-label">Average Order</p>
+      <p class="kpi-value">£<%= sprintf("%.2f", @avg_order) %></p>
+    </div>
+
+    <div class="kpi-card-full">
+      <p class="kpi-label">Items Sold</p>
+      <p class="kpi-value"><%= @total_items_sold %></p>
+    </div>
+
+  </div>
+
+

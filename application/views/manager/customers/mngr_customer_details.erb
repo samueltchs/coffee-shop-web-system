@@ -1,0 +1,113 @@
+<div id="details_container">
+  <div id="personal_details">
+    <button 
+      class="material-symbols-outlined"
+      onclick="window.location.href='<%= mngr_customer_url(params) %>'"
+    >arrow_back</button>
+    <h4><%= @customer.name %></h4>
+
+    <div class="row">
+      <span>Loyalty Number:</span>
+      <span><%= @loyal_num %></span>
+    </div>
+
+    <div class="row">
+      <span>First Name:</span>
+      <span><%= @customer.first_name %></span>
+    </div>
+
+    <div class="row">
+      <span>Last Name:</span>
+      <span><%= @customer.last_name %></span>
+    </div>
+
+    <div class="row">
+      <span>Email:</span>
+      <span><%= @customer.email %></span>
+    </div>
+
+    <div class="row">
+      <span>Phone Number:</span>
+      <span><%= @customer.phone_number %></span>
+    </div>
+
+    <div class="row">
+      <span>Address:</span>
+      <div>
+        <span><%= @customer.address_line_1 %></span>
+        <span><%= @customer.address_line_2 %></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <span>City:</span>
+      <span><%= @customer.city %></span>
+    </div>
+
+    <div class="row">
+      <span>Postcode:</span>
+      <span><%= @customer.postcode %></span>
+    </div>
+  
+    <div class="row">
+      <span>Stamps:</span>
+      <span><%= @customer.stamps %></span>
+    </div>
+
+    <div class="row">
+      <span>Register Time:</span>
+      <span><%= formatted_time(uk_time(@customer.parse_regtime)) %></span>
+    </div>
+
+    <div class="row">
+      <span>Account Status:</span>
+      <span><%= @customer.status %></span>
+    </div>
+  </div>
+
+  <div id="stamps_section">
+    <h4>Stamps</h4>
+    <div id="stamp_icon_container">
+      <% (1..10).each do |i| %>
+        <% if i <= @customer.stamps %>
+          <span class="material-symbols-outlined stamp-icons stamped">filter_vintage</span>
+        <% else %>
+          <span class="material-symbols-outlined stamp-icons unstamped">filter_vintage</span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div id="summary_section">
+    <h4>Summary</h4>
+    <div id="summary_container">
+      <div class="summary-content" id="summary_spending">
+        <span>Total Spending: <%= "£%.2f" % @customer.total_purchase %></span>
+        <span>Average Spending: <%= "£%.2f" % @customer.average_purchase_amount %></span>
+      </div>
+      <div class="summary-content" id="summary_order">
+        <span>Number of Orders: <%= @customer.num_purchase %></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table class="scrollable-table">
+      <tr>
+        <th>Order Number</th>
+        <th>Date</th>
+        <th>Value</th>
+        <th>Status</th>
+      </tr>
+        
+      <% @orders.each do |order| %>
+        <tr>
+          <td><%= order.order_unique_id %></td>
+          <td><%= formatted_time(uk_time(parse_time(order.date_placed))) %></td>
+          <td><%= "£%.2f" % order.price %></td>
+          <td><%= order.status %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

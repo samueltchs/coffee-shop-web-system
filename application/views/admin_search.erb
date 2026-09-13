@@ -1,0 +1,122 @@
+<%= erb :"common/admin_header" %>
+
+<%= erb :"common/admin_top" %>
+
+<form class="filter" action="/admin-search">
+  <input type="hidden" name="admin_search" value="<%= h @admin_search %>" />
+  <select name="filter">
+    <option value="all" <% if @all_selected %>selected<% end %>>All</option>
+    <option value="customers" <% if @customers_selected %>selected<% end %>>Customers</option>
+    <option value="employees" <% if @employees_selected %>selected<% end %>>Employees</option>
+    <option value="orders" <% if @orders_selected %>selected<% end %>>Orders</option>
+  </select>
+  <input type="submit" value="Apply Filter">
+</form>
+
+<% if params["success"] %>
+  <p class="success"><%= h params["success"] %></p>
+<% end %>
+
+<% if params["error"] %>
+  <p class="warning"><%= h params["error"] %></p>
+<% end %>
+
+<% if @employees.count > 0 %>
+  <h1 class="search_tables">Employees</h1>
+  <div class="table_wrapper_medium">
+    <table class="admin_table">
+      <tr>
+        <th>Username</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Role</th>
+      </tr>
+      <% @employees.each do |employee| %>
+        <tr>
+          <% if employee.role == "Admin" %>
+            <% employee_link = "/admin-settings" %>
+          <% else %>
+            <% employee_link = "/admin-employee?username=#{h employee.username}" %>
+          <% end %>
+
+          <td><a class="see_entry" href="<%= employee_link %>"><%= h employee.username %></a></td>
+          <td><a class="see_entry" href="<%= employee_link %>"><%= h employee.first_name %></a></td>
+          <td><a class="see_entry" href="<%= employee_link %>"><%= h employee.last_name %></a></td>
+          <td><a class="see_entry" href="<%= employee_link %>"><%= h employee.email %></a></td>
+          <td><a class="see_entry" href="<%= employee_link %>"><%= h employee.role %></a></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>
+
+<% if @customers.count > 0 %>
+  <h1 class="search_tables">Customers</h1>
+  <div class="table_wrapper_medium">
+    <table class="admin_table">
+      <tr>
+        <th>Loyalty Card Number</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Phone No.</th>
+        <th>Email</th>
+        <th>Status</th>
+      </tr>
+      <% @customers.each do |customer| %>
+        <% customer_link = "/admin-customer?loyalty_number=#{h customer.loyalty_number}" %>
+        <tr>
+          <td><a class="see_entry" href="<%= customer_link %>"><%= h customer.loyalty_number %></a></td>
+          <td><a class="see_entry" href="<%= customer_link %>"><%= h customer.first_name %></a></td>
+          <td><a class="see_entry" href="<%= customer_link %>"><%= h customer.last_name %></a></td>
+          <td><a class="see_entry" href="<%= customer_link %>"><%= h customer.phone_number %></a></td>
+          <td><a class="see_entry" href="<%= customer_link %>"><%= h customer.email %></a></td>
+          <td><a class="see_entry" href="<%= customer_link %>"><%= h customer.status %></a></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>
+
+<% if @orders.count > 0 %>
+  <h1 class="search_tables">Orders</h1>
+  <div class="table_wrapper_medium">
+    <table class="admin_table">
+      <tr>
+        <th>Order ID</th>
+        <th>Customer Loyalty No.</th>
+        <th>Date Placed</th>
+        <th>Tracking ID</th>
+        <th>Reference ID</th>
+        <th>Barista</th>
+        <th>Order Fulfilment</th>
+        <th>Delivery Status</th>
+        <th>Status</th>
+        <th>Payment Method</th>
+        <th>Discount Code</th>
+      </tr>
+      <% @orders.each do |order| %>
+        <% order_link = "/admin-order?order_id=#{h order.order_unique_id}" %>
+        <tr>
+          <td><a class="see_entry" href="<%= order_link %>"><%= h order.order_unique_id %></a></td>
+          <td><a class="see_entry" href="<%= order_link %>"><%= h order.get_loyalty_number %></a></td>
+          <td><a class="see_entry" href="<%= order_link %>"><%= h(format_date(order.date_placed)) %></a></td>
+          <td><a class="see_entry" href="<%= order_link %>"><%= h order.get_tracking_id %></a></td>
+          <td><a class="see_entry" href="<%= order_link %>"><%= h order.get_reference_id %></a></td>
+          <td><a class="see_entry" href="<%= order_link %>"><%= h order.get_barista %></a></td>
+          <td><a class="see_entry" href="<%= order_link %>"><%= h order.order_fulfilment %></a></td>
+          <td><a class="see_entry" href="<%= order_link %>"><%= h order.get_delivered %></a></td>
+          <td><a class="see_entry" href="<%= order_link %>"><%= h order.status %></a></td>
+          <td><a class="see_entry" href="<%= order_link %>"><%= h order.get_payment_method %></a></td>
+          <td><a class="see_entry" href="<%= order_link %>"><%= h order.get_discount_code_used %></a></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>
+
+<% if @employees.empty? && @customers.empty? && @orders.empty? %>
+  <p class="error">No matching entries found.</p>
+<% end %>
+
+<%= erb :"common/admin_footer" %>

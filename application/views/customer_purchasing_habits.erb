@@ -1,0 +1,43 @@
+<%= erb :"common/admin_header" %>
+
+<%= erb :"common/admin_top" %>
+
+<h1><%= h @title %></h1>
+
+<div class="logs">
+  <a class="buttons" href="/admin-customer-activity-logs?loyalty_number=<%= h @customer.loyalty_number %>">
+    <img src="icons/arrow-big-left.svg" class="icon" alt="Go back to activity logs page" />
+    Back to the activity logs
+  </a>
+
+  <h2>Average Expenditure: <%= h(format_price(@average_exp)) %></h2>
+  
+  <h2>Most frequently bought items</h2>
+
+  <% if @top_items.empty? %>
+    <p class="empty">This customer has not purchased any items yet.</p>
+  <% else %>
+    <table class="admin_table">
+      <tr>
+        <th>Item</th>
+        <th>Item ID</th>
+        <th>Times Purchased</th>
+      </tr>
+      <% @top_items.each do |name, item_id, size, milk, count| %>
+        <tr>
+          <td>
+            <%= h name %>
+
+            <% if !milk.empty? %>
+              <%= h size_abbreviation(size) %> - <%= h milk %>
+            <% end %>
+          </td>
+          <td><%= h item_id %></td>
+          <td><%= h count %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+</div>
+
+<%= erb :"common/admin_footer" %>

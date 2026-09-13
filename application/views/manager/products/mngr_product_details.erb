@@ -1,0 +1,53 @@
+<div id="info_container">
+  <span>Product ID:</span>
+  <span><%= @id %></span>
+  <span>Product Name:</span>
+  <span><%= @name %></span>
+  <span>Product Type:</span>
+  <span><%= @type %></span>
+  <span>Product Image:</span>
+  <img src="<%= @image_path %>" alt="No Image">
+  <span>Description:</span>
+  <span><%= @description %></span>
+  
+  <% if @type == "drinks" %>
+    <span>Available Sizes:</span>
+    <span><%= @sizes_string %></span>
+    <span>Milk Options:</span>
+    <span><%= @milk_string %></span>
+
+    <span>Prices:</span>
+    <div class="row">
+      <% @prices.each do |size, price| %>
+        <span><%= "#{Size.get_size(size)}: £#{price}" %></span>
+      <% end %>
+    </div>
+    
+    <span>Costs:</span>
+    <div class="row">
+      <% @costs.each do |size, cost| %>
+        <span><%= "#{Size.get_size(size)}: £#{cost}" %></span>
+      <% end %>
+    </div>
+  <% else %>
+        <span>Origin:</span>
+        <span><%= @origin %></span>
+        <span>Roast Level:</span>
+        <span><%= @roast_level %></span>
+        <span>Price:</span>
+        <span><%= "£#{@price}" %></span>
+        <span>Cost:</span>
+        <span><%= "£#{@cost}" %></span>
+        <span>Stock:</span>
+        <span><%= @stock %></span>
+  <% end %>
+  <span><%= "Status: #{@status}" %></span>
+  <div id="btn_row">
+    <a class="btn" href="<%= mngr_products_back_url(params, @type) %>">
+      Back
+    </a>
+    <a class="btn" href="<%= mngr_update_products_url(@id, @type, params) %>">
+      Edit
+    </a>
+  </div>
+</div>

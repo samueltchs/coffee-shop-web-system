@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<% @title = "Account Settings" %>
+<%= erb :customer_head %>
+
+<body>
+  <header>
+    <%= erb :customer_navbar %>
+  </header>
+
+  <div id="customer/dashboard">
+    <div id="welcome">
+      <h1>Account Settings</h1>
+      <p>Update your personal details or change your password.</p>
+    </div>
+
+    <% if !@message.nil? %>
+      <p class="success"><%= h @message %></p>
+    <% end %>
+
+    <% if !@error.nil? %>
+      <p class="error"><%= h @error %></p>
+    <% end %>
+
+    <div class="account-settings-box">
+      <form action="/customer/customer-account-settings" method="post">
+
+        <h2>Change Details</h2>
+
+        <p><label>First name:</label></p>
+        <p><input type="text" name="first_name" value="<%= h @first_name %>"></p>
+
+        <p><label>Last name:</label></p>
+        <p><input type="text" name="last_name" value="<%= h @last_name %>"></p>
+
+        <p><label>Phone number:</label></p>
+        <p><input type="text" name="phone_no" value="<%= h @phone_no %>"></p>
+
+        <h2>Change Password</h2>
+
+        <p><label>New password:</label></p>
+        <p><input type="password" name="password"></p>
+
+        <ul class="requirements">
+          <li>At least 8 characters long</li>
+          <li>At least 1 uppercase character</li>
+          <li>At least 1 number</li>
+          <li>At least 1 special character</li>
+        </ul>
+
+        <p><label>Confirm password:</label></p>
+        <p><input type="password" name="conf_password"></p>
+
+        <p><input type="submit" value="Save Changes"></p>
+      </form>
+    </div>
+  </div>
+
+  <%= erb :customer_footer %>
+</body>
+</html>

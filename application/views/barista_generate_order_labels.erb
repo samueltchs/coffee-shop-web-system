@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <TITLE> BARISTA GENERATE ORDER LABELS PAGE </TITLE>
+        <link rel="icon" type="image/svg+xml" href="/images/Favicon.svg">
+        <link rel="stylesheet" href="../styles/barista.css">
+        <meta charset="UTF-8">
+    </HEAD>
+    <BODY>
+
+        <H1>
+            Generate Order Labels
+        </H1>
+
+        <FORM style="margin-left:2vw; margin-bottom: 1vh" method="get" action="/barista/generate-postage-labels">
+            <BUTTON class="menu_button_style" style="font-size:1.2rem;" type="submit">Go back</BUTTON>
+        </FORM>
+
+        <DIV id="whole_screen_box" class="box">
+
+            <% if @orders.nil? || @orders.empty? %>
+                <p style="font-size: 2rem; color: #c01919;">No pending online bean orders with a tracking ID found.</p>
+            <% else %>
+                <%
+                    @show_barista = false
+                    @show_tracking = true
+                    @view_items_path = "/barista/generate-order-postage-labels"
+                    @header_font_size = "calc(1.5vw + 0.2vh)"
+                    @row_font_size = "1.4rem"
+                    @table_style = nil
+                %>
+                <%=erb :"barista/orders_table"%>
+            <% end %>
+
+        </DIV>
+
+        <DIV class="alert_popup"
+            <%order_id = params[:selected]
+              selected_order = order_id ? Order.get_order(order_id) : nil%>
+            <%='style="display: flex; gap: 1vh;"' if selected_order%>
+        >
+            <FORM method="get" action="/barista/generate-order-postage-labels" style="align-self: start;">
+                <INPUT class="menu_button_style" style="font-size: calc(1.2vh + 0.9vw);" type="submit" value="Close">
+            </FORM>
+
+            <% if selected_order %>
+                <%
+                    selected_customer = Customer.search_customer_by_loyalty_number(selected_order.loyalty_number).first
+                %>
+                <DIV style="border: 3px solid black; padding: 2vh 2vw; width: fit-content; font-family: monospace; align-self: center;">
+                    <H2 style="margin: 0 0 1vh 0;">POSTAGE LABEL</H2>
+                    <HR>
+                    <P><STRONG>Order ID:</STRONG> <%=h selected_order.order_unique_id%></P>
+                    <P><STRONG>Tracking ID:</STRONG> <%=h selected_order.get_tracking_id%></P>
+                    <HR>
+                    <P><STRONG>TO:</STRONG></P>
+                    <% if selected_customer %>
+                        <P><%=h selected_customer.name%></P>
+                        <P><%=h selected_customer.address_line_1%></P>
+                        <% if selected_customer.address_line_2 && !selected_customer.address_line_2.empty? %>
+                            <P><%=h selected_customer.address_line_2%></P>
+                        <% end %>
+                        <P><%=h selected_customer.city%></P>
+                        <P><%=h selected_customer.postcode%></P>
+                    <% else %>
+                        <P>Loyalty #<%=h selected_order.loyalty_number%></P>
+                    <% end %>
+                    <HR>
+                    <P><STRONG>FROM:</STRONG> <%=h CAFE_NAME%></P>
+                    <FORM method="post" action="/barista/assign-order-tracking-id" style="align-self: start;">
+                        <INPUT type="hidden" name="order_id" value="<%=h selected_order.order_unique_id%>">
+                        <INPUT class="menu_button_style" style="font-size: calc(1.2vh + 0.9vw);" type="submit" value="Print Label">
+                    </FORM>
+                </DIV>
+            <% end %>
+        </DIV>
+
+    </BODY>
+</HTML>

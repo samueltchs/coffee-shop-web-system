@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <TITLE> BARISTA MAKE REFUNDS PAGE </TITLE>
+        <link rel="icon" type="image/svg+xml" href="/images/Favicon.svg">
+        <link rel="stylesheet" href="../styles/barista.css">
+        <meta charset="UTF-8">
+    </HEAD>
+    <BODY>
+        <H1> 
+            Make Refunds
+        </H1>
+
+        <FORM  style="margin-left:2vw; margin-bottom: 1vh"  method=get action="/barista/main">
+            <BUTTON class="menu_button_style" style="font-size:1.2rem;" type="submit">Main Menu</BUTTON>
+        </FORM> 
+        
+        <DIV id="whole_screen_box"
+        class = "box"
+        style="justify-content: flex-start; align-items: flex-start;"
+        >
+            <p style="margin: 1vh 0 0 1vw;font-size: calc(0.8vh + 1.2vw);">
+                Enter the Loyalty Number or email of the customer  </BR>
+                (Leave empty of customers without an account)
+            </p>
+            <FORM method=post action="/barista/make-refunds" style="display: flex; flex-direction: column;">
+            
+            <!-- Customer selection-->
+            <DIV>
+            <INPUT style="width: 25vw; height: 5vh; margin: 1vh 0 0 1vw; vertical-align: middle;"
+                type="search"
+                value ="<%=h @customer.loyalty_number if @customer%>"
+                placeholder="Enter loyalty card number or email..."
+                name="entered_loyalty_number"
+            >
+            <INPUT style="width:5vh; height:5vh; margin: 1vh 0 0 1vw; vertical-align: middle;"
+                type="image"
+                src="../images/search.png"
+                name="submit_button"
+                value = "search"
+                >
+            </DIV>
+
+            <!-- Customer Data -->
+            <%if @customer%>
+                <INPUT type="hidden" name="loyalty_number" value="<%=h @customer.loyalty_number%>">
+                <p class="customer_info_make_refund">
+                    Loyalty Number: <%=h @customer.loyalty_number%>
+                </p>
+                <p class="customer_info_make_refund">
+                    Name: <%=h @customer.first_name%>
+                </p>
+                <p class="customer_info_make_refund">
+                    Surname:  <%=h @customer.last_name%>
+                </p>
+                <p class="customer_info_make_refund">
+                    email:  <%=h @customer.email%>
+                </p>
+            <%else%>
+                <p class="customer_info_make_refund" style="color: #890000;">
+                    No customer selected
+                </p>
+            <%end%>
+
+            <!-- Refund type selector -->
+            <DIV class="past_sales_filter_container" style="margin: 1vh 0 0 1vw;">
+                <p style="font-size: calc(0.8vh + 1.2vw);">Refund type:</p>
+            <SELECT name="type" class="past_sales_filter_selector" onchange="form.submit()">
+                <OPTION value="">Select</OPTION>
+                <OPTION value="Order" <%= "selected" if params[:type] == "Order" %>>Order</OPTION>
+                <OPTION value="Item" <%= "selected" if params[:type] == "Item" %>>Item</OPTION>
+            </SELECT>
+            </DIV>
+            <!-- Sets customer or nil for guest -->
+            <%if @customer
+                loyalty_number = @customer.loyalty_number
+            else
+                loyalty_number = nil
+            end%>
+            <!-- Order selection -->
+            <%if params[:type] == "Order"%>
+                <DIV class="past_sales_filter_container" style="margin: 1vh 0 0 1vw;">
+                    <p style="font-size: calc(1.3vh + 1vw);">Select Order:</p>
+                    <SELECT name="order_id" class="past_sales_filter_selector" style="width: fit-content" onchange="form.submit()">
+                        <OPTION value="">Select order</OPTION>
+
+                        <%Order.get_all_orders_by_customer(loyalty_number).each do |order|%>
+                            <%next if order.incomplete? || order.refunded?%>
+
+                            <OPTION value="<%=h order.order_unique_id%>" <%= "selected" if params[:order_id] == order.order_unique_id.to_s %>>
+                                #<%=h order.order_unique_id%> <%=h order.date_placed%>
+                            </OPTION>
+
+                        <%end%>
+
+                    </SELECT>
+                </DIV>
+            
+            <!-- Item selection -->
+            <%elsif params[:type] == "Item"%>
+                <DIV class="past_sales_filter_container" style="margin: 1vh 0 0 1vw;">
+
+                    <p style="font-size: calc(1.3vh + 1vw);">Select Item:</p>
+                    <SELECT name="item_id" class="past_sales_filter_selector" style="width: fit-content" onchange="form.submit()">
+
+                        <OPTION value="">Select item</OPTION>
+
+                        <%Order.get_all_orders_by_customer(loyalty_number).each do |order|%>
+                            <%next if order.incomplete? || order.refunded?%>
+                            <%items = order.get_all_items_in_order%>
+                            <%if items%>
+
+                                <%items.each do |item|%>
+                                <%next if item.refunded == 1%>
+                                <%is_redeemed = item.redemption_check(order.order_unique_id)%>
+                                    <OPTION value="<%=h item.item_in_order_id%>" <%= "selected" if params[:item_id] == item.item_in_order_id.to_s%>>
+                                        <%if item.is_drink?%>
+                                            <%=h item.quantity%>x <%=h item.get_name%> <%=h item.get_size_text%>, <%=h item.get_milk_name%> (Order #<%=h order.order_unique_id%>)<%=" (incl. 1 Redeemed)" if is_redeemed%>
+                                        <%else%>
+                                            <%=h item.quantity%>x <%=h item.get_name%> (Order #<%=h order.order_unique_id%>)<%=" (1 Redeemed)" if is_redeemed%>
+                                        <%end%>
+                                    </OPTION>
+                                <%end%>
+
+                            <%end%>
+                        <%end%>
+                   
+                    </SELECT>
+                </DIV>
+            <%end%>
+
+            <!-- Reason Area -->
+            <p style="margin: 1vh 0 0 1vw;font-size: calc(0.8vh + 1.2vw);">
+                Enter refund reason
+            </p>
+            <textarea style="margin: 1vh 0 0 1vw; font-size: calc(0.8vw + 0.8vh)" name="refund_reason" rows="6" cols="62"><%=h @refund_reason%></textarea>
+
+                
+            <!-- Amount and method to be refunded-->
+            <p style="margin: 1vh 0 0 1vw;font-size: calc(1.3vh + 1vw);">
+                <%if params[:type] == "Order" && params[:order_id] && !params[:order_id].empty?%>
+                    <%order = Order.get_order(params[:order_id])%>
+                    <%if order%>
+                        Refund method: <%=h order.get_payment_method%></BR>
+                        Refund amount: £<%=h order.get_net_price%>
+                    <%end%>
+                <%elsif params[:type] == "Item" && params[:item_id] && !params[:item_id].empty?%>
+                    <%item = ItemInOrder.get_item(params[:item_id])%>
+                    <%if item%>
+                        <%order = Order.get_order(item.order_unique_id)%>
+                        <%if order%>
+                            Refund method: <%=h order.get_payment_method%></BR>
+                        <%end%>
+                        <%if item.quantity == 1 && item.redemption_check(item.order_unique_id)%>
+                            Refund amount: £0.00 (stamps will be restored)
+                        <%else%>
+                            Refund amount: £<%=h item.price_for_one.round(2)%>
+                        <%end%>
+                    <%end%>
+                <%end%>
+            </p>
+            
+            <!-- Submit button  -->
+            <BUTTON class="menu_button_style"
+                id = "go-back"
+                type="submit"
+                style="margin: 1vh 0 0 1vw; width:12vw; height:5vh; font-size: calc(2.1vw + 0.6vh)"
+                name="submit_button"
+                value="submit"
+            >
+            Refund
+            </BUTTON>
+
+            <!-- Errors -->
+            <%alert = case params[:alert]
+                when "type"
+                    "No refund type chosen"
+                when "reason"
+                    "No refund reason entered"
+                when "invalid_customer"
+                    "Customer not found"
+                when "invalid_order"
+                    "No orders selected"
+                when "invalid_item"
+                    "No items selected"
+            end%>
+            <%if alert%>
+                <p class="customer_info_make_refund" style="color: #890000;">
+                    <%=h alert%>
+                </p>
+            <%end%>
+
+        </DIV>
+     </BODY>
+</HTML>
