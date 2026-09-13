@@ -55,7 +55,7 @@
             href="?<%= URI.encode_www_form(
               params.merge(
                 "sort" => column,
-                "order" => Order
+                "order" => order
               )
             ) %>"
           ><%= text %><%= @symbol if @sort == column %>
