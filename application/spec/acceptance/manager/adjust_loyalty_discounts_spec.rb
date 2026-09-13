@@ -18,10 +18,10 @@ RSpec.describe "Adjust loyalty discounts" do
         fill_in "Discount Code:", with: "COFFEE20"
         fill_in "Campaign Name:", with: "Coffee Lovers Deal"
         fill_in "Percentage off:", with: "20"
-        fill_in "Code Expiry Date:", with: "2026-08-31"
+        fill_in "Code Expiry Date:", with: (Date.today + 60).strftime("%Y-%m-%d")
         choose "Enable"
-        fill_in "From:", with: "2026-03-01"
-        fill_in "To:", with: "2026-06-30"
+        fill_in "From:", with: (Date.today - 120).strftime("%Y-%m-%d")
+        fill_in "To:", with: (Date.today - 30).strftime("%Y-%m-%d")
         select "Drinks Only", from: "Purchase Type:"
         select "Amount of Purchase", from: "Rule:"
         fill_in "Minimum Amount:", with: "5"

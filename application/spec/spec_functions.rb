@@ -609,10 +609,12 @@ def add_test_refund_to_db(loyalty_number = 1, refund_reason = "", status = "", c
   refund
 end
 
-def add_test_discount_code_to_db(discount_code: "COFFEE20", campaign_name: "Coffee Lovers Deal", 
-                                 percentage_off: "20", eligible_type: "2", eligible_rule: "2", 
-                                 eligible_min: "5.00", valid_purchase_date_from: "2026-03-01", 
-                                 valid_purchase_date_to: "2026-06-30", code_expiry_date: "2026-08-31", 
+def add_test_discount_code_to_db(discount_code: "COFFEE20", campaign_name: "Coffee Lovers Deal",
+                                 percentage_off: "20", eligible_type: "2", eligible_rule: "2",
+                                 eligible_min: "5.00",
+                                 valid_purchase_date_from: (Date.today - 120).strftime("%Y-%m-%d"),
+                                 valid_purchase_date_to: (Date.today - 30).strftime("%Y-%m-%d"),
+                                 code_expiry_date: (Date.today + 60).strftime("%Y-%m-%d"),
                                  is_active: "1")
 
   code = DiscountCode.new
@@ -631,10 +633,10 @@ def add_test_discount_code_to_db(discount_code: "COFFEE20", campaign_name: "Coff
   code
 end
 
-def test_discount_params(code: "COFFEE20", name: "Coffee Lovers Deal", 
-                         percentage: "20", pur_type: "2", elig_rule: "2", 
-                         min_amount: "5.00", from: "2026-03-01", 
-                         to: "2026-06-30", expiry: "2026-08-31", 
+def test_discount_params(code: "COFFEE20", name: "Coffee Lovers Deal",
+                         percentage: "20", pur_type: "2", elig_rule: "2",
+                         min_amount: "5.00", from: (Date.today - 120).strftime("%Y-%m-%d"),
+                         to: (Date.today - 30).strftime("%Y-%m-%d"), expiry: (Date.today + 60).strftime("%Y-%m-%d"),
                          status: "1", action: "create", viewcode: nil)
   params = {
     code: code,
@@ -666,7 +668,7 @@ def add_test_discount_eligible_customer_and_order
   #latte with all sizes, whole milk
   add_default_product_options_to_db
   add_drink_with_multiple_sizes_to_db
-  add_test_order_to_db(1, "2026-04-10 10:00:00 +0100", "15", "19.2", "1", "ABC12345", 
+  add_test_order_to_db(1, (Time.now - (75 * 24 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S %z"), "15", "19.2", "1", "ABC12345",
                        "Online", "1", "Completed", "Paid", nil, "19.2")
   add_test_item_in_order_to_db("1", "1", "3.2", "6", "2", "3")
 end
@@ -679,7 +681,7 @@ def add_test_update_discount_eligible_customer_and_order
     0, Time.now.utc, "Active"
   )
   add_test_order_to_db(
-    2, "2026-04-11 10:00:00 +0100", "25", "32", "2", "ABC23435", 
+    2, (Time.now - (60 * 24 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S %z"), "25", "32", "2", "ABC23435",
     "Online", "1", "Completed", "Paid", nil, "32"
   )
   add_test_item_in_order_to_db("1", "2", "3.2", "10", "2", "3")

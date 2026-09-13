@@ -311,7 +311,7 @@ RSpec.describe "manager discounts page controller" do
 
       it "shows eligible customers table headers" do
         #eligible when purchased 5 or more cups of drinks
-        #within 2026-03-01 to 2026-06-30
+        #within the period of 120 days ago till 30 days ago
         #created an order with 6 cups of latte
         add_test_discount_eligible_customer_and_order
         discount = add_test_discount_code_to_db
