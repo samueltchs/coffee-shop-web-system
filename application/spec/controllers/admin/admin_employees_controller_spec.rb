@@ -333,11 +333,11 @@ RSpec.describe "admin employees controller" do
       it "contains the create account submit button" do
         expect(last_response.body).to include('value="Create account"')
       end
-      
+
       it "does not display the warning message" do
         expect(last_response.body).not_to include(
-          "Failure in registering the employee. Please provide valid details."
-        )
+                                            "Failure in registering the employee. Please provide valid details."
+                                          )
       end
     end
   end
@@ -355,8 +355,8 @@ RSpec.describe "admin employees controller" do
 
       it "displays the warning message" do
         expect(last_response.body).to include(
-          "Failure in registering the employee. Please provide valid details."
-        )
+                                        "Failure in registering the employee. Please provide valid details."
+                                      )
       end
 
       it "tells the admin the first name cannot be empty" do
@@ -381,8 +381,8 @@ RSpec.describe "admin employees controller" do
 
       it "tells the admin the password is invalid" do
         expect(last_response.body).to include(
-          "Password is not valid. Must be 8+ characters with at least 1 uppercase, 1 digit and 1 special character."
-        )
+                                        "Password is not valid. Must be 8+ characters with at least 1 uppercase, 1 digit and 1 special character."
+                                      )
       end
 
       it "does not save the employee in the database" do
@@ -402,8 +402,8 @@ RSpec.describe "admin employees controller" do
 
       it "displays error messages" do
         expect(last_response.body).to include(
-          "Failure in registering the employee. Please provide valid details."
-        )
+                                        "Failure in registering the employee. Please provide valid details."
+                                      )
         expect(last_response.body).to include("Username cannot contain spaces.")
       end
 
@@ -424,8 +424,8 @@ RSpec.describe "admin employees controller" do
 
       it "displays error messages" do
         expect(last_response.body).to include(
-          "Failure in registering the employee. Please provide valid details."
-        )
+                                        "Failure in registering the employee. Please provide valid details."
+                                      )
         expect(last_response.body).to include("Username already exists.")
       end
 
@@ -446,8 +446,8 @@ RSpec.describe "admin employees controller" do
 
       it "displays error messages" do
         expect(last_response.body).to include(
-          "Failure in registering the employee. Please provide valid details."
-        )
+                                        "Failure in registering the employee. Please provide valid details."
+                                      )
         expect(last_response.body).to include("First name must start with a capital letter.")
       end
 
@@ -468,8 +468,8 @@ RSpec.describe "admin employees controller" do
 
       it "displays error messages" do
         expect(last_response.body).to include(
-          "Failure in registering the employee. Please provide valid details."
-        )
+                                        "Failure in registering the employee. Please provide valid details."
+                                      )
         expect(last_response.body).to include("First name must contain only letters, hyphens, apostrophes and spaces.")
       end
 
@@ -490,8 +490,8 @@ RSpec.describe "admin employees controller" do
 
       it "displays error messages" do
         expect(last_response.body).to include(
-          "Failure in registering the employee. Please provide valid details."
-        )
+                                        "Failure in registering the employee. Please provide valid details."
+                                      )
         expect(last_response.body).to include("Last name must start with a capital letter.")
       end
 
@@ -512,8 +512,8 @@ RSpec.describe "admin employees controller" do
 
       it "displays error messages" do
         expect(last_response.body).to include(
-          "Failure in registering the employee. Please provide valid details."
-        )
+                                        "Failure in registering the employee. Please provide valid details."
+                                      )
         expect(last_response.body).to include("Last name must contain only letters, hyphens, apostrophes and spaces.")
       end
 
@@ -534,8 +534,8 @@ RSpec.describe "admin employees controller" do
 
       it "displays error messages" do
         expect(last_response.body).to include(
-          "Failure in registering the employee. Please provide valid details."
-        )
+                                        "Failure in registering the employee. Please provide valid details."
+                                      )
         expect(last_response.body).to include("Email already exists.")
       end
 
@@ -556,8 +556,8 @@ RSpec.describe "admin employees controller" do
 
       it "displays error messages" do
         expect(last_response.body).to include(
-          "Failure in registering the employee. Please provide valid details."
-        )
+                                        "Failure in registering the employee. Please provide valid details."
+                                      )
         expect(last_response.body).to include("Email is not valid.")
       end
 
@@ -578,11 +578,11 @@ RSpec.describe "admin employees controller" do
 
       it "displays error messages" do
         expect(last_response.body).to include(
-          "Failure in registering the employee. Please provide valid details."
-        )
+                                        "Failure in registering the employee. Please provide valid details."
+                                      )
         expect(last_response.body).to include(
-          "Password is not valid. Must be 8+ characters with at least 1 uppercase, 1 digit and 1 special character."
-        )
+                                        "Password is not valid. Must be 8+ characters with at least 1 uppercase, 1 digit and 1 special character."
+                                      )
       end
 
       it "does not save the employee in the database" do
@@ -602,8 +602,8 @@ RSpec.describe "admin employees controller" do
 
       it "displays error messages" do
         expect(last_response.body).to include(
-          "Failure in registering the employee. Please provide valid details."
-        )
+                                        "Failure in registering the employee. Please provide valid details."
+                                      )
         expect(last_response.body).to include("The passwords do not match.")
       end
 
@@ -663,7 +663,7 @@ RSpec.describe "admin employees controller" do
         admin = add_test_admin_to_db
         @barista = add_test_barista_to_db("user")
         post_as_employee(admin, "/admin-employee-reset-password", {
-        "username" => "user", "password" => "", "conf_password" => "" 
+          "username" => "user", "password" => "", "conf_password" => ""
         })
       end
 
@@ -682,6 +682,7 @@ RSpec.describe "admin employees controller" do
       end
 
       it "does not save the empty password" do
+        @barista.refresh
         expect(@barista.authenticate("validPass7!")).to be true
       end
     end
@@ -697,12 +698,13 @@ RSpec.describe "admin employees controller" do
 
       it "displays error messages" do
         expect(last_response.body).to include(
-          "Password is not valid. Must be 8+ characters with at least 1 uppercase, 1 digit and 1 special character."
-        )
+                                        "Password is not valid. Must be 8+ characters with at least 1 uppercase, 1 digit and 1 special character."
+                                      )
         expect(last_response.body).to include("Password not updated. Requirements not met.")
       end
 
       it "does not save the invalid password" do
+        @barista.refresh
         expect(@barista.authenticate("validPass7!")).to be true
       end
     end
@@ -719,9 +721,10 @@ RSpec.describe "admin employees controller" do
       it "displays error messages" do
         expect(last_response.body).to include("The passwords do not match.")
         expect(last_response.body).to include("Password not updated. Requirements not met.")
-      end 
+      end
 
       it "does not change the employee's password" do
+        @barista.refresh
         expect(@barista.authenticate("validPass7!")).to be true
       end
     end
@@ -731,7 +734,7 @@ RSpec.describe "admin employees controller" do
         admin = add_test_admin_to_db
         @barista = add_test_barista_to_db("user")
         post_as_employee(admin, "/admin-employee-reset-password", {
-          "username" => "user", "password" => "validPass7!", "conf_password" => "validPass7!" 
+          "username" => "user", "password" => "validPass7!", "conf_password" => "validPass7!"
         })
       end
 
@@ -739,8 +742,9 @@ RSpec.describe "admin employees controller" do
         expect(last_response.body).to include("Password must not be the same as the current one.")
         expect(last_response.body).to include("Password not updated. Requirements not met.")
       end
-      
+
       it "does not change the employee's password" do
+        @barista.refresh
         expect(@barista.authenticate("validPass7!")).to be true
       end
     end
@@ -756,7 +760,7 @@ RSpec.describe "admin employees controller" do
 
       it "displays a confirmation message" do
         expect(last_response.body).to include("Password has been updated successfully.")
-      end 
+      end
 
       it "saves the password in the database" do
         barista = Employee.first(username: 'user')
@@ -964,14 +968,14 @@ RSpec.describe "admin employees controller" do
 
       it "displays the viewed employee's username" do
         get "/barista/main", {}, { "rack.session" =>
-          { username: @admin.username, role: 'Admin', view_employee: 'barista' }
+                                     { username: @admin.username, role: 'Admin', view_employee: 'barista' }
         }
         expect(last_response.body).to include("barista")
       end
 
       it "does not allow non-GET requests" do
         post "/barista/add-stamps", {}, { "rack.session" =>
-          { username: @admin.username, role: 'Admin', view_employee: 'barista' }
+                                            { username: @admin.username, role: 'Admin', view_employee: 'barista' }
         }
         expect(last_response.status).to eq(403)
         expect(last_response.body).to include("You cannot perform actions while viewing an employee account.")
@@ -979,7 +983,7 @@ RSpec.describe "admin employees controller" do
 
       it "allows non-GET requests to paths that are allowed" do
         post "/barista/main", {}, { "rack.session" =>
-          { username: @admin.username, role: 'Admin', view_employee: 'barista' }
+                                      { username: @admin.username, role: 'Admin', view_employee: 'barista' }
         }
         expect(last_response.status).not_to eq(403)
       end
@@ -990,9 +994,9 @@ RSpec.describe "admin employees controller" do
         admin = add_test_admin_to_db
         add_test_barista_to_db("barista")
         post "/admin-employee-reset-password",
-          { "username" => "barista", "password" => "", "conf_password" => "" },
-          { "rack.session" => { username: admin.username, role: 'Admin', view_employee: nil } }
-        
+             { "username" => "barista", "password" => "", "conf_password" => "" },
+             { "rack.session" => { username: admin.username, role: 'Admin', view_employee: nil } }
+
         expect(last_response.status).not_to eq(403)
       end
     end
@@ -1003,8 +1007,8 @@ RSpec.describe "admin employees controller" do
       it "redirects to the employee's page" do
         admin = add_test_admin_to_db
         add_test_barista_to_db("barista")
-        get "/admin-stop-viewing", {}, { "rack.session" => 
-          { username: admin.username, role: 'Admin', view_employee: 'barista' }
+        get "/admin-stop-viewing", {}, { "rack.session" =>
+                                           { username: admin.username, role: 'Admin', view_employee: 'barista' }
         }
 
         expect(last_response).to be_redirect
@@ -1016,7 +1020,7 @@ RSpec.describe "admin employees controller" do
       it "redirects to the admin main page" do
         add_test_admin_to_db("admin")
         get "/admin-stop-viewing", {}, { "rack.session" =>
-          { username: 'admin', role: 'Admin' }
+                                           { username: 'admin', role: 'Admin' }
         }
 
         expect(last_response).to be_redirect

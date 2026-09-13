@@ -184,6 +184,7 @@ RSpec.describe "customer forgot password controller" do
         end
 
         it "does not change the customer's password" do
+          @customer.refresh
           expect(@customer.correct_pass("validPass7!")).to be true
         end
       end
@@ -192,8 +193,8 @@ RSpec.describe "customer forgot password controller" do
         before do
           @customer = add_test_customer_to_db(1)
           post "/customer-reset-password",
-          { "password" => "invalid", "conf_password" => "invalid" },
-          { "rack.session" => { reset_loyalty_number: 1 } }
+               { "password" => "invalid", "conf_password" => "invalid" },
+               { "rack.session" => { reset_loyalty_number: 1 } }
         end
 
         it "has a status code of 200 (OK)" do
@@ -202,11 +203,12 @@ RSpec.describe "customer forgot password controller" do
 
         it "displays an error message" do
           expect(last_response.body).to include(
-            "Password must be 8+ characters with at least 1 uppercase, 1 digit and 1 special character."
-          )
+                                          "Password must be 8+ characters with at least 1 uppercase, 1 digit and 1 special character."
+                                        )
         end
 
         it "does not change the customer's password" do
+          @customer.refresh
           expect(@customer.correct_pass("validPass7!")).to be true
         end
       end
@@ -215,8 +217,8 @@ RSpec.describe "customer forgot password controller" do
         before do
           @customer = add_test_customer_to_db(1)
           post "/customer-reset-password",
-          { "password" => "validPass7!", "conf_password" => "validPass8!" },
-          { "rack.session" => { reset_loyalty_number: 1 } }
+               { "password" => "validPass7!", "conf_password" => "validPass8!" },
+               { "rack.session" => { reset_loyalty_number: 1 } }
         end
 
         it "has a status code of 200 (OK)" do
@@ -228,6 +230,7 @@ RSpec.describe "customer forgot password controller" do
         end
 
         it "does not change the customer's password" do
+          @customer.refresh
           expect(@customer.correct_pass("validPass7!")).to be true
         end
       end
@@ -236,8 +239,8 @@ RSpec.describe "customer forgot password controller" do
         before do
           @customer = add_test_customer_to_db
           post "/customer-reset-password",
-          { "password" => "validPass7!", "conf_password" => "validPass7!" },
-          { "rack.session" => { reset_loyalty_number: 1 } }
+               { "password" => "validPass7!", "conf_password" => "validPass7!" },
+               { "rack.session" => { reset_loyalty_number: 1 } }
         end
 
         it "has a status code of 200 (OK)" do
@@ -249,6 +252,7 @@ RSpec.describe "customer forgot password controller" do
         end
 
         it "does not change the customer's password" do
+          @customer.refresh
           expect(@customer.correct_pass("validPass7!")).to be true
         end
       end
@@ -257,8 +261,8 @@ RSpec.describe "customer forgot password controller" do
         before do
           add_test_customer_to_db(1)
           post "/customer-reset-password",
-          { "password" => "newPass7!", "conf_password" => "newPass7!" },
-          { "rack.session" => { reset_loyalty_number: 1 } }
+               { "password" => "newPass7!", "conf_password" => "newPass7!" },
+               { "rack.session" => { reset_loyalty_number: 1 } }
         end
 
         it "has a status code of 200 (OK)" do

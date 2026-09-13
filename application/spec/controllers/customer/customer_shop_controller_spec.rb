@@ -4,7 +4,7 @@ RSpec.describe "customer shop controller" do
     end
 
     describe "GET /shop" do
-        context "when logged in" do 
+        context "when logged in" do
             before do
                 get_as_customer_logged_in("/shop")
             end
@@ -23,10 +23,10 @@ RSpec.describe "customer shop controller" do
         end
 
         context "when not logged in" do
-            before do 
+            before do
                 get_as_customer_not_logged_in("/shop")
             end
-            
+
             it "response is 200 (ok)" do
                 expect(last_response).to be_ok
             end
@@ -44,9 +44,9 @@ RSpec.describe "customer shop controller" do
 
     describe "GET /shop/search" do
         context "with an empty search field" do
-            context "when logged in" do 
+            context "when logged in" do
                 before do
-                    get_as_customer_logged_in("/shop")
+                    get_as_customer_logged_in("/shop/search")
                 end
 
                 it "response is 200 (ok)" do
@@ -63,10 +63,10 @@ RSpec.describe "customer shop controller" do
             end
 
             context "when not logged in" do
-                before do 
-                    get_as_customer_not_logged_in("/shop")
+                before do
+                    get_as_customer_not_logged_in("/shop/search")
                 end
-                
+
                 it "response is 200 (ok)" do
                     expect(last_response).to be_ok
                 end
@@ -81,7 +81,7 @@ RSpec.describe "customer shop controller" do
                 end
             end
         end
-    
+
         # this isn't to check the buttons to the pages are correct, since this is already done,
         # but rather to check the searching works to find relevant results
         context "when searching for 'bean'" do
@@ -133,7 +133,7 @@ RSpec.describe "customer shop controller" do
                     unfavourite_all()
                     get_as_customer_logged_in("/shop/product", {"product_id": "1"})
                 end
-                
+
                 it "has add to favourites button" do
                     expect(last_response.body).to include("favourites/add")
                 end
@@ -144,7 +144,7 @@ RSpec.describe "customer shop controller" do
                     favourite_test_bean()
                     get_as_customer_logged_in("/shop/product", {"product_id": "1"})
                 end
-                
+
                 it "has remove from favourites button" do
                     expect(last_response.body).to include("favourites/remove")
                 end

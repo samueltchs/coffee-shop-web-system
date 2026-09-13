@@ -5,7 +5,7 @@ RSpec.describe "Shop System" do
 
     describe "Searching for products" do
         it "can access product search page" do
-            visit("/customer/dashboard")
+            visit("/customer-landing-page")
             click_link "search"
             expect(page).to have_current_path("/shop/search")
         end
@@ -32,17 +32,17 @@ RSpec.describe "Shop System" do
 
     describe "Adding products to basket" do
         context "when logged in" do
-            before do 
+            before do
                 login_as_customer(log_in_test_customer)
             end
 
             context "when on the search page" do
-                before do 
+                before do
                     search_for_test_bean()
                 end
 
                 it "has add to basket button" do
-                    expect(page).to have_content("Add to Basket")
+                    expect(page).to have_button("Add to Basket")
                 end
 
                 context "when pressing add to basket" do
@@ -60,20 +60,20 @@ RSpec.describe "Shop System" do
                 before do
                     visit("/shop")
                 end
-                
+
                 it "has add to basket button" do
-                    expect(page).to have_content("Add to Basket")
+                    expect(page).to have_button("Add to Basket")
                 end
             end
-            
+
             context "when on the product page" do
                 context "when product is a bean" do
                     before do
-                        visit("/shop/product/product_id=1")
+                        visit("/shop/product?product_id=1")
                     end
 
                     it "has add to basket button" do
-                        expect(page).to have_content("Add to Basket")
+                        expect(page).to have_button("Add to Basket")
                         expect(page).not_to have_content("Log in to add to basket") # when not logged in, this text is shown
                     end
 
@@ -98,15 +98,21 @@ RSpec.describe "Shop System" do
             end
 
             context "after adding test beans to basket" do
-                before do 
-                    visit("/")
+                before do
+                    add_test_beans_to_basket
+                    visit("/shop/basket")
+                end
+
+                it "displays the Test Beans" do
+                    expect(page).to have_content("Test Beans")
                 end
             end
         end
 
         context "when not logged in" do
             it "redirects to login page" do
-                expect(page).to have_current_path("/login")
+                visit("/shop/basket")
+                expect(page).to have_current_path("/login", ignore_query: true)
             end
         end
     end
