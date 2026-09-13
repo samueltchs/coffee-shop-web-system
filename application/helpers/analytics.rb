@@ -305,7 +305,7 @@ module Analytics
     year_ago = today << 12
 
     months = month_intervals(year_ago, today)
-    customers = Customer.all
+    customers = Customer.exclude(status: "Deleted").exclude(registered_time: nil).all
 
     months.each do |from, to|
       month = from.month

@@ -238,12 +238,16 @@ class Customer < Sequel::Model
 
   #parse registered time into time object
   def parse_regtime
+    return nil if registered_time.to_s.empty?
+
     parse_time(registered_time)
   end
   
   #check whether an account is signed up in the current month
   def curr_month_signup?
     time = parse_regtime
+    return false unless time
+
     now = Time.now.utc
     time.month == now.month && time.year == now.year
   end

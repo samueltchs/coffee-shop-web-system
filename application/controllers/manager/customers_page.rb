@@ -18,7 +18,7 @@ get "/manager/customers" do
 
   @signup_chart_data = signup_chart
 
-  @customers = Customer.all
+  @customers = Customer.exclude(status: "Deleted").exclude(registered_time: nil).all
   @total = @customers.count
   @curr_month = @customers.count(&:curr_month_signup?)
 
