@@ -11,10 +11,7 @@ class Size < Sequel::Model
     return sizes
   end
 
-  def self.get_id(size)
-    id = self.first(size: size).id
-
-    return -1 unless id
-    id
+  def self.get_id(text)
+    first(size: text)&.id || -1
   end
 end

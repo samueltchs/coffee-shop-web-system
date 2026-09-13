@@ -18,21 +18,21 @@ RSpec.describe Size do
   describe ".get_id" do
     it "returns the size id for a valid size name" do
       add_test_size_to_db("Small")
-      
-      expect(Size.get_size("Small")).to eq(1)
+
+      expect(Size.get_id("Small")).to eq(1)
     end
 
     it "returns -1 if size name does is not valid" do
-      expect(Size.get_size("Small")).to eq(-1)
+      expect(Size.get_id("Small")).to eq(-1)
     end
   end
 
   describe ".get_all_size_names" do
-    it "returns all size names in an array" do 
-      Size.create("Small")
-      Size.create("Regular")
-      Size.create("Large")
-      Size.create("XLarge")
+    it "returns all size names in an array" do
+      add_test_size_to_db("Small")
+      add_test_size_to_db("Regular")
+      add_test_size_to_db("Large")
+      add_test_size_to_db("XLarge")
 
       expect(Size.get_all_size_names).to eq(["Small", "Regular", "Large", "XLarge"])
     end
