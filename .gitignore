@@ -4,5 +4,3 @@ _coverage/
 capybara-*.html
 .idea/
 /application/db/*.sqlite3
-application/README.md
-references.md
