@@ -140,8 +140,8 @@ get "/manager/complaints" do
 end
 
 
-get "/manager/free-coffees" do
-  @title = "Free Coffees"
+get "/manager/stamp-redemption" do
+  @title = "Stamp Redemptions"
   @page_css ="free_coffees"
   @from_date = params[:from_date] || ""
 @to_date = params[:to_date] || ""

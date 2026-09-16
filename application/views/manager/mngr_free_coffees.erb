@@ -4,7 +4,7 @@
   </div>
 
   <div id="date_range_container">
-    <form method="get" action="/manager/free-coffees">
+    <form method="get" action="/manager/stamp-redemption">
       <div>
         <label for="from_date">From:</label>
         <input type="date" id="from_date" name="from_date" value="<%= @from_date %>">
@@ -13,7 +13,7 @@
       </div>
       <div>
         <input type="submit" id="submit_btn" value="Filter">
-        <a id="reset_btn" href="/manager/free-coffees">Reset</a>
+        <a id="reset_btn" href="/manager/stamp-redemption">Reset</a>
       </div>
     </form>
   </div>
@@ -33,7 +33,7 @@
     <% if @free_coffees.empty? %>
       <tr>
         <td colspan="5" class="empty-state">
-          No free coffees redeemed yet
+          No free coffee redeemed yet
         </td>
       </tr>
     <% else %>

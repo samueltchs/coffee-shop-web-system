@@ -96,10 +96,10 @@ RSpec.describe "manager controller" do
     end
   end
 
-  describe "GET /manager/free-coffees" do
+  describe "GET /manager/stamp-redemption" do
     context "when not logged in" do
       it "redirects to employee login page" do
-        get "/manager/free-coffees"
+        get "/manager/stamp-redemption"
 
         expect(last_response).to be_redirect
       end
@@ -108,7 +108,7 @@ RSpec.describe "manager controller" do
     context "when logged in as manager" do
       it "loads the page" do
         manager = add_test_manager_to_db
-        get_as_employee(manager, "/manager/free-coffees")
+        get_as_employee(manager, "/manager/stamp-redemption")
 
         expect(last_response).to be_ok
       end
