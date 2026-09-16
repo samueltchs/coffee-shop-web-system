@@ -324,6 +324,57 @@ INSERT INTO free_coffee_redemptions VALUES(6, '2026-05-01 10:00:00 UTC', 22, 35,
 -- incomplete/unpaid - should not appear on any barista page
 INSERT INTO orders VALUES(23, 10000000, '2026-05-18 12:30:00 +0100', 2.20, 8.80, 987654321, NULL, 'Online', 0, 'Incomplete', 'Unpaid', NULL, NULL, NULL, 8.80);
 
+-- manager dashboard analytics: paid orders from June to September 2026
+-- June orders
+INSERT INTO orders VALUES(24, 10000000, '2026-06-07 09:15:00 +0100',  3.40, 13.10, NULL, 'JUN24001', 'Online',    1, 'Collected', 'Paid', 'WELCOME10', 10, 1, 11.79);
+INSERT INTO orders VALUES(25, 10000001, '2026-06-18 13:30:00 +0100', 38.00, 55.00, NULL, NULL,       'Barista1!', 1, 'Collected', 'Paid', NULL,       NULL, 2, 55.00);
+INSERT INTO orders VALUES(26, 10000004, '2026-06-27 16:45:00 +0100', 14.10, 25.00, NULL, 'JUN26001', 'Online',    1, 'Collected', 'Paid', 'COFFEE20',  20, 1, 20.00);
+
+INSERT INTO item_in_orders VALUES(37, 1, 24,  4.50, 2, 3, 3, 0); -- Latte Regular Whole x2
+INSERT INTO item_in_orders VALUES(38, 2, 24,  4.10, 1, 4, 2, 0); -- Americano Large No Milk
+INSERT INTO item_in_orders VALUES(39, 6, 25, 10.50, 4, 1, 1, 0); -- Arabic Medium x4
+INSERT INTO item_in_orders VALUES(40, 8, 25, 13.00, 1, 1, 1, 0); -- Brazilian Dark
+INSERT INTO item_in_orders VALUES(41, 3, 26,  4.50, 2, 4, 5, 0); -- Cappuccino Large Oat x2
+INSERT INTO item_in_orders VALUES(42, 7, 26, 16.00, 1, 1, 1, 0); -- Ethiopian Light
+
+-- July orders
+INSERT INTO orders VALUES(27, 10000002, '2026-07-04 10:20:00 +0100',  3.85, 13.50, NULL, NULL,       'Barista1!', 1, 'Collected', 'Paid', NULL,        NULL, 2, 13.50);
+INSERT INTO orders VALUES(28, 10000003, '2026-07-15 14:10:00 +0100', 21.50, 29.00, NULL, 'JUL28001', 'Online',    1, 'Collected', 'Paid', 'WELCOME10',  10, 1, 26.10);
+INSERT INTO orders VALUES(29, 10000000, '2026-07-25 11:40:00 +0100',  9.80, 20.10, NULL, NULL,       'Barista1!', 1, 'Collected', 'Paid', NULL,        NULL, 2, 20.10);
+
+INSERT INTO item_in_orders VALUES(43, 4, 27,  4.60, 2, 3, 3, 0); -- Flat White Regular Whole x2
+INSERT INTO item_in_orders VALUES(44, 5, 27,  4.30, 1, 3, 4, 0); -- Cortado Regular Soy
+INSERT INTO item_in_orders VALUES(45, 7, 28, 16.00, 1, 1, 1, 0); -- Ethiopian Light
+INSERT INTO item_in_orders VALUES(46, 8, 28, 13.00, 1, 1, 1, 0); -- Brazilian Dark
+INSERT INTO item_in_orders VALUES(47, 1, 29,  4.80, 2, 4, 5, 0); -- Latte Large Oat x2
+INSERT INTO item_in_orders VALUES(48, 6, 29, 10.50, 1, 1, 1, 0); -- Arabic Medium
+
+-- August orders
+INSERT INTO orders VALUES(30, 10000001, '2026-08-02 08:50:00 +0100',  4.90, 19.80, NULL, 'AUG30001', 'Online',    1, 'Collected', 'Paid', NULL,        NULL, 1, 19.80);
+INSERT INTO orders VALUES(31, 10000004, '2026-08-14 15:25:00 +0100', 18.50, 26.50, NULL, NULL,       'Barista1!', 1, 'Collected', 'Paid', NULL,        NULL, 2, 26.50);
+INSERT INTO orders VALUES(32, 10000002, '2026-08-29 12:05:00 +0100', 13.70, 26.40, NULL, 'AUG32001', 'Online',    1, 'Collected', 'Paid', 'WELCOME10',  10, 1, 23.76);
+
+INSERT INTO item_in_orders VALUES(49, 2, 30,  3.80, 3, 3, 2, 0); -- Americano Regular No Milk x3
+INSERT INTO item_in_orders VALUES(50, 3, 30,  4.20, 2, 3, 4, 0); -- Cappuccino Regular Soy x2
+INSERT INTO item_in_orders VALUES(51, 6, 31, 10.50, 1, 1, 1, 0); -- Arabic Medium
+INSERT INTO item_in_orders VALUES(52, 7, 31, 16.00, 1, 1, 1, 0); -- Ethiopian Light
+INSERT INTO item_in_orders VALUES(53, 1, 32,  4.20, 1, 2, 3, 0); -- Latte Small Whole
+INSERT INTO item_in_orders VALUES(54, 5, 32,  4.60, 2, 4, 5, 0); -- Cortado Large Oat x2
+INSERT INTO item_in_orders VALUES(55, 8, 32, 13.00, 1, 1, 1, 0); -- Brazilian Dark
+
+-- September orders (up to 15 September 2026)
+INSERT INTO orders VALUES(33, 10000003, '2026-09-03 09:35:00 +0100',  6.20, 22.70, NULL, NULL,       'Barista1!', 1, 'Collected', 'Paid', NULL,        NULL, 2, 22.70);
+INSERT INTO orders VALUES(34, 10000004, '2026-09-09 13:55:00 +0100', 24.00, 34.00, NULL, 'SEP34001', 'Online',    1, 'Collected', 'Paid', 'WELCOME10',  10, 1, 30.60);
+INSERT INTO orders VALUES(35, 10000001, '2026-09-15 17:10:00 +0100', 15.10, 29.10, NULL, NULL,       'Barista1!', 1, 'Collected', 'Paid', NULL,        NULL, 2, 29.10);
+
+INSERT INTO item_in_orders VALUES(56, 1, 33,  4.50, 3, 3, 4, 0); -- Latte Regular Soy x3
+INSERT INTO item_in_orders VALUES(57, 4, 33,  4.60, 2, 3, 5, 0); -- Flat White Regular Oat x2
+INSERT INTO item_in_orders VALUES(58, 8, 34, 13.00, 1, 1, 1, 0); -- Brazilian Dark
+INSERT INTO item_in_orders VALUES(59, 6, 34, 10.50, 2, 1, 1, 0); -- Arabic Medium x2
+INSERT INTO item_in_orders VALUES(60, 3, 35,  4.50, 2, 4, 3, 0); -- Cappuccino Large Whole x2
+INSERT INTO item_in_orders VALUES(61, 2, 35,  4.10, 1, 4, 2, 0); -- Americano Large No Milk
+INSERT INTO item_in_orders VALUES(62, 7, 35, 16.00, 1, 1, 1, 0); -- Ethiopian Light
+
 -- verify refunds + refund postage labels
 -- labels shows Pending + loyalty present -> refund 1 (existing) + 3 + 4 = 3 entries
 -- all statuses and both order/item refund types covered across refunds 1-7
