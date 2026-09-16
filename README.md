@@ -43,7 +43,7 @@ What I delivered:
 - **Manager Dashboard**
     - Visualisations of performance analytics with charts
     - Date range selection for the data shown  
-<br>
+
 - **Product Management**
     - Add, Update and Delete product features
       - Post-method form for product creation and updates
@@ -52,7 +52,7 @@ What I delivered:
     - Product details page
     - Product table search and sort
     - SQL schema for `products` and `product_variants` tables  
-<br>
+
 - **Discount Management**
   - Active and past campaign views
   - Discount creation and updates
@@ -62,7 +62,7 @@ What I delivered:
   - Discount details page
   - Stamp redemption tracking
   - SQL schema for `discount_codes`, `discount_redemptions`, `eligible_purchase_types` and `eligible_rules` tables  
-<br>
+
 - **Customer Summary**
   - Sortable list of registered customers
     - Registration and sales date range filters
@@ -71,15 +71,15 @@ What I delivered:
   - Customer details page
     - List of the customer's orders
     - Visualisation of stamps collected  
-<br>
+
 - **Manager Interface**
   - Header and sidebar navigation
   - Reusable scrollable table styling
   - Responsive layouts in manager dashboard, product, discount and customer pages  
-<br>
+
 - **Routing and Controller Development**
   - For all the above features  
-<br>
+
 - **Automated Testing**
   - RSpec acceptance and controller tests for all the above features
   - 94.1% RSpec line coverage on my code
@@ -132,12 +132,13 @@ The customer page at a narrow responsive viewport, with collapsed navigation, st
 
    ```sh
    git clone https://github.com/samueltchs/coffee-shop-web-system.git
-   cd coffee-shop-web-system/application
+   cd coffee-shop-web-system
    ```
 
-2. Install the project dependencies:
+2. Enter the `application` directory and install the project dependencies. Run the remaining setup commands from this directory:
 
    ```sh
+   cd application
    bundle install
    ```
 
@@ -175,8 +176,9 @@ The customer account includes seeded orders, favourites, discount activity, comp
 The suite covers models, helpers, controllers and end-to-end acceptance workflows. 
 It achieved 85.79% project-wide line coverage (3,305 of 3,852 lines), measured with SimpleCov.
 
-Run the complete automated test suite from the application directory:
+From the repository root, enter the `application` directory and run the complete automated test suite:
 
 ```sh
+cd application
 bundle exec rspec
 ```
