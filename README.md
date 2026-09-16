@@ -8,11 +8,11 @@ The project demonstrates end-to-end web development across database design, doma
 
 ## Features
 
-- **Role-based access** – Dedicated customer, barista, manager and administrator workflows with protected routes, session authentication, BCrypt password hashing and password-strength validation.
-- **Customer storefront** – Product browsing and search, favourites, basket management, collection or bean delivery, discount codes, loyalty rewards, mock checkout, order history, refund requests and complaints.
-- **Barista operations** – Customer lookup, in-store ordering and checkout, stamp management, free-coffee redemption, filtered sales and delivery records, daily summaries, refund processing and postage-label generation.
-- **Management tools** – Product, variant and bean-stock management; configurable discount campaigns; customer and complaint monitoring; and date-filtered analytics for sales, refunds, products, customers, sign-ups and reward redemptions.
-- **Administration** – Search and manage customers, employees and orders; correct payment statuses; review customer activity and purchasing habits; send personalised promotions; and suspend, reactivate or anonymise accounts.
+- **Role-based access:** Dedicated customer, barista, manager and administrator workflows with protected routes, session authentication, BCrypt password hashing and password-strength validation.
+- **Customer storefront:** Product browsing and search, favourites, basket management, collection or bean delivery, discount codes, loyalty rewards, mock checkout, order history, refund requests and complaints.
+- **Barista operations:** Customer lookup, in-store ordering and checkout, stamp management, free-coffee redemption, filtered sales and delivery records, daily summaries, refund processing and postage-label generation.
+- **Management tools:** Product, variant and bean-stock management; configurable discount campaigns; customer and complaint monitoring; and date-filtered analytics for sales, refunds, products, customers, sign-ups and reward redemptions.
+- **Administration:** Search and manage customers, employees and orders; correct payment statuses; review customer activity and purchasing habits; send personalised promotions; and suspend, reactivate or anonymise accounts.
 
 ## Technology
 
