@@ -155,7 +155,8 @@ The customer page at a narrow responsive viewport, with collapsed navigation, st
    ```
 
 5. Open [http://localhost:4567](http://localhost:4567) in a browser for the customer-facing system.  
-<br>
+
+
 6. Employee accounts can sign in at [http://localhost:4567/employee-login-page](http://localhost:4567/employee-login-page).
 
 ### Demo Accounts
